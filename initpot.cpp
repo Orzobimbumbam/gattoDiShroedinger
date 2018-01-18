@@ -15,13 +15,18 @@ double WSaxPot::potential(double x) const
 
 
 
-HBOPot::HBOPot(double m, double omega, double rhbo): m_m(m), m_omega(omega) {}
+HBOPot::HBOPot(double m, double omega): m_m(m), m_omega(omega) {}
 
 double HBOPot::potential(double x) const
 {
     double hbopot=(1/2)*m_m*(m_omega*m_omega)*(x*x);
     
     return hbopot;
+}
+
+double HBOPot::getOmega() const
+{
+    return m_omega;
 }
 
 

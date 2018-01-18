@@ -1,4 +1,5 @@
 //class hierarchy interface goes in header
+#pragma once
 
 class InitialPot //pure virtual base class
 {
@@ -33,8 +34,10 @@ public:
     //=====================================================================
     // HBO potenzial
     //=====================================================================
-    HBOPot(double m, double omega, double rhbo);
+    HBOPot(double m, double omega);
     double potential(double x) const override;
+    
+    double getOmega() const;
     
 private:
     HBOPot(); //same as before
