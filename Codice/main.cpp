@@ -30,6 +30,8 @@ int main(int argc, const char * argv[]) {
         }
         
     }
+     
+     
     
     file.close();
     file.clear();
