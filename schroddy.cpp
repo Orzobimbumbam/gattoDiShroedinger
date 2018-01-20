@@ -9,11 +9,11 @@ using namespace Parameters;
 
 Eigenvalues::~Eigenvalues() {}
 
-HarmonicEigenvalues::HarmonicEigenvalues(double omega): m_omega(omega) {}
+HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m_omega(omega), m_n(n), m_l(l) {}
 
-double HarmonicEigenvalues::eigenvalue(unsigned int n, int l) const
+double HarmonicEigenvalues::eigenvalue() const
 {
-    return hbar*m_omega*(2*n+l+(3/2));
+    return hbar*m_omega*(2*m_n+m_l+(3/2));
 }
 
 Eigenvalues* HarmonicEigenvalues::clone() const
@@ -29,12 +29,12 @@ Schroddy::~Schroddy()
     delete m_eigenval;
 }
 
-double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned int n, int l, unsigned long NSteps) const
+double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps) const
 {
     //implement runge-kutta here..
     const double h = (x1 - x0)/NSteps;
     const double factor = 2*mp/(hbar*hbar);
-    const double eigenvalue = m_eigenval -> eigenvalue(n, l);
+    const double eigenvalue = m_eigenval -> eigenvalue();
     
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     for (unsigned long i = 0; i < NSteps; ++i)
