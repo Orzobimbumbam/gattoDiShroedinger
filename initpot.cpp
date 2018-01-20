@@ -3,6 +3,7 @@
 #include <cmath>
 #include "initpot.h" //remember to include header with interface
 
+InitialPot::~InitialPot() {}
 
 WSaxPot::WSaxPot(double V0, double Rn, double a0): m_V0(V0), m_Rn(Rn), m_a0(a0) {};
 
@@ -13,6 +14,10 @@ double WSaxPot::potential(double x) const
     return wspot;
 }
 
+InitialPot* WSaxPot::clone() const
+{
+    return new WSaxPot(*this); //return a derived class object through a base class pointer
+}
 
 
 HBOPot::HBOPot(double m, double omega): m_m(m), m_omega(omega) {}
@@ -23,10 +28,15 @@ double HBOPot::potential(double x) const
     
     return hbopot;
 }
-
+/*
 double HBOPot::getOmega() const
 {
     return m_omega;
+}*/
+
+InitialPot* HBOPot::clone() const
+{
+    return new HBOPot(*this); //return a derived class object through a base class pointer
 }
 
 

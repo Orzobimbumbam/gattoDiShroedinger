@@ -7,6 +7,8 @@ public:
     virtual double potential(double x) const = 0;
     virtual ~InitialPot();
     
+    virtual InitialPot* clone() const = 0; //virtual constructor
+    
 private:
     
 };
@@ -20,6 +22,8 @@ class WSaxPot: public InitialPot //derived class
 public:
     WSaxPot(double V0, double Rn, double a0);
     double potential(double x) const override;
+    
+    InitialPot* clone() const override;
     
 private:
     WSaxPot(); //make defaul ctor private as we must initialize parameters
@@ -37,7 +41,8 @@ public:
     HBOPot(double m, double omega);
     double potential(double x) const override;
     
-    double getOmega() const;
+    //double getOmega() const;
+    InitialPot* clone() const override;
     
 private:
     HBOPot(); //same as before

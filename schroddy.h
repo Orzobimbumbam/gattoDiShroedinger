@@ -11,11 +11,12 @@ class Eigenvalues
 public:
     virtual double eigenvalue(unsigned int n, int l) const = 0;
     virtual ~Eigenvalues();
+    
+    virtual Eigenvalues* clone() const = 0;
 
 private:
     
 };
-
 
 
 class HarmonicEigenvalues: public Eigenvalues
@@ -23,6 +24,8 @@ class HarmonicEigenvalues: public Eigenvalues
 public:
     HarmonicEigenvalues(double omega);
     double eigenvalue(unsigned int n, int l) const override;
+    
+    Eigenvalues* clone() const override;
     
 private:
     HarmonicEigenvalues();
@@ -36,9 +39,13 @@ private:
 class Schroddy
 {
 public:
-    Schroddy(); //if you have more parameters to pass in, change this
-    double solveShroddyByRK(const InitialPot& pot, const Eigenvalues& eigenval, double x0, double x1, double step) const;
+    Schroddy(const InitialPot& pot, const Eigenvalues& eigenval); //if you have more parameters to pass in, change this
+    double solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned int n, int l, unsigned long NSteps) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
+    
+    ~Schroddy();
     
 private:
+    const InitialPot* const m_pot;
+    const Eigenvalues* const m_eigenval;
     
 };

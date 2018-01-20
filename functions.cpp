@@ -1,5 +1,5 @@
 // Class for basic functions
-
+/*
 # include <iostream>
 # include <math.h>
 # include <stdlib.h>
@@ -75,7 +75,7 @@ char b;
 std::cout << "Premere un tasto per terminare.";
 std::cin >> b;
 return 0;
-}*/
+}
 
 double derivata( double (*fun)(double), double x, double h)
 {
@@ -87,4 +87,4 @@ double f(double x)
 return x*x;
 }
 
-}
+}*/

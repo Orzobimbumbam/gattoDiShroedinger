@@ -7,66 +7,57 @@
 
 using namespace Parameters;
 
+Eigenvalues::~Eigenvalues() {}
+
 HarmonicEigenvalues::HarmonicEigenvalues(double omega): m_omega(omega) {}
+
 double HarmonicEigenvalues::eigenvalue(unsigned int n, int l) const
 {
     return hbar*m_omega*(2*n+l+(3/2));
 }
 
-double Schroddy::solveShroddyByRK(const InitialPot& pot, const Eigenvalues& eigenval, double x0, double x1, double step) const
+Eigenvalues* HarmonicEigenvalues::clone() const
+{
+    return new HarmonicEigenvalues(*this);
+}
+
+Schroddy::Schroddy(const InitialPot& pot, const Eigenvalues& eigenval): m_pot(pot.clone()), m_eigenval(eigenval.clone()) {}
+
+Schroddy::~Schroddy()
+{
+    delete m_pot;
+    delete m_eigenval;
+}
+
+double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned int n, int l, unsigned long NSteps) const
 {
     //implement runge-kutta here..
+    const double h = (x1 - x0)/NSteps;
+    const double factor = 2*mp/(hbar*hbar);
+    const double eigenvalue = m_eigenval -> eigenvalue(n, l);
     
-    return 0; //change return value
+    double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
+    for (unsigned long i = 0; i < NSteps; ++i)
+    {
+        
+        //compute decoupled RK factors
+        const double k1 = runningPsiPrime;
+        const double l1 = (m_pot -> potential(runningX) - eigenvalue)*runningPsi;
+        const double k2 = runningPsiPrime + h/2*l1;
+        const double l2 = (m_pot -> potential(runningX + h/2) - eigenvalue)*(runningPsi + h/2*k1);
+        const double k3 = runningPsiPrime + h/2*l2;
+        const double l3 = (m_pot -> potential(runningX + h/2) - eigenvalue)*(runningPsi + h/2*k2);
+        const double k4 = runningPsiPrime + h*l3;
+        const double l4 = (m_pot -> potential(runningX + h) - eigenvalue)*(runningPsi + h*k3);
+        
+        //advance running variables
+        runningPsi += h/6*factor*(k1 + 2*k2 + 2*k3 + k4);
+        runningPsiPrime =+ h/6*factor*(l1 + 2*l2 + 2*l3 + l4);
+        runningX += h;
+        
+    }
+    return runningPsi;
 }
 	
-//=====================================================================
-// Schrodinger function for Runge-Kutta method.
-//=====================================================================
-/*
-double schrodinger (double& r, double& l, double& *Vks, double& u)
-{	
-	double eigenvalue=HBOEigen(omega, l, hbar, n);
-	double schrod=-2*(eigenvalue-((l*(l+1))/(2*(r*r)))-*Vks)*u;
 	
-	return schrod;
-}	
-
-	/*
-int main() {
-	
-		//const double hbar=1.0545718 * pow(10,-34);
-		*/
-	
-	
-	
-//return 0;
-//}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	}
 
