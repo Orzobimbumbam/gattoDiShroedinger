@@ -15,7 +15,7 @@ const double hbar = 1.0545718*1e-34;
 
 
 const double mp= 1.6726219e-27 ;							// Proton mass
-//const double mn=   ;						// Neutron mass
+const double mn=1.6749273e-27   ;						// Neutron mass
 
 // Wood-Saxon potential parameters
 const double V0 = 25.025;
@@ -25,7 +25,7 @@ const double a0 = 1;
 //const double k0=  ;
 //const double r0=  ;
 
-// HBO potential parameters
+// HO potential parameters
 //const double m=   ;
 //double r=   ;
 //const  unsigned int n = 100;

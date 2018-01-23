@@ -32,20 +32,20 @@ private:
 };
 
 
-class HBOPot: public InitialPot //derived class
+class HOPot: public InitialPot //derived class
 {
 public:
     //=====================================================================
-    // HBO potenzial
+    // HO potential
     //=====================================================================
-    HBOPot(double m, double omega);
+    HOPot(double m, double omega);
     double potential(double x) const override;
     
     //double getOmega() const;
     InitialPot* clone() const override;
     
 private:
-    HBOPot(); //same as before
+    HOPot(); //same as before
     const double m_m, m_omega;
 };
 

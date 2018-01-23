@@ -20,23 +20,23 @@ InitialPot* WSaxPot::clone() const
 }
 
 
-HBOPot::HBOPot(double m, double omega): m_m(m), m_omega(omega) {}
+HOPot::HOPot(double m, double omega): m_m(m), m_omega(omega) {}
 
-double HBOPot::potential(double x) const
+double HOPot::potential(double x) const
 {
-    double hbopot=(1/2)*m_m*(m_omega*m_omega)*(x*x);
+    double hopot=(1/2)*m_m*(m_omega*m_omega)*(x*x);
     
-    return hbopot;
+    return hopot;
 }
 /*
-double HBOPot::getOmega() const
+double HOPot::getOmega() const
 {
     return m_omega;
 }*/
 
-InitialPot* HBOPot::clone() const
+InitialPot* HOPot::clone() const
 {
-    return new HBOPot(*this); //return a derived class object through a base class pointer
+    return new HOPot(*this); //return a derived class object through a base class pointer
 }
 
 
