@@ -3,9 +3,8 @@
 # include "initpot.h"
 # include "parameters.h"
 # include "schroddy.h"
-//# include <cmath>
+# include <cmath>
 
-using namespace Parameters;
 
 Eigenvalues::~Eigenvalues() {}
 
@@ -13,7 +12,7 @@ HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m
 
 double HarmonicEigenvalues::eigenvalue() const
 {
-    return hbar*m_omega*(2*m_n+m_l+(3/2));
+    return Parameters::hbar*m_omega*(2*m_n+m_l+(3/2));
 }
 
 Eigenvalues* HarmonicEigenvalues::clone() const
@@ -33,7 +32,7 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
 {
     //implement runge-kutta here..
     const double h = (x1 - x0)/NSteps;
-    const double factor = 2*mp/(hbar*hbar);
+    const double factor = 2*Parameters::mp/(Parameters::hbar*Parameters::hbar);
     const double eigenvalue = m_eigenval -> eigenvalue();
     
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;

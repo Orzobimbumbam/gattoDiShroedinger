@@ -24,14 +24,18 @@ class HarmonicEigenvalues: public Eigenvalues
 public:
     HarmonicEigenvalues(double omega, unsigned int n, int l);
     double eigenvalue() const override;
+    //setEnergyLevel(unsigned int n);
+    //setAngularMomentum(int l);
     
     Eigenvalues* clone() const override;
     
 private:
     HarmonicEigenvalues();
     const double m_omega;
-    unsigned int m_n;
-    int m_l;
+    
+    //if you want to be able to change quantum numbers within same object, implement set methods and remove const keyword
+    const unsigned int m_n;
+    const int m_l;
 };
 
 
@@ -51,3 +55,4 @@ private:
     const Eigenvalues* const m_eigenval;
     
 };
+

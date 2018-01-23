@@ -65,7 +65,7 @@ double derivata(double (*function)(double), double, double);
 
 double x=0;
 double h=0.001;
-/*std::cout << "In quale punto vuoi calcolare la derivata? ";
+std::cout << "In quale punto vuoi calcolare la derivata? ";
 std::cin >> x;
 std::cout << "\n Con quale incremento?";
 std::cin >> h;
