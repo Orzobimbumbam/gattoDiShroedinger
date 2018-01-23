@@ -26,7 +26,8 @@ const double a0 = 1;
 //const double r0=  ;
 
 // HO potential parameters
-//const double m=   ;
+const double m=mn   ;
+const double f = 100;
 //double r=   ;
 //const  unsigned int n = 100;
 //const unsigned int nl=2;
@@ -36,7 +37,8 @@ const double a0 = 1;
 //double E2= ;
 
 // Other parameters
-
+const unsigned int energyLevel = 1;
+const int angularMomentum = 1;
 }
 
 //#endif
