@@ -4,7 +4,7 @@
 #include "initpot.h" //remember to include header with interface
 
 InitialPot::~InitialPot() {}
-
+/*
 WSaxPot::WSaxPot(double V0, double Rn, double a0): m_V0(V0), m_Rn(Rn), m_a0(a0) {};
 
 double WSaxPot::potential(double x) const
@@ -18,7 +18,7 @@ InitialPot* WSaxPot::clone() const
 {
     return new WSaxPot(*this); //return a derived class object through a base class pointer
 }
-
+*/
 
 HOPot::HOPot(double m, double omega): m_m(m), m_omega(omega) {}
 
