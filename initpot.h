@@ -13,7 +13,6 @@ private:
     
 };
 
-/*
 class WSaxPot: public InitialPot //derived class
 {
     //=====================================================================
@@ -30,7 +29,7 @@ private:
     const double m_V0, m_Rn, m_a0;
     
 };
-*/
+
 
 class HOPot: public InitialPot //derived class
 {

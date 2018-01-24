@@ -6,6 +6,7 @@
 # include "parameters.h"
 # include "schroddy.h"
 # include <cmath>
+# include <vector>
 
 /*=======================================================================
  * HO Eigenvalues generator
@@ -45,6 +46,9 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     const double eigenvalue = m_eigenval -> eigenvalue();
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
+    std::vector<double> psiArray;
+    psiArray.push_back(psi0);
+    
     for (unsigned long i = 0; i < NSteps; ++i)
     {
 
@@ -58,14 +62,24 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
         const double k4 = runningPsiPrime + h*l3;
         const double l4 = (m_pot -> potential(runningX + h) - eigenvalue)*(runningPsi + h*k3);
 
-        //advance running variables
+        //advance running variables and store intermediate results
         runningPsi += h/6*factor*(k1 + 2*k2 + 2*k3 + k4);
         runningPsiPrime =+ h/6*factor*(l1 + 2*l2 + 2*l3 + l4);
         runningX += h;
+        psiArray.push_back(runningPsi);
 
     }
-    return runningPsi;
-
+    //work out normalizatiion constant
+    double psiSquared = 0;
+    for (std::vector<double>::iterator it = psiArray.begin(); it != psiArray.end(); ++it)
+        psiSquared += (*it)*(*it); //derefence iterator at array's element and square (brackets are needed!)
+    
+    const double scalar = psiSquared*h;
+    
+    //return normalized eigenfunction (on interval [x0, x1]) and job done!
+    return runningPsi/scalar;
+}
+/*
     double integral(double(*fun)(double), double xmin, double xmax, int n_int );
 
 
@@ -87,7 +101,7 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     scalarPsi=integral(integralPsi, Parameters::x_min, Parameters::x_max, h_t)
     normalPsi=runningPsi/sqrt(scalarPsi);
 
-}
+}*/
 
 
 
