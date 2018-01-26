@@ -8,10 +8,12 @@
 # include <cmath>
 # include <vector>
 
+
+Eigenvalues::~Eigenvalues() {}
+
 /*=======================================================================
  * HO Eigenvalues generator
  *=====================================================================*/
-Eigenvalues::~Eigenvalues() {}
 
 HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m_omega(omega), m_n(n), m_l(l) {}
 
@@ -25,6 +27,34 @@ Eigenvalues* HarmonicEigenvalues::clone() const
     return new HarmonicEigenvalues(*this);
 }
 
+
+/*========================================================================
+ * Eigenvalues generator by shooting method
+ *======================================================================*/
+
+GenericEigenvalues::GenericEigenvalues (double eigval1, double eigval2, double eigenvalt, double err): m_eigval1(eigval1), m_eigval2(eigval2), m_eigenvalt(eigenvalt), m_err(err){}
+
+double GenericEigenvalues::eigenvalue() const
+{
+	m_eigval1=Parameters::eigenvalue1;
+	m_eigval2=Parameters::eigenvalue2;
+	m_err=Parameters::error;
+
+
+
+
+
+
+
+
+
+
+}
+
+Eigenvalues* GenericEigenvalues::clone() const
+{
+	return new GenericEigenvalues(*this);
+}
 
 /*=========================================================================
  * Schrodinger equation solver by Runge-Kutta method
@@ -48,7 +78,7 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     std::vector<double> psiArray;
     psiArray.push_back(psi0);
-    
+
     for (unsigned long i = 0; i < NSteps; ++i)
     {
 
@@ -70,37 +100,31 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
 
     }
     //work out normalizatiion constant
-    double psiSquared = 0;
+    double psiSquared = 0, normalPsi=0;
     for (std::vector<double>::iterator it = psiArray.begin(); it != psiArray.end(); ++it)
         psiSquared += (*it)*(*it); //derefence iterator at array's element and square (brackets are needed!)
-    
+
     const double scalar = psiSquared*h;
-    
+
     //return normalized eigenfunction (on interval [x0, x1]) and job done!
-    return runningPsi/scalar;
+    return normalPsi=runningPsi/sqrt(scalar);
 }
 /*
     double integral(double(*fun)(double), double xmin, double xmax, int n_int );
-
-
     // Eigenfunction normalization by trapezes method
     double h_t=0, scalarPsi=0, normalPsi=0;
     double integralPsi=runningPsi*runningPsi;
     h_t=(Parameters::x_min-Parameters::x_max)/NSteps;
-
     double integral(double(*fun)(double), double xmin, double xmax, int n_int )
     {
     	double hint=0, i=0, value=0;
     	hint=(xmin-xmax)/n_int;
-
     	for (i = xmin; i < xmax; i+=n_int)
     		value+=(((*fun)(i)+(*fun)(i+hint))*hint/2)
     	return value;
     }
-
     scalarPsi=integral(integralPsi, Parameters::x_min, Parameters::x_max, h_t)
     normalPsi=runningPsi/sqrt(scalarPsi);
-
 }*/
 
 

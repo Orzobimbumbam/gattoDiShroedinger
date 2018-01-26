@@ -17,7 +17,7 @@ const double mn= 1.6749273e-27   ;						// Neutron mass
 
 // Wood-Saxon potential parameters
 const double V0 = 25.025;
-const double Rn =  1e-9;
+const double Rn = 1e-9;
 const double a0 = 1;
 
 // Spin-Orbit potential parameters
@@ -30,8 +30,9 @@ const double f = 100;
 //double r=   ;
 
 // Eigenvalues generator parameters
-//double E1= ;
-//double E2= ;
+double eigenvalue1=0.93250 ;
+double eigenvalue2=1.36256 ;
+double error=10e8;
 
 // Other parameters
 const unsigned int energyLevel = 1;
