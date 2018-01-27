@@ -22,7 +22,7 @@ public:
     empiDensities* clone() const override;
 
 private:
-    EmpiricaldensityMC();
+    //EmpiricaldensityMC(); //cannot have two default constructors
 
 };
 
@@ -36,7 +36,7 @@ public:
     empiDensities* clone() const override;
 
 private:
-    EmpiricaldensitySCAT();
+    //EmpiricaldensitySCAT(); //cannot have two def ctors
 
 };
 
