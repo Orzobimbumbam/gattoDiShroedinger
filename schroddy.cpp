@@ -34,20 +34,14 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 GenericEigenvalues::GenericEigenvalues (double eigval1, double eigval2, double eigenvalt, double err): m_eigval1(eigval1), m_eigval2(eigval2), m_eigenvalt(eigenvalt), m_err(err){}
 
-double GenericEigenvalues::eigenvalue() const
+double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
-	m_eigval1=Parameters::eigenvalue1;
-	m_eigval2=Parameters::eigenvalue2;
-	m_err=Parameters::error;
-
-
-
-
-
-
-
-
-
+	//m_eigval1=Parameters::eigenvalue1; //cannot assign to a const variable; don't you pass in these values to the constructor? why do it twice?
+	//m_eigval2=Parameters::eigenvalue2;
+	//m_err=Parameters::error;
+    
+    
+    return 0.0;
 
 }
 

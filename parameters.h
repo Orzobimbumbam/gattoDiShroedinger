@@ -32,7 +32,7 @@ const double f = 100;
 // Eigenvalues generator parameters
 double eigenvalue1=0.93250 ;
 double eigenvalue2=1.36256 ;
-double error=10e8;
+double error=10e8; //maybe you mean 1e-08?
 
 // Other parameters
 const unsigned int energyLevel = 1;
