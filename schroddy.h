@@ -39,6 +39,23 @@ private:
 };
 
 
+class GenericEigenvalues: public Eigenvalues
+{
+public:
+	GenericEigenvalues (double eigval1, double eigval2, double eigenvalt, double err);
+	double eigenvalue() const override;
+
+	Eigenvalues* clone() const override;
+
+private:
+	GenericEigenvalues();
+	const double m_eigval1;
+	const double m_eigval2;
+	const double m_eigenvalt;
+	const double m_err;
+};
+
+
 //Shroedinger class + solver
 
 

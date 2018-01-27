@@ -10,21 +10,23 @@
  *==========================================*/
 Theoreticaldensity::~Theoreticaldensity() {}
 
-TheoNuclearDensity::TheoNuclearDensity(double normalPsi, double x): m_normalPsi(normalPsi) {} //this class cannot have a public constructor if virtual
+Theoreticaldensity::Theoreticaldensity(double eigenfunc, double x): m_eigenfunc(eigenfunc), m_x(x) {}
 
-double TheoNuclearDensity::theodensity(double x) const //MUST be defined in derived class
+double Theoreticaldensity::density() const
 {
-    return (1/(4*Parameters::PI*(x*x)))*Parameteres::NN*(m_normalPsi*m_normalPsi);// BOH!!!!!!!
+	m_eigenfunc& schroddy::normalPsi;
+    return (1/(4*Parameters::PI*(m_x*m_x)))*Parameters::NN*(m_eigenfunc*m_eigenfunc);// BOH!!!!!!!
 }
 
-Theoreticaldensity* TheoNuclearDensity::clone() const //same argument as before, if not virtual cloning isn't necessary
+Densities* Theoreticaldensity::clone() const
 {
-    return new TheoNuclearDensity(*this);
+    return new Theoreticaldensity(*this);
 }
 
 /*=============================================
  * Kohm-Sham inverse equations
  *===========================================*/
+
 
 
 
