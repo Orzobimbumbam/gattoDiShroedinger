@@ -11,6 +11,9 @@
 		D3C60200200FF6CE00F1E661 /* functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601F8200FF6CE00F1E661 /* functions.cpp */; };
 		D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
 		D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
+		D3E9F77D20210BB400DAAAB7 /* empidensity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77820210BB400DAAAB7 /* empidensity.cpp */; };
+		D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */; };
+		D3E9F78120210BD300DAAAB7 /* NLSolverClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77F20210BD300DAAAB7 /* NLSolverClass.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +38,13 @@
 		D3C601FD200FF6CE00F1E661 /* parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameters.h; sourceTree = "<group>"; };
 		D3C601FE200FF6CE00F1E661 /* schroddy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = schroddy.cpp; sourceTree = "<group>"; };
 		D3C601FF200FF6CE00F1E661 /* schroddy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = schroddy.h; sourceTree = "<group>"; };
+		D3E9F77820210BB400DAAAB7 /* empidensity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = empidensity.cpp; sourceTree = "<group>"; };
+		D3E9F77920210BB400DAAAB7 /* empidensity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = empidensity.h; sourceTree = "<group>"; };
+		D3E9F77A20210BB400DAAAB7 /* Includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Includes.h; sourceTree = "<group>"; };
+		D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kohn-sham.cpp"; sourceTree = "<group>"; };
+		D3E9F77C20210BB400DAAAB7 /* kohn-sham.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kohn-sham.h"; sourceTree = "<group>"; };
+		D3E9F77F20210BD300DAAAB7 /* NLSolverClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NLSolverClass.cpp; sourceTree = "<group>"; };
+		D3E9F78020210BD300DAAAB7 /* NLSolverClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NLSolverClass.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +61,13 @@
 		D3C601E5200FF6A800F1E661 = {
 			isa = PBXGroup;
 			children = (
+				D3E9F77F20210BD300DAAAB7 /* NLSolverClass.cpp */,
+				D3E9F78020210BD300DAAAB7 /* NLSolverClass.hpp */,
+				D3E9F77820210BB400DAAAB7 /* empidensity.cpp */,
+				D3E9F77920210BB400DAAAB7 /* empidensity.h */,
+				D3E9F77A20210BB400DAAAB7 /* Includes.h */,
+				D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */,
+				D3E9F77C20210BB400DAAAB7 /* kohn-sham.h */,
 				D3C601F8200FF6CE00F1E661 /* functions.cpp */,
 				D3C601F9200FF6CE00F1E661 /* functions.h */,
 				D3C601FA200FF6CE00F1E661 /* initpot.cpp */,
@@ -136,7 +153,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3E9F77D20210BB400DAAAB7 /* empidensity.cpp in Sources */,
 				D3C601F2200FF6AB00F1E661 /* main.cpp in Sources */,
+				D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */,
+				D3E9F78120210BD300DAAAB7 /* NLSolverClass.cpp in Sources */,
 				D3C60200200FF6CE00F1E661 /* functions.cpp in Sources */,
 				D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */,
 				D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */,
@@ -266,6 +286,7 @@
 				D3C601F7200FF6AB00F1E661 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
