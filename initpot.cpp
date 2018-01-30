@@ -1,5 +1,5 @@
 //Class for initial potentials
-
+#pragma once
 #include <cmath>
 #include "parameters.h"
 #include "initpot.h" //remember to include header with interface
@@ -7,26 +7,23 @@
 InitialPot::~InitialPot() {}
 /*
 WSaxPot::WSaxPot(double V0, double Rn, double a0): m_V0(V0), m_Rn(Rn), m_a0(a0) {};
-
 double WSaxPot::potential(double x) const
 {
     double wspot = -m_V0/(1+exp ((x-m_Rn)/m_a0));
-
     return wspot;
 }
-
 InitialPot* WSaxPot::clone() const
 {
     return new WSaxPot(*this); //return a derived class object through a base class pointer
 }
 */
 
-HOPot::HOPot(double m, double omega, double hbar, double angular): m_m(m), m_omega(omega), m_hbar(hbar), m_angular(angular) {}
+HOPot::HOPot(double m, double omega): m_m(m), m_omega(omega){}
 
 double HOPot::potential(double x) const
 {
-	double sch_angular=((m_hbar*m_hbar)*m_angular(m_angular+1))/(2*m_m*(x*x));
-    double hopot=sch_angular+(1/2)*m_m*(m_omega*m_omega)*(x*x);
+	const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
+    double hopot=angularpart+(1/2)*m_m*(m_omega*m_omega)*(x*x);
 
     return hopot;
 }
@@ -41,6 +38,22 @@ InitialPot* HOPot::clone() const
     return new HOPot(*this); //return a derived class object through a base class pointer
 }
 
+potOut::potOut(double potKS): m_potKS(potKS){}
+
+double potOut::potential(double x) const
+{
+	const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
+return angularpart+m_potKS;
+
+}
+InitialPot* potOut::clone() const
+{
+    return new potOut(*this); //return a derived class object through a base class pointer
+}
+
+
+
+
 
 
 //=====================================================================
@@ -51,11 +64,5 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
 {
 	double l, j;
 	double LS=((hbar*hbar)/2)(j(j+1)-l(l+1)-3/4)
-
 	double deriv
-
 	sopot=*/
-
-
-
-

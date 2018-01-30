@@ -1,12 +1,3 @@
-
-//
-//  NLSolverClass.hpp
-//  GiltPricer
-//
-//  Created by Alberto Campi on 17/02/2017.
-//  Copyright © 2017 Alberto Campi. All rights reserved.
-//
-
 #ifndef NLSolverClass_hpp
 #define NLSolverClass_hpp
 
@@ -19,17 +10,17 @@ class NLSolver
 {
 public:
     NLSolver(double accuracy): m_accuracy(accuracy) {}
-    
+
     void setAccuracy(double accuracy)
     {
         m_accuracy = accuracy;
     }
-    
+
     double solveByBisection(const T& f, double targetValue, double a, double b) const //solver by bisection method
     {
         double y1 = (f.*evaluate)(a); //dereferencing a pointer to class method
         double y2 = (f.*evaluate)(b);
-        
+
         if (std::abs(y1 - targetValue) <= m_accuracy)
             return y1;
         if (std::abs(y2 - targetValue) <= m_accuracy)
@@ -41,7 +32,7 @@ public:
         unsigned long i = 0;
         double mid = a + 0.5*(b - a);
         double y = (f.*evaluate)(mid);
-        
+
         while (std::abs(y - targetValue) > m_accuracy)
         {
             if (i == Nmax) //avoid infinite loops
@@ -63,10 +54,10 @@ public:
     double solveByNR(const T& f, double x, double targetValue) const //solver by Newton-Raphson method
     {
         double y = (f.*evaluate)(x);
-        
+
         const unsigned long Nmax = 1000;
         long unsigned i = 0;
-        
+
         while(std::abs(y - targetValue) > m_accuracy)
         {
             double yprime = (f.*fderivative)(x);
@@ -81,10 +72,16 @@ public:
         }
         return x;
     }
-    
+
 private:
     const double m_accuracy;
-    
+
 };
 
 #endif /* NLSolverClass_hpp */
+
+
+
+
+
+

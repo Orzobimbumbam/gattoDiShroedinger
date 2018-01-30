@@ -7,6 +7,7 @@
 # include "schroddy.h"
 # include <cmath>
 # include <vector>
+# include "NLSolverClass.hpp"
 
 
 Eigenvalues::~Eigenvalues() {}
@@ -16,33 +17,43 @@ Eigenvalues::~Eigenvalues() {}
  *=====================================================================*/
 /*
 HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m_omega(omega), m_n(n), m_l(l) {}
-
 double HarmonicEigenvalues::eigenvalue() const
 {
     return Parameters::hbar*m_omega*(2*m_n+m_l+(3/2));
 }
-
 Eigenvalues* HarmonicEigenvalues::clone() const
 {
     return new HarmonicEigenvalues(*this);
 }
 */
 
+
+//schroddywrapper::schroddywrapper (const Schroddy& sh, double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps): m_sh(sh), m_x0(x0), m_x1(x1), m_psi0(psi0), m_psiPrime0(psiPrime0), m_NSteps(NSteps) {}
+schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
+double schroddywrapper::eigenfunction(double E) const
+{
+	return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, Parameters::N_step);
+}
+
+
+
+
+
 /*========================================================================
  * Eigenvalues generator by shooting method
  *======================================================================*/
 
-GenericEigenvalues::GenericEigenvalues (double eigval1, double eigval2, double eigenvalt, double err): m_eigval1(eigval1), m_eigval2(eigval2), m_eigenvalt(eigenvalt), m_err(err){}
+GenericEigenvalues::GenericEigenvalues (const InitialPot& potKS, double eigval1, double eigval2): m_potKS(potKS.clone()), m_eigval1(eigval1), m_eigval2(eigval2){}
 
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
-	double
-	Schroddy sch();
-	sch.solveShroddyByRK();
+	//double
+	Schroddy sch(*m_potKS,*this);
+	//double sch.solveShroddyByRK();
+	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(Parameters::error);
 
-
-
-    return 0.0;
+	const schroddywrapper wrap(sch);
+    return sol.solveByBisection(wrap, 0, m_eigval1, m_eigval2);
 
 }
 
@@ -121,5 +132,3 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     scalarPsi=integral(integralPsi, Parameters::x_min, Parameters::x_max, h_t)
     normalPsi=runningPsi/sqrt(scalarPsi);
 }*/
-
-

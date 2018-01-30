@@ -3,6 +3,7 @@
 #pragma once
 
 class InitialPot;
+class Schroddy;
 
 //hierarchy for eigenvalue objects
 
@@ -39,20 +40,25 @@ private:
 };
 
 
+
+
+
+
+
+
 class GenericEigenvalues: public Eigenvalues
 {
 public:
-	GenericEigenvalues (double eigval1, double eigval2, double eigenvalt, double err);
+	GenericEigenvalues (const InitialPot& potKS,double eigval1, double eigval2);
 	double eigenvalue() const override;
 
 	Eigenvalues* clone() const override;
 
 private:
 	GenericEigenvalues();
-	const double m_eigval1;
-	const double m_eigval2;
-	const double m_eigenvalt;
-	const double m_err;
+	double m_eigval1;
+	double m_eigval2;
+	const InitialPot* m_potKS;
 };
 
 
@@ -71,4 +77,15 @@ private:
     const InitialPot* const m_pot;
     const Eigenvalues* const m_eigenval;
 
+};
+
+
+class schroddywrapper
+{
+public:
+	schroddywrapper (const Schroddy& sh);
+	double eigenfunction (double E) const;
+private:
+	//double m_x0, m_x1, m_psi0, m_psiPrime0, m_NSteps;
+	Schroddy m_sh;
 };

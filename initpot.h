@@ -38,7 +38,7 @@ public:
     //=====================================================================
     // HO potential
     //=====================================================================
-    HOPot(double m, double omega, double hbar, double angular);
+    HOPot(double m, double omega);
     double potential(double x) const override;
 
     //double getOmega() const;
@@ -46,8 +46,22 @@ public:
 
 private:
     HOPot(); //same as before
-    const double m_m, m_omega, m_hbar, m_angular;
+    const double m_m, m_omega;
 };
+
+class potOut: public InitialPot
+{
+public:
+	potOut(double potKS);
+	double potential (double x) const override;
+
+	InitialPot* clone() const override;
+
+private:
+	double m_potKS;
+};
+
+
 
 
 

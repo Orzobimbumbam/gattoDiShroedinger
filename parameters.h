@@ -12,8 +12,8 @@ namespace Parameters
 
 const int NN=10;										// Neutrons number
 const int NP=10;										// Protons number
-const double mp= 1.6726219e-27 ;						// Proton mass
-const double mn= 1.6749273e-27   ;						// Neutron mass
+const double mp= 1.6726219e-27;							// Proton mass
+const double mn= 1.6749273e-27;							// Neutron mass
 
 // Wood-Saxon potential parameters
 const double V0 = 25.025;
@@ -32,7 +32,15 @@ const double f = 100;
 // Eigenvalues generator parameters
 double eigenvalue1=0.93250 ;
 double eigenvalue2=1.36256 ;
-double error=10e8; //maybe you mean 1e-08?
+double error=10e-8; //maybe you mean 1e-08?
+
+// Runge-Kutta parameters
+const double x_in=0;
+const double x_fin=Rn;
+const double psi0=0;
+const double Psi_0=0;
+const double psiPrime0=0;
+unsigned long N_step=10;
 
 // Other parameters
 const unsigned int energyLevel = 1;
@@ -45,6 +53,5 @@ const double x_max=3*Rn;								//Interval
 }
 
 //#endif
-
 
 
