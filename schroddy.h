@@ -72,7 +72,3 @@ private:
     const Eigenvalues* const m_eigenval;
 
 };
-
-
-
-

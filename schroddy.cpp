@@ -36,11 +36,12 @@ GenericEigenvalues::GenericEigenvalues (double eigval1, double eigval2, double e
 
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
-	//m_eigval1=Parameters::eigenvalue1; //cannot assign to a const variable; don't you pass in these values to the constructor? why do it twice?
-	//m_eigval2=Parameters::eigenvalue2;
-	//m_err=Parameters::error;
-    
-    
+	double
+	Schroddy sch();
+	sch.solveShroddyByRK ();
+
+
+
     return 0.0;
 
 }
@@ -120,10 +121,5 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     scalarPsi=integral(integralPsi, Parameters::x_min, Parameters::x_max, h_t)
     normalPsi=runningPsi/sqrt(scalarPsi);
 }*/
-
-
-
-
-
 
 
