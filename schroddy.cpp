@@ -14,7 +14,7 @@ Eigenvalues::~Eigenvalues() {}
 /*=======================================================================
  * HO Eigenvalues generator
  *=====================================================================*/
-
+/*
 HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m_omega(omega), m_n(n), m_l(l) {}
 
 double HarmonicEigenvalues::eigenvalue() const
@@ -26,7 +26,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 {
     return new HarmonicEigenvalues(*this);
 }
-
+*/
 
 /*========================================================================
  * Eigenvalues generator by shooting method
@@ -38,7 +38,7 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
 	double
 	Schroddy sch();
-	sch.solveShroddyByRK ();
+	sch.solveShroddyByRK();
 
 
 
