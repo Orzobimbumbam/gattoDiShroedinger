@@ -26,17 +26,6 @@ Eigenvalues* HarmonicEigenvalues::clone() const
     return new HarmonicEigenvalues(*this);
 }
 
-/*========================================================================
- * Wrapper for resolve arguments inconsistency between schroddy and NLSolver classes
- *======================================================================*/
-
-//schroddywrapper::schroddywrapper (const Schroddy& sh, double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps): m_sh(sh), m_x0(x0), m_x1(x1), m_psi0(psi0), m_psiPrime0(psiPrime0), m_NSteps(NSteps) {}
-schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
-
-double schroddywrapper::eigenfunction(double E) const
-{
-	return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 10);
-}
 
 /*========================================================================
  * Eigenvalues generator by shooting method
@@ -87,10 +76,25 @@ Eigenvalues* GenericEigenvalues::clone() const
 
 Schroddy::Schroddy(const InitialPot& pot/*, const Eigenvalues& eigenval*/): m_pot(pot.clone())/*, m_eigenval(eigenval.clone())*/ {}
 
+Schroddy::Schroddy(const Schroddy& sourceSchroddy) //copy constructor
+{
+    if (&sourceSchroddy != this)
+        m_pot = sourceSchroddy.m_pot -> clone();
+}
+
+Schroddy& Schroddy::operator=(const Schroddy& rhsSchroddy) //copy assignment
+{
+    if (&rhsSchroddy != this)
+    {
+        delete m_pot;
+        m_pot = rhsSchroddy.m_pot -> clone();
+    }
+    return *this;
+}
+
 Schroddy::~Schroddy()
 {
-    //delete m_pot; this should be fixed by implementing copy constructor
-    //delete m_eigenval;
+    delete m_pot;
 }
 
 double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, unsigned long NSteps) const
@@ -133,6 +137,20 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     //return normalized eigenfunction (on interval [x0, x1]) and job done!
     return normalPsi=runningPsi/sqrt(scalar);
 }
+
+/*========================================================================
+ * Wrapper for resolve arguments inconsistency between schroddy and NLSolver classes
+ *======================================================================*/
+
+//schroddywrapper::schroddywrapper (const Schroddy& sh, double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps): m_sh(sh), m_x0(x0), m_x1(x1), m_psi0(psi0), m_psiPrime0(psiPrime0), m_NSteps(NSteps) {}
+schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
+
+double schroddywrapper::eigenfunction(double E) const
+{
+    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 10);
+}
+
+
 /*
     double integral(double(*fun)(double), double xmin, double xmax, int n_int );
     // Eigenfunction normalization by trapezes method
