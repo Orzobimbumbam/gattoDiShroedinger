@@ -1,11 +1,11 @@
 //Class for Schrodinger equation solver
-# include <math.h>
-# include <stdlib.h>
-# include <stdio.h>
+//# include <math.h>
+//# include <stdlib.h>
+//# include <stdio.h>
 # include "initpot.h"
 # include "parameters.h"
 # include "schroddy.h"
-# include <cmath>
+//# include <cmath>
 # include <vector>
 # include "NLSolverClass.hpp"
 
@@ -15,7 +15,7 @@ Eigenvalues::~Eigenvalues() {}
 /*=======================================================================
  * HO Eigenvalues generator
  *=====================================================================*/
-/*
+
 HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m_omega(omega), m_n(n), m_l(l) {}
 double HarmonicEigenvalues::eigenvalue() const
 {
@@ -25,32 +25,30 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 {
     return new HarmonicEigenvalues(*this);
 }
-*/
 
+/*========================================================================
+ * Wrapper for resolve arguments inconsistency between schroddy and NLSolver classes
+ *======================================================================*/
 
 //schroddywrapper::schroddywrapper (const Schroddy& sh, double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps): m_sh(sh), m_x0(x0), m_x1(x1), m_psi0(psi0), m_psiPrime0(psiPrime0), m_NSteps(NSteps) {}
 schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
 double schroddywrapper::eigenfunction(double E) const
 {
-	return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, Parameters::N_step);
+	return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 10);
 }
-
-
-
-
 
 /*========================================================================
  * Eigenvalues generator by shooting method
  *======================================================================*/
-
+/*
 GenericEigenvalues::GenericEigenvalues (const InitialPot& potKS, double eigval1, double eigval2): m_potKS(potKS.clone()), m_eigval1(eigval1), m_eigval2(eigval2){}
 
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
-	//double
+	double error=10e-8;
 	Schroddy sch(*m_potKS,*this);
 	//double sch.solveShroddyByRK();
-	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(Parameters::error);
+	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
 
 	const schroddywrapper wrap(sch);
     return sol.solveByBisection(wrap, 0, m_eigval1, m_eigval2);
@@ -60,7 +58,7 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 Eigenvalues* GenericEigenvalues::clone() const
 {
 	return new GenericEigenvalues(*this);
-}
+}*/
 
 /*=========================================================================
  * Schrodinger equation solver by Runge-Kutta method
@@ -76,7 +74,6 @@ Schroddy::~Schroddy()
 
 double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps) const
 {
-    //implement runge-kutta here..
     const double h = (x1 - x0)/NSteps;
     const double factor = 2*Parameters::mn/(Parameters::hbar*Parameters::hbar);
     const double eigenvalue = m_eigenval -> eigenvalue();

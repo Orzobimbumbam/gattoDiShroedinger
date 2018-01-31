@@ -7,9 +7,10 @@
 
 int main(int argc, const char * argv[]) {
 
-
 	double eigenvalue1=0.93250 ;
 	double eigenvalue2=1.36256 ;
+	//double error=10e-8;
+	unsigned long N_step=10;
 
     //const unsigned int energyLevel = 1;
     //const int angularMomentum = 1;
@@ -29,7 +30,8 @@ int main(int argc, const char * argv[]) {
     Schroddy s(pot, eig); //your Schoddy object ready to go
     //double result=0;
 
-	double result=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, Parameters::N_step);
+	//double result=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, Parameters::N_step);
+	double result=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 10);
 
     // do stuff here...
     /*

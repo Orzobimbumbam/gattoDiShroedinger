@@ -1,7 +1,11 @@
 //class hierarchy interface goes in header
 #pragma once
 
-class InitialPot //pure virtual base class
+/*====================================================================
+ * Pure virtual base class for in/out potentials
+ *===================================================================*/
+
+class InitialPot
 {
 public:
     virtual double potential(double x) const = 0;
@@ -13,12 +17,13 @@ private:
 
 };
 
-/*
+/*=====================================================================
+ * Woods-Saxon potential class
+ *===================================================================*/
+
 class WSaxPot: public InitialPot //derived class
 {
-    //=====================================================================
-    // Woods-Saxon potential
-    //=====================================================================
+
 public:
     WSaxPot(double V0, double Rn, double a0);
     double potential(double x) const override;
@@ -30,14 +35,16 @@ private:
     const double m_V0, m_Rn, m_a0;
 
 };
-*/
+
+
+/*=====================================================================
+ * HO potential class
+ *===================================================================*/
 
 class HOPot: public InitialPot //derived class
 {
 public:
-    //=====================================================================
-    // HO potential
-    //=====================================================================
+
     HOPot(double m, double omega);
     double potential(double x) const override;
 
@@ -48,6 +55,30 @@ private:
     HOPot(); //same as before
     const double m_m, m_omega;
 };
+
+/*=====================================================================
+ * Spin-Orbit potential class
+ *===================================================================*/
+/*
+class SOPot: public InitialPot //derived class
+{
+public:
+
+    SOPot(double m, double omega);
+    double potential(double x) const override;
+
+    //double getOmega() const;
+    InitialPot* clone() const override;
+
+private:
+    SOPot(); //same as before
+    const double m_m, m_omega;
+};
+*/
+
+/*======================================================================
+ * Kohn-Sham potential class
+ *====================================================================*/
 
 class potOut: public InitialPot
 {

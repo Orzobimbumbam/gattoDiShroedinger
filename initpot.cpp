@@ -2,10 +2,14 @@
 #pragma once
 #include <cmath>
 #include "parameters.h"
-#include "initpot.h" //remember to include header with interface
+#include "initpot.h"
 
 InitialPot::~InitialPot() {}
-/*
+
+/*===================================================================
+ * Woods-Saxon potential
+ *=================================================================*/
+
 WSaxPot::WSaxPot(double V0, double Rn, double a0): m_V0(V0), m_Rn(Rn), m_a0(a0) {};
 double WSaxPot::potential(double x) const
 {
@@ -16,10 +20,13 @@ InitialPot* WSaxPot::clone() const
 {
     return new WSaxPot(*this); //return a derived class object through a base class pointer
 }
-*/
+
+
+/*===================================================================
+ * HO potential
+ *=================================================================*/
 
 HOPot::HOPot(double m, double omega): m_m(m), m_omega(omega){}
-
 double HOPot::potential(double x) const
 {
 	const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
@@ -38,12 +45,26 @@ InitialPot* HOPot::clone() const
     return new HOPot(*this); //return a derived class object through a base class pointer
 }
 
-potOut::potOut(double potKS): m_potKS(potKS){}
+//=====================================================================
+// Spin-orbit potential
+//=====================================================================
+/*
+double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
+{
+	double l, j;
+	double LS=((hbar*hbar)/2)(j(j+1)-l(l+1)-3/4)
+	double deriv
+	sopot=*/
 
+/*=====================================================================
+ * Kohn-Sham potential
+ *===================================================================*/
+
+potOut::potOut(double potKS): m_potKS(potKS){}
 double potOut::potential(double x) const
 {
 	const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
-return angularpart+m_potKS;
+	return angularpart+m_potKS;
 
 }
 InitialPot* potOut::clone() const
@@ -56,13 +77,4 @@ InitialPot* potOut::clone() const
 
 
 
-//=====================================================================
-// Spin-orbit potential
-//=====================================================================
-/*
-double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
-{
-	double l, j;
-	double LS=((hbar*hbar)/2)(j(j+1)-l(l+1)-3/4)
-	double deriv
-	sopot=*/
+

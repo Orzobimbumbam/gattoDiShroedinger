@@ -5,8 +5,7 @@
 #include<cmath>
 
 
-//I would keep only GLOBAL constants in this namespace to avoid naming clashes...
-//Simulation variables can be passed in to the constructors from main
+
 namespace Parameters
 {
 
@@ -30,9 +29,9 @@ const double f = 100;
 //double r=   ;
 
 // Eigenvalues generator parameters
-double eigenvalue1=0.93250 ;
+/*double eigenvalue1=0.93250 ;
 double eigenvalue2=1.36256 ;
-double error=10e-8; //maybe you mean 1e-08?
+double error=10e-8;*/
 
 // Runge-Kutta parameters
 const double x_in=0;
@@ -40,11 +39,11 @@ const double x_fin=Rn;
 const double psi0=0;
 const double Psi_0=0;
 const double psiPrime0=0;
-unsigned long N_step=10;
+//unsigned long N_step=10;
 
 // Other parameters
 const unsigned int energyLevel = 1;
-const int angularMomentum = 1;
+const int angularMomentum = 3;
 const double PI = 4*atan(1);
 const double hbar = 1.0545718*1e-34;
 const double x_min=0;									//Integration

@@ -5,7 +5,9 @@
 class InitialPot;
 class Schroddy;
 
-//hierarchy for eigenvalue objects
+/*==================================================================
+ * Pure virtual class for eigenvalues
+ *================================================================*/
 
 class Eigenvalues
 {
@@ -19,6 +21,9 @@ private:
 
 };
 
+/*===================================================================
+ * HO eigenvalues generator class
+ *=================================================================*/
 
 class HarmonicEigenvalues: public Eigenvalues
 {
@@ -39,12 +44,9 @@ private:
     const int m_l;
 };
 
-
-
-
-
-
-
+/*=====================================================================
+ * Eigenvalues generator (shooting method) class
+ *===================================================================*/
 
 class GenericEigenvalues: public Eigenvalues
 {
@@ -62,13 +64,14 @@ private:
 };
 
 
-//Shroedinger class + solver
-
+/*=======================================================================
+ * Shroedinger class + solver
+ *=====================================================================*/
 
 class Schroddy
 {
 public:
-    Schroddy(const InitialPot& pot, const Eigenvalues& eigenval); //if you have more parameters to pass in, change this
+    Schroddy(const InitialPot& pot, const Eigenvalues& eigenval);
     double solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
 
     ~Schroddy();
@@ -76,16 +79,20 @@ public:
 private:
     const InitialPot* const m_pot;
     const Eigenvalues* const m_eigenval;
-
 };
 
+/*=======================================================================
+ * Wrapper for resolve arguments inconsistency between schroddy and NLSolver classes
+ *=====================================================================*/
 
 class schroddywrapper
 {
 public:
 	schroddywrapper (const Schroddy& sh);
 	double eigenfunction (double E) const;
+
 private:
 	//double m_x0, m_x1, m_psi0, m_psiPrime0, m_NSteps;
 	Schroddy m_sh;
 };
+
