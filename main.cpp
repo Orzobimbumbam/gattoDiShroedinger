@@ -1,8 +1,16 @@
-#include <iostream>
-#include "Includes.h"
+# include <iostream>
+//# include "parameters.h"
+# include "Includes.h"
+//# include "schroddy.h"
+
 
 
 int main(int argc, const char * argv[]) {
+
+	double eigenvalue1=0.93250 ;
+	double eigenvalue2=1.36256 ;
+	//double error=10e-8;
+	unsigned long N_step=10;
 
     //const unsigned int energyLevel = 1;
     //const int angularMomentum = 1;
@@ -10,11 +18,20 @@ int main(int argc, const char * argv[]) {
     //const double f = 100;
 
     const double omega = 2*Parameters::PI*Parameters::f;
-    HarmonicEigenvalues eig(omega, Parameters::energyLevel, Parameters::angularMomentum);
     HOPot pot (Parameters::mn, omega ) ;
+    GenericEigenvalues eig(pot, eigenvalue1, eigenvalue2);
+    //GenericEigenvalues eig(pot, Parameters::eigenvalue1, Parameters::eigenvalue2);
+    //HarmonicEigenvalues eig(omega, Parameters::energyLevel, Parameters::angularMomentum);
+
+
+
     //WSaxPot pot(Parameters::V0, Parameters::Rn, Parameters::a0); //this is how you call the constructors; if you need pointers, call new
 
-    //Schroddy s(pot, eig); //your Schoddy object ready to go
+    Schroddy s(pot, eig); //your Schoddy object ready to go
+    //double result=0;
+
+	//double result=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, Parameters::N_step);
+	double result=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 10);
 
     // do stuff here...
     /*
@@ -41,10 +58,14 @@ int main(int argc, const char * argv[]) {
     file.close();
     file.clear();
     */
-
+    std::cout << result << std::endl;
     std::cout << "Program executed successfully!" << std::endl;
     return 0;
 }
+
+
+
+
 
 
 
