@@ -32,51 +32,72 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 //schroddywrapper::schroddywrapper (const Schroddy& sh, double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps): m_sh(sh), m_x0(x0), m_x1(x1), m_psi0(psi0), m_psiPrime0(psiPrime0), m_NSteps(NSteps) {}
 schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
+
 double schroddywrapper::eigenfunction(double E) const
 {
-	return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 10);
+	return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 10);
 }
 
 /*========================================================================
  * Eigenvalues generator by shooting method
  *======================================================================*/
-/*
-GenericEigenvalues::GenericEigenvalues (const InitialPot& potKS, double eigval1, double eigval2): m_potKS(potKS.clone()), m_eigval1(eigval1), m_eigval2(eigval2){}
+
+
+TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0.93250), m_eigenval2(1.36256) {}
+
+double TrialEigenvalues::getEigenval1()
+{
+    if (m_trialEigenvalusObj == nullptr)
+        m_trialEigenvalusObj = new TrialEigenvalues; //lazy instantiation
+    
+    return m_trialEigenvalusObj -> m_eigenval1;
+}
+
+double TrialEigenvalues::getEigenval2()
+{
+    if (m_trialEigenvalusObj == nullptr)
+        m_trialEigenvalusObj = new TrialEigenvalues; //lazy instantiation
+    
+    return m_trialEigenvalusObj -> m_eigenval2;
+}
+
+GenericEigenvalues::GenericEigenvalues (const InitialPot& initPot): m_initPot(initPot.clone()) {}
 
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
-	double error=10e-8;
-	Schroddy sch(*m_potKS,*this);
-	//double sch.solveShroddyByRK();
+	const double error = 10e-8;
+	Schroddy sch(*m_initPot);
+
 	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
 
 	const schroddywrapper wrap(sch);
-    return sol.solveByBisection(wrap, 0, m_eigval1, m_eigval2);
+    return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
 
 }
 
 Eigenvalues* GenericEigenvalues::clone() const
 {
 	return new GenericEigenvalues(*this);
-}*/
+}
 
 /*=========================================================================
  * Schrodinger equation solver by Runge-Kutta method
  *=======================================================================*/
 
-Schroddy::Schroddy(const InitialPot& pot, const Eigenvalues& eigenval): m_pot(pot.clone()), m_eigenval(eigenval.clone()) {}
+Schroddy::Schroddy(const InitialPot& pot/*, const Eigenvalues& eigenval*/): m_pot(pot.clone())/*, m_eigenval(eigenval.clone())*/ {}
 
 Schroddy::~Schroddy()
 {
-    delete m_pot;
-    delete m_eigenval;
+    //delete m_pot; this should be fixed by implementing copy constructor
+    //delete m_eigenval;
 }
 
-double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps) const
+double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, unsigned long NSteps) const
 {
     const double h = (x1 - x0)/NSteps;
     const double factor = 2*Parameters::mn/(Parameters::hbar*Parameters::hbar);
-    const double eigenvalue = m_eigenval -> eigenvalue();
+    const double eigenvalue = E;//m_eigenval -> eigenvalue();
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     std::vector<double> psiArray;

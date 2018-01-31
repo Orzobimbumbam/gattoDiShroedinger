@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 class empiDensities
@@ -39,7 +40,7 @@ private:
     //EmpiricaldensitySCAT(); //cannot have two def ctors
 
 };
-
+*/
 
 
 

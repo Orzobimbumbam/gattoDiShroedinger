@@ -44,25 +44,6 @@ private:
     const int m_l;
 };
 
-/*=====================================================================
- * Eigenvalues generator (shooting method) class
- *===================================================================*/
-
-class GenericEigenvalues: public Eigenvalues
-{
-public:
-	GenericEigenvalues (const InitialPot& potKS,double eigval1, double eigval2);
-	double eigenvalue() const override;
-
-	Eigenvalues* clone() const override;
-
-private:
-	GenericEigenvalues();
-	double m_eigval1;
-	double m_eigval2;
-	const InitialPot* m_potKS;
-};
-
 
 /*=======================================================================
  * Shroedinger class + solver
@@ -71,14 +52,15 @@ private:
 class Schroddy
 {
 public:
-    Schroddy(const InitialPot& pot, const Eigenvalues& eigenval);
-    double solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
+    Schroddy(const InitialPot& pot/*, const Eigenvalues& eigenval*/);
+    //Schroddy(const Schroddy& sourceSh);
+    double solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, unsigned long NSteps) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
 
     ~Schroddy();
 
 private:
     const InitialPot* const m_pot;
-    const Eigenvalues* const m_eigenval;
+    //const Eigenvalues* const m_eigenval;
 };
 
 /*=======================================================================
@@ -95,4 +77,43 @@ private:
 	//double m_x0, m_x1, m_psi0, m_psiPrime0, m_NSteps;
 	Schroddy m_sh;
 };
+
+/*=====================================================================
+ * Eigenvalues generator (shooting method) class
+ *===================================================================*/
+
+//singleton class for trial eigenvalues
+class TrialEigenvalues
+{
+public:
+    static double getEigenval1();
+    static double getEigenval2();
+    
+    
+private:
+    static TrialEigenvalues* m_trialEigenvalusObj;
+    const double m_eigenval1, m_eigenval2;
+    TrialEigenvalues();
+};
+
+
+class GenericEigenvalues: public Eigenvalues
+{
+public:
+    GenericEigenvalues (const InitialPot& initPot);
+    double eigenvalue() const override;
+    
+    Eigenvalues* clone() const override;
+    
+private:
+    GenericEigenvalues();
+    const InitialPot* const m_initPot;
+};
+
+
+
+
+
+
+
 

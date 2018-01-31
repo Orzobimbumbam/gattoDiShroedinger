@@ -1,3 +1,5 @@
+/*
+
 # include "parameters.h"
 # include "schroddy.h"
 # include "kohn-sham.h"
@@ -5,9 +7,9 @@
 # include <cmath>
 
 
-/*==================================================================
- * Empirical density by Monte Carlo simulations
- *================================================================*/
+//==================================================================
+//  Empirical density by Monte Carlo simulations
+ //================================================================
 
 EmpiricaldensityMC::~EmpiricaldensityMC() {}
 
@@ -25,9 +27,9 @@ empiDensities* EmpiricaldensityMC::clone() const
 }
 
 
-/*====================================================================
- * Empirical density by scatteing
- *==================================================================*/
+//====================================================================
+//Empirical density by scatteing
+//==================================================================
 
 EmpiricaldensitySCAT::~EmpiricaldensitySCAT() {}
 
@@ -43,5 +45,5 @@ empiDensities* EmpiricaldensitySCAT::clone() const
 {
     return new EmpiricaldensitySCAT(*this);
 }
-
+*/
 

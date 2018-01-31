@@ -1,5 +1,4 @@
 //Class for initial potentials
-#pragma once
 #include <cmath>
 #include "parameters.h"
 #include "initpot.h"
