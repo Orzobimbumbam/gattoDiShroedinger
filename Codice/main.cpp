@@ -15,7 +15,7 @@ int main(int argc, const char * argv[]) {
     //double eigenvalue1=0.93250 ;
     //double eigenvalue2=1.36256 ;
     //double error=10e-8;
-    unsigned long N_step = 10;
+    //unsigned long N_step = 10;
     
     
     const double omega = 2*Parameters::PI*Parameters::f;

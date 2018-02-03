@@ -113,16 +113,16 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
         //compute decoupled RK factors
         const double k1 = runningPsiPrime;
         const double l1 = (m_pot -> potential(runningX) - eigenvalue)*runningPsi;
-        const double k2 = runningPsiPrime + h/2*l1;
-        const double l2 = (m_pot -> potential(runningX + h/2) - eigenvalue)*(runningPsi + h/2*k1);
-        const double k3 = runningPsiPrime + h/2*l2;
-        const double l3 = (m_pot -> potential(runningX + h/2) - eigenvalue)*(runningPsi + h/2*k2);
+        const double k2 = runningPsiPrime + h/2.*l1;
+        const double l2 = (m_pot -> potential(runningX + h/2.) - eigenvalue)*(runningPsi + h/2.*k1);
+        const double k3 = runningPsiPrime + h/2.*l2;
+        const double l3 = (m_pot -> potential(runningX + h/2.) - eigenvalue)*(runningPsi + h/2.*k2);
         const double k4 = runningPsiPrime + h*l3;
         const double l4 = (m_pot -> potential(runningX + h) - eigenvalue)*(runningPsi + h*k3);
 
         //advance running variables and store intermediate results
-        runningPsi += h/6*factor*(k1 + 2*k2 + 2*k3 + k4);
-        runningPsiPrime =+ h/6*factor*(l1 + 2*l2 + 2*l3 + l4);
+        runningPsiPrime += h/6.*factor*(k1 + 2*k2 + 2*k3 + k4);
+        runningPsi += h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
         runningX += h;
         psiArray.push_back(runningPsi);
 
@@ -147,7 +147,7 @@ schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
 
 double schroddywrapper::eigenfunction(double E) const
 {
-    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 10);
+    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 1000);
 }
 
 
