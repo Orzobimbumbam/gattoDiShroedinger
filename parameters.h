@@ -16,7 +16,8 @@ const double mp= 1.6726219e-27;							// Proton mass
 const double mn= 1.;
 // Wood-Saxon potential parameters
 const double V0 = 25.025;
-const double Rn = 1e-9;
+//const double Rn = 1e-9;
+const double Rn = 1;
 const double a0 = 1;
 
 // Spin-Orbit potential parameters
@@ -35,7 +36,7 @@ double error=10e-8;*/
 
 // Runge-Kutta parameters
 const double x_in=0;
-const double x_fin=Rn;
+const double x_fin=3*Rn;
 const double psi0=0;
 const double Psi_0=0;
 const double psiPrime0=1;

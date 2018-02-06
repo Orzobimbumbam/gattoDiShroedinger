@@ -33,7 +33,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0.93250), m_eigenval2(1.36256) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(100) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -121,21 +121,22 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
         const double l4 = (m_pot -> potential(runningX + h) - eigenvalue)*(runningPsi + h*k3);
 
         //advance running variables and store intermediate results
-        runningPsiPrime += h/6.*factor*(k1 + 2*k2 + 2*k3 + k4);
-        runningPsi += h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
+        runningPsi += h/6.*factor*(k1 + 2*k2 + 2*k3 + k4);
+        runningPsiPrime += h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
         runningX += h;
         psiArray.push_back(runningPsi);
 
     }
     //work out normalizatiion constant
-    double psiSquared = 0, normalPsi=0;
+    double psiSquared = 0;// normalPsi=0;
     for (std::vector<double>::iterator it = psiArray.begin(); it != psiArray.end(); ++it)
         psiSquared += (*it)*(*it); //derefence iterator at array's element and square (brackets are needed!)
 
     const double scalar = psiSquared*h;
 
     //return normalized eigenfunction (on interval [x0, x1]) and job done!
-    return normalPsi=runningPsi/sqrt(scalar);
+    const double normalPsi = runningPsi/sqrt(scalar);
+    return normalPsi;
 }
 
 /*========================================================================
@@ -147,7 +148,7 @@ schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
 
 double schroddywrapper::eigenfunction(double E) const
 {
-    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 1000);
+    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 10000);
 }
 
 

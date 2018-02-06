@@ -28,7 +28,7 @@ public:
         if ((y1 - targetValue)*(y2 - targetValue) > 0)
             throw "NLSolverClass: solveByBisection : No zeros in this interval.";
 
-        const unsigned long Nmax = 1000;
+        const unsigned long Nmax = 10000;
         unsigned long i = 0;
         double mid = a + 0.5*(b - a);
         double y = (f.*evaluate)(mid);
@@ -66,8 +66,8 @@ public:
                 std::cerr << "NLSolverClass: solveByNR : No zeros found." << std::endl;
                 break;
             }
-            x = x - (y - targetValue)/yprime;
             y = (f.*evaluate)(x);
+            x = x - (y - targetValue)/yprime;
             ++i;
         }
         return x;
