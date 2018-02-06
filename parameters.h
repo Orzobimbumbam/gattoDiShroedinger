@@ -18,6 +18,8 @@ const int A=NN+NP; 											// Mass number
 const double R0= 1.27; 									//[fm]
 // Wood-Saxon potential parameters
 const double V0 = 25.025;
+//const double Rn = R0*pow(A,(1/3));
+//const double a0 = 0.67;
 //const double Rn = 1e-9;
 const double Rn = 1;
 const double a0 = 1;
