@@ -19,7 +19,7 @@ int main(int argc, const char * argv[]) {
     
     
     const double omega = 2*Parameters::PI*Parameters::f;
-    HOPot pot (Parameters::mn, omega ) ;
+    HOPot pot (Parameters::mn, omega, 1) ;
     GenericEigenvalues GenEig(pot);
     double eig = GenEig.eigenvalue();
     std::cout << "Bisected Eigenvalue: " << eig << std::endl;

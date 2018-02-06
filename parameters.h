@@ -13,7 +13,7 @@ const int NN=10;										// Neutrons number
 const int NP=10;										// Protons number
 const double mp= 1.6726219e-27;							// Proton mass
 //const double mn= 1.6749273e-27;							// Neutron mass
-const double mn= 939.565378;
+//const double mn= 939.565378;
 const int A=NN+NP; 											// Mass number
 const double R0= 1.27; 									//[fm]
 // Wood-Saxon potential parameters
@@ -29,7 +29,7 @@ const double a0 = 1;
 //const double r0=  ;
 
 // HO potential parameters
-const double m=mn   ;
+const double mn=1   ;
 const double f = 100;
 //double r=   ;
 
