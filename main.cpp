@@ -1,72 +1,31 @@
-# include <iostream>
-//# include "parameters.h"
-# include "Includes.h"
-//# include "schroddy.h"
 
+
+#include <iostream>
+#include "Includes.h"
 
 
 int main(int argc, const char * argv[]) {
-
-	double eigenvalue1=0.93250 ;
-	double eigenvalue2=1.36256 ;
-	//double error=10e-8;
-	unsigned long N_step=10;
-
-    //const unsigned int energyLevel = 1;
-    //const int angularMomentum = 1;
-
-    //const double f = 100;
-
+    
+    //double eigenvalue1=0.93250 ;
+    //double eigenvalue2=1.36256 ;
+    //double error=10e-8;
+    unsigned long N_step = 10;
+    
+    
     const double omega = 2*Parameters::PI*Parameters::f;
-    HOPot pot (Parameters::mn, omega ) ;
-    GenericEigenvalues eig(pot, eigenvalue1, eigenvalue2);
-    //GenericEigenvalues eig(pot, Parameters::eigenvalue1, Parameters::eigenvalue2);
-    //HarmonicEigenvalues eig(omega, Parameters::energyLevel, Parameters::angularMomentum);
 
+for ( int i=0; i<=Parameters::angularMomentum; ++i)
+{
+	int l_mom=i;
+    HOPot pot (Parameters::mn, omega, l_mom) ;
+    GenericEigenvalues GenEig(pot);
+    double eig = GenEig.eigenvalue();
+    Schroddy Sfunc (pot);
+    double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, N_step);
 
+    std::cout << "l value: "<< i << "Bisected Eigenvalue: " << eig << "Eigenfunction: " << eigfun << std::endl;
 
-    //WSaxPot pot(Parameters::V0, Parameters::Rn, Parameters::a0); //this is how you call the constructors; if you need pointers, call new
-
-    Schroddy s(pot, eig); //your Schoddy object ready to go
-    //double result=0;
-
-	//double result=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, Parameters::N_step);
-	double result=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 10);
-
-    // do stuff here...
-    /*
-    std::fstream file;
-    int i, n, l;
-
-    file.open("eigenfunc.dat",std::ios::out);
-
-    for (i=0; i<N; i++)
-    {
-        for (l=0; l<nl; l++)
-        {
-            HBOEigen (omega, l, hbar, n);
-            rungekutta(schrodinger, r, h, 4, u);
-
-
-            file << hboeigen << "\t \t"	<< u[0] << "\t" << endl;
-        }
-
-    }
-
-
-
-    file.close();
-    file.clear();
-    */
-    std::cout << result << std::endl;
-    std::cout << "Program executed successfully!" << std::endl;
+}
+    std::cout << "Program executed successfully." << std::endl;
     return 0;
 }
-
-
-
-
-
-
-
-

@@ -25,7 +25,7 @@ InitialPot* WSaxPot::clone() const
  * HO potential
  *=================================================================*/
 
-HOPot::HOPot(double m, double omega): m_m(m), m_omega(omega){}
+HOPot::HOPot(double m, double omega, int anglmomentum): m_m(m), m_omega(omega), m_anglmomentum(anglmomentum){}
 double HOPot::potential(double x) const
 {
     double angularPart = 0;
@@ -73,6 +73,7 @@ InitialPot* potOut::clone() const
 {
     return new potOut(*this); //return a derived class object through a base class pointer
 }
+
 
 
 
