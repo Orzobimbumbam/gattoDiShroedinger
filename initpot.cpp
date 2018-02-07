@@ -25,14 +25,14 @@ InitialPot* WSaxPot::clone() const
  * HO potential
  *=================================================================*/
 
-HOPot::HOPot(double m, double omega, int anglmomentum): m_m(m), m_omega(omega), m_anglmomentum(anglmomentum){}
+HOPot::HOPot(double m, double omega, int anglmomentum): m_m(m), h_omega(omega), m_anglmomentum(anglmomentum){}
 double HOPot::potential(double x) const
 {
     double angularPart = 0;
     /**/if (x != 0)
-        angularPart = ((Parameters::hbar*Parameters::hbar)*m_anglmomentum*(m_anglmomentum+1))/(2*m_m*(x*x));/**/
+        angularPart = ((Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1))/(2*m_m*(x*x));/**/
 
-    double hopot = angularPart+(1/2)*m_m*(m_omega*m_omega)*(x*x);
+    double hopot = angularPart+(1/2)*((m_m*(h_omega*h_omega))/(Parameters::hbarc*Parameters::hbarc))*(x*x);
 
     return hopot;
 }
