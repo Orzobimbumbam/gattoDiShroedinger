@@ -39,7 +39,7 @@ double eigenvalue2=1.36256 ;
 double error=10e-8;*/
 
 // Runge-Kutta parameters
-const double x_in=0;
+const double x_in=0.005;
 const double x_fin=3*Rn;
 const double psi0=0;
 const double Psi_0=0;
@@ -50,10 +50,12 @@ const double psiPrime0=1;
 const unsigned int energyLevel = 1;
 const int angularMomentum = 3;
 const double PI = 4*atan(1);
-//const double hbar = 1.0545718e-34;
-const double hbar = 1;
-const double x_min=0;									//Integration
-const double x_max=3*Rn;								//Interval
+const double hbar = 6.58211928e-16; 					// Reduced constant Planck [eV*s]
+const double hbarc= 197.3269788;						// [MeV*fm]
+//const double c=2.99792458e23;							// Light speed [fm/s]
+const double c=0.071241;
+const double x_min=0;									// Integration
+const double x_max=3*Rn;								// Interval
 
 }
 

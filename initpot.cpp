@@ -29,8 +29,8 @@ HOPot::HOPot(double m, double omega, int anglmomentum): m_m(m), m_omega(omega), 
 double HOPot::potential(double x) const
 {
     double angularPart = 0;
-    /*if (x != 0)
-        angularPart = ((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));*/
+    /**/if (x != 0)
+        angularPart = ((Parameters::hbar*Parameters::hbar)*m_anglmomentum*(m_anglmomentum+1))/(2*m_m*(x*x));/**/
 
     double hopot = angularPart+(1/2)*m_m*(m_omega*m_omega)*(x*x);
 
@@ -65,8 +65,8 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
 potOut::potOut(double potKS): m_potKS(potKS){}
 double potOut::potential(double x) const
 {
-	const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
-	return angularpart+m_potKS;
+	//const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
+	return /*angularpart+*/m_potKS;
 
 }
 InitialPot* potOut::clone() const

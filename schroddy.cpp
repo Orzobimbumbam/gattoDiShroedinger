@@ -100,7 +100,7 @@ Schroddy::~Schroddy()
 double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, unsigned long NSteps) const
 {
     const double h = (x1 - x0)/NSteps;
-    const double factor = 2*Parameters::mn/(Parameters::hbar*Parameters::hbar);
+    const double factor = 2*Parameters::mn*(Parameters::c*Parameters::c)/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;//m_eigenval -> eigenvalue();
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
@@ -121,7 +121,7 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
         const double l4 = (m_pot -> potential(runningX + h) - eigenvalue)*(runningPsi + h*k3);
 
         //advance running variables and store intermediate results
-        runningPsi += h/6.*factor*(k1 + 2*k2 + 2*k3 + k4);
+        runningPsi += (h/6.*factor*(k1 + 2*k2 + 2*k3 + k4))/runningX;
         runningPsiPrime += h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
         runningX += h;
         psiArray.push_back(runningPsi);
@@ -135,7 +135,7 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     const double scalar = psiSquared*h;
 
     //return normalized eigenfunction (on interval [x0, x1]) and job done!
-    const double normalPsi = runningPsi/sqrt(scalar);
+    const double normalPsi = (runningPsi/runningX)/sqrt(scalar);
     return normalPsi;
 }
 
