@@ -33,7 +33,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(100) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-100), m_eigenval2(100) {}
 
 double TrialEigenvalues::getEigenval1()
 {
