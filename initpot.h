@@ -53,7 +53,7 @@ public:
 
 private:
     HOPot(); //same as before
-    const double m_m, m_omega, m_anglmomentum;
+    const double m_m, h_omega, m_anglmomentum;
 };
 
 /*=====================================================================

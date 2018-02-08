@@ -100,7 +100,7 @@ Schroddy::~Schroddy()
 double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, unsigned long NSteps) const
 {
     const double h = (x1 - x0)/NSteps;
-    const double factor = 2*Parameters::mn/(Parameters::hbar*Parameters::hbar);
+    const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;//m_eigenval -> eigenvalue();
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
