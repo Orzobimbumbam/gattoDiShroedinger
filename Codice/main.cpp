@@ -9,6 +9,9 @@
 #include <iostream>
 #include "Includes.h"
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
 
 int main(int argc, const char * argv[]) {
     
@@ -19,7 +22,8 @@ int main(int argc, const char * argv[]) {
     
     
     const double omega = 2*Parameters::PI*Parameters::f;
-    HOPot pot (Parameters::mn, omega, 1) ;
+    const double l = 1;
+    HOPot pot (Parameters::mn, omega, l) ;
     GenericEigenvalues GenEig(pot);
     double eig = GenEig.eigenvalue();
     std::cout << "Bisected Eigenvalue: " << eig << std::endl;

@@ -256,6 +256,8 @@
 		D3C601F6200FF6AB00F1E661 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/boost_1_62_0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -263,6 +265,8 @@
 		D3C601F7200FF6AB00F1E661 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/boost_1_62_0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

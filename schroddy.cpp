@@ -33,7 +33,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(100) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-7.8), m_eigenval2(2.5) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -136,7 +136,7 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
 
     //return normalized eigenfunction (on interval [x0, x1]) and job done!
     const double normalPsi = runningPsi/sqrt(scalar);
-    return normalPsi;
+    return normalPsi/x1;
 }
 
 /*========================================================================
