@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <jsoncpp/json/json.h>
 #include "Includes.h"
 
 
@@ -11,10 +13,23 @@ int main(int argc, const char * argv[]) {
 
 
 	unsigned long N_step = 1000;
-    
-    
-    //const double omega = 2*Parameters::PI*Parameters::f;
+	std::ifstream ifs ("orbitals2.json");
+    Json::Reader reader;
+    Json::Value obj;
+    reader.parse(ifs, obj);
 
+    const Json::Value& orbital = obj["orbital"];
+    //const Json::Value& properties = obj["properties"];
+
+    //std::cout << "orbital " << obj["orbital"].asString() << std::endl;
+
+    for (int i=0; i<orbital.size(); ++i)
+    {
+    	std::cout << "orbitals " << orbital[i]["orbital"].asString() << std::endl;
+    }
+
+    //const double omega = 2*Parameters::PI*Parameters::f;
+/*
 for ( int i=0; i<=Parameters::angularMomentum; ++i)
 {
 	int l_mom=i;
@@ -27,10 +42,11 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
     std::cout << "l value: "<< i << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
     //std::cout << "l value: "<< i << "Bisected Eigenvalue: " << eig << std::endl;
 
-}
-    /*double Emax=400, E=0, pass=0.001;
+}*/
+    /*double Emax=10, E=0, pass=0.1;
     int N=(Emax-E)/pass, l_mom=1;
-    double arrayeval [N], arrayefun [N];
+    std::vector<double> arrayeval (N);
+    std::vector<double> arrayefun (N);
     HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
     std::ofstream file("test_range.txt");
     //double* arraytest= new double [N];
@@ -38,11 +54,20 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
     for (int i=0; i<=N; ++i)
     {
     	Schroddy s(pot);
-    	arrayeval[i]=E;
-    	arrayefun[i]=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, N_step);
-    	file << arrayeval[i] << "      " << arrayefun[i] << std::endl;
-    	//std::cout << arrayeval[i] << "      " << arrayefun[i] << std::endl;
+    	arrayeval.push_back(E);
+    	double eigfun=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, N_step);
+    	arrayefun.push_back(eigfun);
+    	//file << arrayeval << "      " << arrayefun << std::endl;
+    	//std::cout << arrayeval [i] << "      " << arrayefun [i] << std::endl;
     	E+=pass;
+    }
+
+    for (int i=0; i<arrayeval.size(); ++i)
+    {
+    	for (int j=0; j<arrayefun.size(); ++j)
+    	{
+    		std::cout << arrayeval [i] << "      " << arrayefun [j] << std::endl;
+    	}
     }
 
     file.close();*/

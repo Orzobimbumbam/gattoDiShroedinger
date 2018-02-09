@@ -1,0 +1,93 @@
+ "orbitals":
+{
+
+	"orbital":"1s",
+	"properties":
+ 	{
+		"level_position" : 1,
+		"n_value" : 1,
+		"l_value" : 0,
+		"degener" : 2
+	},
+	
+	"orbital":"1p"
+	"properties":	
+	{
+		"level_position" : 2,
+		"n_value" : 1,
+		"l_value" : 1,
+		"degener" : 6
+	},
+
+	"orbital":"1d"
+	"properties":
+	 {
+		"level_position" : 3,
+		"n_value" : 1,
+		"l_value" : 2,
+		"degener" : 10
+	},
+
+	"orbital":"2s"
+	"properties":
+ 	{
+		"level_position" : 4,
+		"n_value" : 2,
+		"l_value" : 0,
+		"degener" : 2
+	},
+
+	"orbital":"1f"
+	"properties":
+ 	{
+		"level_position" : 5,
+		"n_value" : 1,
+		"l_value" : 3,
+		"degener" : 14
+	},
+
+	"orbital":"2p"
+	"properties":
+ 	{
+		"level_position" : 6,
+		"n_value" : 2,
+		"l_value" : 1,
+		"degener" : 6
+	},
+
+	"orbital":"1g"
+	"properties":
+ 	{
+		"level_position" : 7,
+		"n_value" : 1,
+		"l_value" : 4,
+		"degener" : 18
+	},
+
+	"orbital":"2d"
+	"property":
+ 	{
+		"level_position" : 8,
+		"n_value" : 2,
+		"l_value" : 2,
+		"degener" : 10
+	},
+
+	"orbital":"3s"
+	"properties":
+	{
+		"level_position" : 9,
+		"n_value" : 3,
+		"l_value" : 0,
+		"degener" : 2
+	},
+
+	"orbital":"1h"
+	"properties":
+ 	{
+		"level_position" : 10,
+		"n_value" : 1,
+		"l_value" : 5,
+		"degener" : 22
+	}
+}
