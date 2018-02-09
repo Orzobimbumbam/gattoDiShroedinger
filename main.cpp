@@ -2,6 +2,9 @@
 #include <fstream>
 #include <vector>
 #include <jsoncpp/json/json.h>
+#include <jsoncpp/json/reader.h>
+#include <jsoncpp/json/writer.h>
+#include <jsoncpp/json/value.h>
 #include "Includes.h"
 
 
@@ -12,22 +15,31 @@ int main(int argc, const char * argv[]) {
     //double error=10e-8;
 
 
-	unsigned long N_step = 1000;
-	std::ifstream ifs ("orbitals2.json");
+	//unsigned long N_step = 1000;
+	Json::Value root;
     Json::Reader reader;
-    Json::Value obj;
-    reader.parse(ifs, obj);
+	std::ifstream ifs ("orbitals3.json");    // this read
+    ifs >> root;							 // the entire file
+    //Json::Value obj;
+    //reader.parse(ifs, obj);
 
-    const Json::Value& orbital = obj["orbital"];
+    const Json::Value array = root["orbitals"]["levels"]["level"];
+    //const Json::Value& orbital = obj["orbital"];
     //const Json::Value& properties = obj["properties"];
 
     //std::cout << "orbital " << obj["orbital"].asString() << std::endl;
 
+
+   for (int i=0; i<array.size(); ++i)
+  {
+    	std::cout << array[i].asInt() << std::endl;
+  }
+/*
     for (int i=0; i<orbital.size(); ++i)
     {
     	std::cout << "orbitals " << orbital[i]["orbital"].asString() << std::endl;
     }
-
+*/
     //const double omega = 2*Parameters::PI*Parameters::f;
 /*
 for ( int i=0; i<=Parameters::angularMomentum; ++i)
