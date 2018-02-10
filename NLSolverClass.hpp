@@ -20,8 +20,8 @@ public:
     {
         double y1 = (f.*evaluate)(a); //dereferencing a pointer to class method
         double y2 = (f.*evaluate)(b);
-        std::cout << a << "\t" << b << std::endl;
-        std::cout << y1 << "\t" << y2 << std::endl;
+       // std::cout << a << "\t" << b << std::endl;
+       // std::cout << y1 << "\t" << y2 << std::endl;
         if (std::abs(y1 - targetValue) <= m_accuracy)
             return y1;
         if (std::abs(y2 - targetValue) <= m_accuracy)

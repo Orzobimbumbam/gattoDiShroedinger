@@ -9,8 +9,8 @@
 namespace Parameters
 {
 
-const int NN=10;										// Neutrons number
-const int NP=10;										// Protons number
+const int NN=8;										// Neutrons number
+const int NP=0;										// Protons number
 //const double mp= 1.6726219e-27;							// Proton mass
 //const double mn= 1.6749273e-27;							// Neutron mass
 const double mn= 939.565378;  							//mnc^2 [Mev]
@@ -40,7 +40,7 @@ double eigenvalue2=1.36256 ;
 double error=10e-8;*/
 
 // Runge-Kutta parameters
-const double x_in=0.005;
+const double x_in=0;
 const double x_fin=3*Rn;
 const double psi0=0;
 const double Psi_0=0;
@@ -49,7 +49,7 @@ const double psiPrime0=1;
 
 // Other parameters
 const unsigned int energyLevel = 1;
-const int angularMomentum = 1;
+const int angularMomentum = 2;
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 					// Reduced constant Planck [eV*s]
 const double hbarc= 197.3269788;						// [MeV*fm]
