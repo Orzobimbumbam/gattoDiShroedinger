@@ -10,32 +10,34 @@
 
 int main(int argc, const char * argv[]) {
 
-	unsigned long N_step = 1000;
+	double H = 0.001;
 	int mass_num=Parameters::A;
 
 /*==========================================================================================
  * STEP-1
- * Calculate eigenfunctions for each quantum involved state by Schrodinger solver
+ * Calculate, by Schrodinger solver, the eigenfunctions for each quantum involved state
  *========================================================================================*/
 	//Load the matrix with quantum and degeneration numbers of each state
-	//std::vector <std::vector <int> > orbitals (10, std::vector <int> (3,0));
-	std::vector <int> state (3);
-	std::vector <std::vector <int> > orbitals;
+	std::vector <std::vector <int> > orbitals (10);// std::vector <int> (3,0));
+	//std::vector <int> state (3);
+	//std::vector <std::vector <int> > orbitals;
 	std::fstream in ("orbitals.txt", std::ios::in);
 
 	for (int i=0; i<10; ++i)
 	{
 		for (int j=0; j<3; ++j)
 		{
-			in >> state [j];
-			orbitals.push_back(state);
+			int temp;
+			in >> temp;
+			orbitals[i].push_back(temp);
 		}
 	}
 
 		/*for (int i=0; i<10; ++i)
 		{
 			for (int j=0; j<3; ++j)
-				std::cout << orbitals[i][j] << std::endl;
+				std::cout << orbitals[i][j];
+				std::cout << std::endl;
 		}*/
 
 	// Solve Schrodinger equation for each involved state
@@ -47,20 +49,25 @@ int main(int argc, const char * argv[]) {
 	{
 		int l_mom=orbitals[i][1];
 		HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
-		GenericEigenvalues GenEig(pot);
+		GenericEigenvalues GenEig(pot, H);
 		double eig = GenEig.eigenvalue();
-		Schroddy Sfunc (pot);
-		double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, N_step);
+		Schroddy Sfunc (pot, H);
+		double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig);
 
 		arrayeval.push_back(eig);
 		arrayefun.push_back(eigfun);
 
 		std::cout << "l value: "<< l_mom << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
 
-		i++;
 		mass_num -= orbitals[i][2];
+		i++;
 		std::cout << mass_num << std::endl;
 	}
+
+/*=========================================================================================
+ * STEP-2
+ * Calculate the theoretical density
+ *=======================================================================================*/
 
 
 
@@ -119,8 +126,8 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
  *======================================================================================*/
     /*double Emax=400, E=250, pass=0.001;
     int N=(Emax-E)/pass, l_mom=1;
-    std::vector<double> arrayeval (N);
-    std::vector<double> arrayefun (N);
+    std::vector<double> arrayeval;
+    std::vector<double> arrayefun;
     HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
     std::ofstream file("test_range.txt");
 
