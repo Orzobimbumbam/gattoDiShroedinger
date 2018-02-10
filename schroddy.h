@@ -52,16 +52,19 @@ private:
 class Schroddy
 {
 public:
-    Schroddy(const InitialPot& pot/*, const Eigenvalues& eigenval*/);
+    Schroddy(const InitialPot& pot, double H/*, const Eigenvalues& eigenval*/);
     Schroddy(const Schroddy& sourceSh);
     Schroddy& operator=(const Schroddy& rhsSchroddy);
     
-    double solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, unsigned long NSteps) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
+    //double getH() const {return m_h;}
+
+    double solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
 
     ~Schroddy();
 
 private:
     InitialPot* m_pot;
+    double m_h;
     //const Eigenvalues* const m_eigenval;
 };
 
@@ -102,7 +105,7 @@ private:
 class GenericEigenvalues: public Eigenvalues
 {
 public:
-    GenericEigenvalues (const InitialPot& initPot);
+    GenericEigenvalues (const InitialPot& initPot, double H);
     double eigenvalue() const override;
     
     Eigenvalues* clone() const override;
@@ -110,6 +113,7 @@ public:
 private:
     GenericEigenvalues();
     InitialPot* m_initPot;
+    const double m_h;
 };
 
 

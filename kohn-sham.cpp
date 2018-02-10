@@ -10,12 +10,12 @@
  *==========================================*/
 Densities::~Densities() {}
 
-Theoreticaldensity::Theoreticaldensity(double eigenfunc, double x): m_eigenfunc(eigenfunc), m_x(x) {}
+Theoreticaldensity::Theoreticaldensity(double eigenfunc, int degen, double x): m_eigenfunc(eigenfunc), m_degen(degen), m_x(x) {}
 
 double Theoreticaldensity::density() const
 {
-	//m_eigenfunc& schroddy::normalPsi; //this line doesn't make sense..
-    return (1/(4*Parameters::PI*(m_x*m_x)))*Parameters::NN*(m_eigenfunc*m_eigenfunc);// BOH!!!!!!!
+
+    return (1/(4*Parameters::PI*(m_x*m_x)))*m_degen*(m_eigenfunc*m_eigenfunc);
 }
 
 Densities* Theoreticaldensity::clone() const
