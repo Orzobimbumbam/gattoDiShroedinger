@@ -31,7 +31,7 @@ const double a0 = 1;
 // HO potential parameters
 //const double mn=1   ;
 //const double f = 2.417988e21;
-const double hbar_omega=10;								// [MeV]
+const double hbar_omega=100;								// [MeV]
 //double r=   ;
 
 // Eigenvalues generator parameters
@@ -40,7 +40,7 @@ double eigenvalue2=1.36256 ;
 double error=10e-8;*/
 
 // Runge-Kutta parameters
-const double x_in=0.005;
+const double x_in=0.;
 const double x_fin=3*Rn;
 const double psi0=0;
 const double Psi_0=0;

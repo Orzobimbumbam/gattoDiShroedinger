@@ -33,7 +33,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-7.8), m_eigenval2(2.5) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-100), m_eigenval2(100) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -148,7 +148,7 @@ schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
 
 double schroddywrapper::eigenfunction(double E) const
 {
-    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 10000);
+    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 1000);
 }
 
 

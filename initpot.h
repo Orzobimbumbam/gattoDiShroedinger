@@ -45,7 +45,7 @@ class HOPot: public InitialPot //derived class
 {
 public:
 
-    HOPot(double m, double omega, int anglmomentum);
+    HOPot(double m, int anglmomentum);
     double potential(double x) const override;
 
     //double getOmega() const;
@@ -53,7 +53,7 @@ public:
 
 private:
     HOPot(); //same as before
-    const double m_m, h_omega, m_anglmomentum;
+    const double m_m, m_anglmomentum;
 };
 
 /*=====================================================================
