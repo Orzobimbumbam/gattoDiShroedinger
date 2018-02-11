@@ -31,7 +31,7 @@ const double a0 = 1;
 // HO potential parameters
 //const double mn=1   ;
 //const double f = 2.417988e21;
-const double hbar_omega=100;								// [MeV]
+const double hbar_omega=10;								// [MeV]
 //double r=   ;
 
 // Eigenvalues generator parameters

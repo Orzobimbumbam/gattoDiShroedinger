@@ -51,16 +51,16 @@ double TrialEigenvalues::getEigenval2()
     return m_trialEigenvalusObj -> m_eigenval2;
 }
 
-GenericEigenvalues::GenericEigenvalues (const InitialPot& initPot, double H): m_initPot(initPot.clone()), m_h(H) {}
+GenericEigenvalues::GenericEigenvalues (const Schroddy& sh/*const InitialPot& initPot, double H*/): m_sh(sh) {}
 
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
 	const double error = 10e-8;
-	Schroddy sch(*m_initPot, m_h);
+	//Schroddy sch(*m_initPot, m_h);
 
 	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
 
-	const schroddywrapper wrap(sch);
+	const schroddywrapper wrap(m_sh);
     return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
 
 }
@@ -74,7 +74,8 @@ Eigenvalues* GenericEigenvalues::clone() const
  * Schrodinger equation solver by Runge-Kutta method
  *=======================================================================*/
 
-Schroddy::Schroddy(const InitialPot& pot, double H/*, const Eigenvalues& eigenval*/): m_pot(pot.clone()), m_h(H)/*, m_eigenval(eigenval.clone())*/ {}
+Schroddy::Schroddy(const InitialPot& pot): m_pot(pot.clone()), m_h(0.001) {}//default precision
+Schroddy::Schroddy(const InitialPot& pot, double H): m_pot(pot.clone()), m_h(H) {}
 
 Schroddy::Schroddy(const Schroddy& sourceSchroddy) //copy constructor
 {
@@ -103,8 +104,7 @@ Schroddy::~Schroddy()
 
 double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const
 {
-    const double h = m_h;
-    const unsigned long NStep = (x1 - x0)/h;
+    const unsigned long NSteps = (x1 - x0)/m_h;
     const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;//m_eigenval -> eigenvalue();
 
@@ -112,23 +112,23 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     std::vector<double> psiArray;
     psiArray.push_back(psi0);
 
-    for (unsigned long i = 0; i < NStep ; ++i)
+    for (unsigned long i = 0; i < NSteps ; ++i)
     {
 
         //compute decoupled RK factors
         const double k1 = runningPsiPrime;
         const double l1 = (m_pot -> potential(runningX) - eigenvalue)*runningPsi;
-        const double k2 = runningPsiPrime + h/2.*l1;
-        const double l2 = (m_pot -> potential(runningX + h/2.) - eigenvalue)*(runningPsi + h/2.*k1);
-        const double k3 = runningPsiPrime + h/2.*l2;
-        const double l3 = (m_pot -> potential(runningX + h/2.) - eigenvalue)*(runningPsi + h/2.*k2);
-        const double k4 = runningPsiPrime + h*l3;
-        const double l4 = (m_pot -> potential(runningX + h) - eigenvalue)*(runningPsi + h*k3);
+        const double k2 = runningPsiPrime + m_h/2.*l1;
+        const double l2 = (m_pot -> potential(runningX + m_h/2.) - eigenvalue)*(runningPsi + m_h/2.*k1);
+        const double k3 = runningPsiPrime + m_h/2.*l2;
+        const double l3 = (m_pot -> potential(runningX + m_h/2.) - eigenvalue)*(runningPsi + m_h/2.*k2);
+        const double k4 = runningPsiPrime + m_h*l3;
+        const double l4 = (m_pot -> potential(runningX + m_h) - eigenvalue)*(runningPsi + m_h*k3);
 
         //advance running variables and store intermediate results
-        runningPsi += h/6.*factor*(k1 + 2*k2 + 2*k3 + k4);
-        runningPsiPrime += h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
-        runningX += h;
+        runningPsi += m_h/6.*factor*(k1 + 2*k2 + 2*k3 + k4);
+        runningPsiPrime += m_h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
+        runningX += m_h;
         psiArray.push_back(runningPsi);
 
     }
@@ -139,7 +139,7 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
     for (std::vector<double>::iterator it = psiArray.begin(); it != psiArray.end(); ++it)
         psiSquared += (*it)*(*it); //derefence iterator at array's element and square (brackets are needed!)
 
-    const double scalar = psiSquared*h;
+    const double scalar = psiSquared*m_h;
 
     //return normalized eigenfunction (on interval [x0, x1]) and job done!
     const double normalPsi = runningPsi/sqrt(scalar);
@@ -155,7 +155,7 @@ schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
 
 double schroddywrapper::eigenfunction(double E) const
 {
-    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, 1000);
+    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E);
 }
 
 
