@@ -18,10 +18,10 @@ int main(int argc, const char * argv[]) {
  * Calculate, by Schrodinger solver, the eigenfunctions for each quantum involved state
  *========================================================================================*/
 	//Load the matrix with quantum and degeneration numbers of each state
-	std::vector <std::vector <int> > orbitals (10);// std::vector <int> (3,0));
+	//std::vector <std::vector <int> > orbitals (10);// std::vector <int> (3,0));
 	//std::vector <int> state (3);
 	//std::vector <std::vector <int> > orbitals;
-	std::fstream in ("orbitals.txt", std::ios::in);
+	/*std::fstream in ("orbitals.txt", std::ios::in);
 
 	for (int i=0; i<10; ++i)
 	{
@@ -41,11 +41,11 @@ int main(int argc, const char * argv[]) {
 		}*/
 
 	// Solve Schrodinger equation for each involved state
-	int i=0;
+	/*int i=0;
     std::vector<double> arrayeval;
     std::vector<double> arrayefun;
 
-    while (mass_num > 0)
+     while (mass_num > 0)
 	{
 		int l_mom=orbitals[i][1];
 		HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
@@ -62,7 +62,25 @@ int main(int argc, const char * argv[]) {
 		mass_num -= orbitals[i][2];
 		i++;
 		std::cout << mass_num << std::endl;
-	}
+	}*/
+
+    unsigned int n=3;
+    int l_mom=0;
+
+	HOPot pot (Parameters::mn, l_mom);
+	Schroddy Sfunc (pot, H);
+	GenericEigenvalues GenEig(Sfunc, n);
+	double eig = GenEig.eigenvalue();
+	//double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, );
+
+	std::cout << eig << std::endl;
+
+
+
+
+
+
+
 
 /*=========================================================================================
  * STEP-2
