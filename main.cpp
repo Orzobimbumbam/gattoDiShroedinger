@@ -47,24 +47,25 @@ int main(int argc, const char * argv[]) {
 
      while (mass_num > 0)
 	{
-		int l_mom=orbitals[i][1];
-		HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
-		GenericEigenvalues GenEig(pot, H);
-		double eig = GenEig.eigenvalue();
+    	int quantN=orbitals[i][0];
+		int quantL=orbitals[i][1];
+		HOPot pot (Parameters::mn, Parameters::hbar_omega, quantL);
 		Schroddy Sfunc (pot, H);
-		double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig);
+		GenericEigenvalues GenEig(pot, quantN);
+		double eig = GenEig.eigenvalue();
+		double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig);
 
 		arrayeval.push_back(eig);
 		arrayefun.push_back(eigfun);
 
-		std::cout << "l value: "<< l_mom << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
+		std::cout << "l value: "<< quantL << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
 
 		mass_num -= orbitals[i][2];
 		i++;
 		std::cout << mass_num << std::endl;
 	}*/
 
-    unsigned int n=3;
+    /*unsigned int n=1;
     int l_mom=0;
 
 	HOPot pot (Parameters::mn, l_mom);
@@ -73,7 +74,7 @@ int main(int argc, const char * argv[]) {
 	double eig = GenEig.eigenvalue();
 	//double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, );
 
-	std::cout << eig << std::endl;
+	std::cout << eig << std::endl;*/
 
 
 

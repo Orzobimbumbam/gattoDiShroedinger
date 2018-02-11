@@ -33,7 +33,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(200), m_eigenval2(400) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(296.895), m_eigenval2(400) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -90,18 +90,25 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
 
 	const schroddywrapper wrap(m_sh);
+
 	double zero;
+	bool lastZeroFlag = false;
+	E1=E2;
+	while (!lastZeroFlag)
+	{
+		zero = sol.solveByBisection(wrap, 0, E1 , E2);
+
+		if (zero == -51)
+			E1 = E2 - 0.001;
+		else lastZeroFlag = true;
+	}
+
+	/*double zero;
 	for (unsigned int i=0; i < m_nState; ++i)
 	{
 		zero = sol.solveByBisection(wrap, 0, E1 , E2);
 		//E1 = zero;
-		/*if (zero < E2)
-			E1 = zero;
-		if (zero > E1)
-			E2 = zero;*/
-
-
-	}
+	}*/
     //return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
 	return zero;//sol.solveByBisection(wrap, 0, E1 , E2);
 }
