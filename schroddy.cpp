@@ -7,6 +7,7 @@
 # include "schroddy.h"
 //# include <cmath>
 # include <vector>
+# include <fstream>
 # include "NLSolverClass.hpp"
 
 
@@ -33,7 +34,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(296.895), m_eigenval2(400) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-100), m_eigenval2(100) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -76,7 +77,7 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 	  if (nodes > m_nState)
 		   E *= 0.7;
 	  if (nodes < m_nState)
-		  E *= 2.;
+		   E *= 2.;
 	  else nStatesFlag = true;
 	}
 
@@ -91,26 +92,26 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 
 	const schroddywrapper wrap(m_sh);
 
-	double zero;
+	/*double zero;
 	bool lastZeroFlag = false;
 	E1=E2;
 	while (!lastZeroFlag)
 	{
 		zero = sol.solveByBisection(wrap, 0, E1 , E2);
 
-		if (zero == -51)
+		if (zero == -10e24)
 			E1 = E2 - 0.001;
 		else lastZeroFlag = true;
-	}
+	}*/
 
-	/*double zero;
+	double zero;
 	for (unsigned int i=0; i < m_nState; ++i)
 	{
 		zero = sol.solveByBisection(wrap, 0, E1 , E2);
 		//E1 = zero;
-	}*/
+	}
     //return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
-	return zero;//sol.solveByBisection(wrap, 0, E1 , E2);
+	return zero; //sol.solveByBisection(wrap, 0, E1 , E2);
 }
 
 
@@ -157,6 +158,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     const unsigned long NSteps = (x1 - x0)/m_h;
     const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;//m_eigenval -> eigenvalue();
+    std::ofstream file("RKout.txt");
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     //std::vector<double> psiArray;
@@ -182,6 +184,20 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         psiArray.push_back(runningPsi);
 
     }
+
+    std::vector <double>::iterator walk = psiArray.begin();
+    while (walk != psiArray.end())
+    {
+    	file << *walk << std::endl;
+    	//std::cout << *walk << std::endl;
+    	walk++;
+    }
+
+    file.close();
+
+
+
+
     //return runningPsi/x1;
 
     //work out normalizatiion constant
