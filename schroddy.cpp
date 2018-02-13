@@ -17,10 +17,10 @@ Eigenvalues::~Eigenvalues() {}
  * HO Eigenvalues generator
  *=====================================================================*/
 
-HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m_omega(omega), m_n(n), m_l(l) {}
+HarmonicEigenvalues::HarmonicEigenvalues(unsigned int n, int l): m_n(n), m_l(l) {}
 double HarmonicEigenvalues::eigenvalue() const
 {
-    return Parameters::hbar*m_omega*(2*m_n+m_l+(3/2));
+    return Parameters::hbar_omega*(2*m_n+m_l+(3/2));
 }
 Eigenvalues* HarmonicEigenvalues::clone() const
 {
@@ -181,7 +181,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         runningPsi += m_h/6.*factor*(k1 + 2*k2 + 2*k3 + k4);
         runningPsiPrime += m_h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
         runningX += m_h;
-        psiArray.push_back(runningPsi);
+        psiArray.push_back(runningPsi/runningX);
 
     }
 
