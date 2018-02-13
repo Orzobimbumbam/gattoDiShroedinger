@@ -1,6 +1,7 @@
 //double HBOEigen ( double omega, double l, double hbar, int n);
 //double schrodinger (double r, double l, double vks, double u);
 #pragma once
+#include <vector>
 
 class InitialPot;
 class Schroddy;
@@ -60,7 +61,7 @@ public:
     double getH() const {return m_h;}
     void setH(double H) {m_h = H;}
 
-    double solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
+    double solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray ) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
 
     ~Schroddy();
 
@@ -106,7 +107,7 @@ private:
 class GenericEigenvalues: public Eigenvalues
 {
 public:
-    GenericEigenvalues (const Schroddy& sh/*const InitialPot& initPot, double H*/);
+    GenericEigenvalues (const Schroddy& sh, unsigned int nState /*const InitialPot& initPot, double H*/);
     double eigenvalue() const override;
     
     Eigenvalues* clone() const override;
@@ -115,6 +116,7 @@ private:
     GenericEigenvalues();
     //InitialPot* m_initPot;
     const Schroddy m_sh;
+    unsigned int m_nState;
     //const double m_h;
 };
 

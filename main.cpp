@@ -17,11 +17,11 @@ int main(int argc, const char * argv[]) {
  * STEP-1
  * Calculate, by Schrodinger solver, the eigenfunctions for each quantum involved state
  *========================================================================================*/
-	//Load the matrix with quantum and degeneration numbers of each state
-	std::vector <std::vector <int> > orbitals (10);// std::vector <int> (3,0));
+	//Load the matrix with quantum numbers of each state
+	//std::vector <std::vector <int> > orbitals (10);// std::vector <int> (3,0));
 	//std::vector <int> state (3);
 	//std::vector <std::vector <int> > orbitals;
-	std::fstream in ("orbitals.txt", std::ios::in);
+	/*std::fstream in ("orbitals.txt", std::ios::in);
 
 	for (int i=0; i<10; ++i)
 	{
@@ -41,28 +41,50 @@ int main(int argc, const char * argv[]) {
 		}*/
 
 	// Solve Schrodinger equation for each involved state
-	int i=0;
+	/*int i=0;
+	  int degen = 0;
     std::vector<double> arrayeval;
     std::vector<double> arrayefun;
 
-    while (mass_num > 0)
+     while (mass_num > 0)
 	{
-		int l_mom=orbitals[i][1];
-		HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
-		GenericEigenvalues GenEig(pot, H);
-		double eig = GenEig.eigenvalue();
+    	int quantN=orbitals[i][0];
+		int quantL=orbitals[i][1];
+		HOPot pot (Parameters::mn, Parameters::hbar_omega, quantL);
 		Schroddy Sfunc (pot, H);
-		double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig);
+		GenericEigenvalues GenEig(pot, quantN);
+		double eig = GenEig.eigenvalue();
+		double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig);
 
 		arrayeval.push_back(eig);
 		arrayefun.push_back(eigfun);
 
-		std::cout << "l value: "<< l_mom << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
+		degen = 2*(2*quantL+1);
 
-		mass_num -= orbitals[i][2];
+		std::cout << "l value: "<< quantL << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
+
+		mass_num -= degen;
 		i++;
 		std::cout << mass_num << std::endl;
-	}
+	}*/
+
+    unsigned int n=3;
+    int l_mom=0;
+
+	HOPot pot (Parameters::mn, l_mom);
+	Schroddy Sfunc (pot, H);
+	GenericEigenvalues GenEig(Sfunc, n);
+	double eig = GenEig.eigenvalue();
+	//double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, );
+
+	std::cout << eig << std::endl;
+
+
+
+
+
+
+
 
 /*=========================================================================================
  * STEP-2

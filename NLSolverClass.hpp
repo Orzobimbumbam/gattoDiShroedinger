@@ -26,8 +26,13 @@ public:
             return y1;
         if (std::abs(y2 - targetValue) <= m_accuracy)
             return y2;
+
+        //double point;
         if ((y1 - targetValue)*(y2 - targetValue) > 0)
-            throw "NLSolverClass: solveByBisection : No zeros in this interval.";
+        {
+            //point = -10e24;
+        	throw "NLSolverClass: solveByBisection : No zeros in this interval.";
+        }
 
         const unsigned long Nmax = 10000;
         unsigned long i = 0;
@@ -39,6 +44,7 @@ public:
             if (i == Nmax) //avoid infinite loops
             {
                 std::cerr << "NLSolverClass: solveByBisection : No zeros found." << std::endl;
+                //return point;
                 break;
             }
             if ((y - targetValue)*((f.*evaluate)(a) - targetValue) < 0)

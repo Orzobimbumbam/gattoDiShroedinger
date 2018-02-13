@@ -7,6 +7,7 @@
 # include "schroddy.h"
 //# include <cmath>
 # include <vector>
+# include <fstream>
 # include "NLSolverClass.hpp"
 
 
@@ -33,7 +34,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(200), m_eigenval2(400) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-100), m_eigenval2(100) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -51,19 +52,69 @@ double TrialEigenvalues::getEigenval2()
     return m_trialEigenvalusObj -> m_eigenval2;
 }
 
-GenericEigenvalues::GenericEigenvalues (const Schroddy& sh/*const InitialPot& initPot, double H*/): m_sh(sh) {}
+GenericEigenvalues::GenericEigenvalues (const Schroddy& sh, unsigned int nState/*const InitialPot& initPot, double H*/): m_sh(sh), m_nState(nState) {}
 
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
 	const double error = 10e-8;
-	//Schroddy sch(*m_initPot, m_h);
+	double E = TrialEigenvalues::getEigenval2();
+	//double E1
+	std::vector <double> psiArray;
+	bool nStatesFlag = false;
+
+	while (!nStatesFlag)
+	{
+	  double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
+			Parameters::psiPrime0,E , psiArray);
+	  unsigned int nodes = 0;
+
+	  for (unsigned long i = 0; i < psiArray.size()-1; ++i)
+	  {
+		  if (psiArray[i]*psiArray[i+1] < 0)
+			  ++ nodes;
+	  }
+
+	  if (nodes > m_nState)
+		   E *= 0.7;
+	  if (nodes < m_nState)
+		   E *= 2.;
+	  else nStatesFlag = true;
+	}
+
+	double E1 = TrialEigenvalues::getEigenval1(), E2 = E;
+	if (E < TrialEigenvalues::getEigenval1())
+	{
+		E1 = E;
+		E2 = TrialEigenvalues::getEigenval1();
+	}
 
 	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
 
 	const schroddywrapper wrap(m_sh);
-    return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
 
+	/*double zero;
+	bool lastZeroFlag = false;
+	E1=E2;
+	while (!lastZeroFlag)
+	{
+		zero = sol.solveByBisection(wrap, 0, E1 , E2);
+
+		if (zero == -10e24)
+			E1 = E2 - 0.001;
+		else lastZeroFlag = true;
+	}*/
+
+	double zero;
+	for (unsigned int i=0; i < m_nState; ++i)
+	{
+		zero = sol.solveByBisection(wrap, 0, E1 , E2);
+		//E1 = zero;
+	}
+    //return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
+	return zero; //sol.solveByBisection(wrap, 0, E1 , E2);
 }
+
+
 
 Eigenvalues* GenericEigenvalues::clone() const
 {
@@ -102,14 +153,15 @@ Schroddy::~Schroddy()
     delete m_pot;
 }
 
-double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const
+double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const
 {
     const unsigned long NSteps = (x1 - x0)/m_h;
     const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;//m_eigenval -> eigenvalue();
+    std::ofstream file("RKout.txt");
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
-    std::vector<double> psiArray;
+    //std::vector<double> psiArray;
     psiArray.push_back(psi0);
 
     for (unsigned long i = 0; i < NSteps ; ++i)
@@ -132,6 +184,20 @@ double Schroddy::solveShroddyByRK(double x0, double x1, double psi0, double psiP
         psiArray.push_back(runningPsi);
 
     }
+
+    std::vector <double>::iterator walk = psiArray.begin();
+    while (walk != psiArray.end())
+    {
+    	file << *walk << std::endl;
+    	//std::cout << *walk << std::endl;
+    	walk++;
+    }
+
+    file.close();
+
+
+
+
     //return runningPsi/x1;
 
     //work out normalizatiion constant
@@ -155,7 +221,9 @@ schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
 
 double schroddywrapper::eigenfunction(double E) const
 {
-    return m_sh.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E);
+	std::vector <double> psiArray;
+    return m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
+    		Parameters::psiPrime0, E, psiArray );
 }
 
 
