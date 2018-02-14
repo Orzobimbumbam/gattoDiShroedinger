@@ -9,6 +9,7 @@
 # include <vector>
 # include <fstream>
 # include "NLSolverClass.hpp"
+# include "gnuplot_i.hpp"
 
 
 Eigenvalues::~Eigenvalues() {}
@@ -62,23 +63,26 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 	std::vector <double> psiArray;
 	bool nStatesFlag = false;
 
-	while (!nStatesFlag)
+	for (int n=0; n < m_nState; ++n)
 	{
-	  double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
-			Parameters::psiPrime0,E , psiArray);
-	  unsigned int nodes = 0;
+		while (!nStatesFlag)
+		{
+			double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
+					Parameters::psiPrime0,E , psiArray);
+			unsigned int nodes = 0;
 
-	  for (unsigned long i = 0; i < psiArray.size()-1; ++i)
-	  {
-		  if (psiArray[i]*psiArray[i+1] < 0)
-			  ++ nodes;
-	  }
+			for (unsigned long i = 0; i < psiArray.size()-1; ++i)
+			{
+				if (psiArray[i]*psiArray[i+1] < 0)
+					++ nodes;
+			}
 
-	  if (nodes > m_nState)
-		   E *= 0.7;
-	  if (nodes < m_nState)
-		   E *= 2.;
-	  else nStatesFlag = true;
+			if (nodes > n /*m_nState*/)
+				E *= 0.7;
+			if (nodes < n /*m_nState*/)
+				E *= 2.;
+			else nStatesFlag = true;
+		}
 	}
 
 	double E1 = TrialEigenvalues::getEigenval1(), E2 = E;
@@ -110,6 +114,7 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 		zero = sol.solveByBisection(wrap, 0, E1 , E2);
 		//E1 = zero;
 	}
+
     //return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
 	return zero; //sol.solveByBisection(wrap, 0, E1 , E2);
 }
@@ -162,6 +167,8 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     //std::vector<double> psiArray;
+    std::vector<double> psiRadius;
+    psiRadius.push_back(x0);
     psiArray.push_back(psi0);
 
     for (unsigned long i = 0; i < NSteps ; ++i)
@@ -182,20 +189,27 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         runningPsiPrime += m_h/6.*factor*(l1 + 2*l2 + 2*l3 + l4);
         runningX += m_h;
         psiArray.push_back(runningPsi/runningX);
+        psiRadius.push_back(runningX);
 
     }
 
-    std::vector <double>::iterator walk = psiArray.begin();
-    while (walk != psiArray.end())
+    std::vector<double>::iterator walk1 = psiRadius.begin();
+    std::vector<double>::iterator walk2 = psiArray.begin();
+    while (walk1 != psiRadius.end() && walk2 != psiArray.end())
     {
-    	file << *walk << std::endl;
+    	file << *walk1 << "\t"<< *walk2 << std::endl;
     	//std::cout << *walk << std::endl;
-    	walk++;
+    	walk1++, walk2++;
     }
 
     file.close();
 
-
+    const std::string f = "RKout.txt";
+    Gnuplot gp("lines");
+    gp.set_title("Plotfile\\nNew Line");
+    //gp.plotfile_xy(&f,1,2,'Psi');
+    gp.plotfile_xy("RKout.txt",1,2,"Psi");
+    gp.unset_title();
 
 
     //return runningPsi/x1;
