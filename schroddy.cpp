@@ -83,18 +83,27 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 				E *= 2.;
 			else nStatesFlag = true;
 		}
+
+
+		double E1 = TrialEigenvalues::getEigenval1(), E2 = E;
+		if (E < TrialEigenvalues::getEigenval1())
+		{
+			E1 = E;
+			E2 = TrialEigenvalues::getEigenval1();
+		}
+
+		NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
+
+		const schroddywrapper wrap(m_sh);
+
+		double zero;
+		zero = sol.solveByBisection(wrap, 0, E1 , E2);
+
 	}
 
-	double E1 = TrialEigenvalues::getEigenval1(), E2 = E;
-	if (E < TrialEigenvalues::getEigenval1())
-	{
-		E1 = E;
-		E2 = TrialEigenvalues::getEigenval1();
-	}
+	/*NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
 
-	NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
-
-	const schroddywrapper wrap(m_sh);
+	const schroddywrapper wrap(m_sh);*/
 
 	/*double zero;
 	bool lastZeroFlag = false;
@@ -108,12 +117,12 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 		else lastZeroFlag = true;
 	}*/
 
-	double zero;
+	/*double zero;
 	for (unsigned int i=0; i < m_nState; ++i)
 	{
 		zero = sol.solveByBisection(wrap, 0, E1 , E2);
 		//E1 = zero;
-	}
+	}*/
 
     //return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
 	return zero; //sol.solveByBisection(wrap, 0, E1 , E2);
@@ -204,12 +213,12 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     file.close();
 
-    const std::string f = "RKout.txt";
+   /* const std::string f = "RKout.txt";
     Gnuplot gp("lines");
     gp.set_title("Plotfile\\nNew Line");
     //gp.plotfile_xy(&f,1,2,'Psi');
     gp.plotfile_xy("RKout.txt",1,2,"Psi");
-    gp.unset_title();
+    gp.unset_title();*/
 
 
     //return runningPsi/x1;
