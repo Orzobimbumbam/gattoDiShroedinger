@@ -106,17 +106,18 @@ private:
 class GenericEigenvalues: public Eigenvalues
 {
 public:
-    GenericEigenvalues (const Schroddy& sh, unsigned int nState /*const InitialPot& initPot, double H*/);
+    GenericEigenvalues (const Schroddy& sh, unsigned int nState);
     double eigenvalue() const override;
     
     Eigenvalues* clone() const override;
     
 private:
     GenericEigenvalues();
-    //InitialPot* m_initPot;
+    double shootingMethod(double E1, double E2, unsigned int parity) const;
+    
     const Schroddy m_sh;
     unsigned int m_nState;
-    //const double m_h;
+    
 };
 
 

@@ -53,39 +53,41 @@ double TrialEigenvalues::getEigenval2()
 
 GenericEigenvalues::GenericEigenvalues (const Schroddy& sh, unsigned int nState): m_sh(sh), m_nState(nState) {}
 
-double GenericEigenvalues::eigenvalue() const //this must return a double..
+double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int parity) const
 {
-	const double error = 1e-8;
-    double E2 = TrialEigenvalues::getEigenval2();
-
-	std::vector <double> psiArray;
+    const double error = 1e-8;
+    int parityFlag = 1;
+    
+    if (parity%2 == 0)
+        parityFlag = -1;
+    
+    std::vector <double> psiArray;
     unsigned int nodes = 0;
-	while (true)
-	{
+    while (true)
+    {
+        
+        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, parityFlag*Parameters::psi0,
+                                          Parameters::psiPrime0, E2 , psiArray);
+        
+        nodes = 0;
+        for (unsigned long i = 0; i < psiArray.size()-1; ++i)
+        {
+            if (psiArray[i]*psiArray[i+1] < 0)
+                ++ nodes;
+        }
+        
+        if (nodes > m_nState)
+            E2 *= 0.99;
+        else if (nodes < m_nState)
+            E2 *= 1.11;
+        else break;
+    }
     
-	  double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
-			Parameters::psiPrime0, E2 , psiArray);
-	  
-      nodes = 0;
-	  for (unsigned long i = 0; i < psiArray.size()-1; ++i)
-	  {
-		  if (psiArray[i]*psiArray[i+1] < 0)
-			  ++ nodes;
-	  }
-
-	  if (nodes > m_nState)
-		   E2 *= 0.99;
-	  else if (nodes < m_nState)
-		   E2 *= 1.11;
-      else break;
-	}
-    
-    double E1 = 25;// TrialEigenvalues::getEigenval1(); //this must change for every cycle i.e. if n=3, E1 = E(n=2)
     double midE = (E1 + E2)/2.;
-    //double s = 1;
+    
     while (std::abs(E2 - E1) > error)
     {
-        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
+        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, parityFlag*Parameters::psi0,
                                           Parameters::psiPrime0, midE , psiArray);
         
         if (s > 0)
@@ -96,24 +98,20 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
         midE = (E1 + E2)/2.;
     }
     
+    return midE;
+}
 
-    /*
-	double E1 = TrialEigenvalues::getEigenval1(), E2 = E;
-	if (E < TrialEigenvalues::getEigenval1())
-	{
-		E1 = E;
-		E2 = TrialEigenvalues::getEigenval1();
-	}*/
+double GenericEigenvalues::eigenvalue() const //this must return a double..
+{
+    double E1 = TrialEigenvalues::getEigenval1();
     
+    for (unsigned int i = 1; i <= m_nState; ++i)
+    {
+        E1 = shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
+    }
     
-    
-	//NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
+    return E1;
 
-	//const schroddywrapper wrap(m_sh);
-	
-
-
-	return midE; //sol.solveByBisection(wrap, 0, E1 , E2);
 }
 
 
@@ -165,8 +163,8 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     //std::vector<double> psiArray;
-    std::vector<double> psiRadius;
-    psiRadius.push_back(x0);
+    //std::vector<double> psiRadius;
+    //psiRadius.push_back(x0);
     psiArray.push_back(psi0);
 
     for (unsigned long i = 0; i < NSteps ; ++i)
