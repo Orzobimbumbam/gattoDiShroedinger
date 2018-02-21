@@ -1,14 +1,13 @@
 //Class for Schrodinger equation solver
-//# include <math.h>
-//# include <stdlib.h>
-//# include <stdio.h>
+
 # include "initpot.h"
 # include "parameters.h"
 # include "schroddy.h"
-//# include <cmath>
+# include <cmath>
 # include <vector>
 # include <fstream>
 # include "NLSolverClass.hpp"
+//# include "gnuplot_i.hpp"
 
 
 Eigenvalues::~Eigenvalues() {}
@@ -17,10 +16,10 @@ Eigenvalues::~Eigenvalues() {}
  * HO Eigenvalues generator
  *=====================================================================*/
 
-HarmonicEigenvalues::HarmonicEigenvalues(double omega, unsigned int n, int l): m_omega(omega), m_n(n), m_l(l) {}
+HarmonicEigenvalues::HarmonicEigenvalues(unsigned int n, int l): m_n(n), m_l(l) {}
 double HarmonicEigenvalues::eigenvalue() const
 {
-    return Parameters::hbar*m_omega*(2*m_n+m_l+(3/2));
+    return Parameters::hbar_omega*(2*m_n+m_l+(3/2));
 }
 Eigenvalues* HarmonicEigenvalues::clone() const
 {
@@ -108,30 +107,12 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
     
     
     
-    
 	//NLSolver <schroddywrapper, &schroddywrapper::eigenfunction> sol(error);
 
 	//const schroddywrapper wrap(m_sh);
+	
 
-	/*double zero;
-	bool lastZeroFlag = false;
-	E1=E2;
-	while (!lastZeroFlag)
-	{
-		zero = sol.solveByBisection(wrap, 0, E1 , E2);
 
-		if (zero == -10e24)
-			E1 = E2 - 0.001;
-		else lastZeroFlag = true;
-	}*/
-
-    //double zero;
-	//for (unsigned int i=0; i < m_nState; ++i)
-	//{
-		//zero = sol.solveByBisection(wrap, 0, E1 , E2);
-		//E1 = zero;
-	//}
-    //return sol.solveByBisection(wrap, 0, TrialEigenvalues::getEigenval1() , TrialEigenvalues::getEigenval2());
 	return midE; //sol.solveByBisection(wrap, 0, E1 , E2);
 }
 
@@ -184,6 +165,8 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     //std::vector<double> psiArray;
+    std::vector<double> psiRadius;
+    psiRadius.push_back(x0);
     psiArray.push_back(psi0);
 
     for (unsigned long i = 0; i < NSteps ; ++i)
@@ -208,16 +191,34 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     /*
     std::vector <double>::iterator walk = psiArray.begin();
     while (walk != psiArray.end())
-    {
-    	file << *walk << std::endl;
-    	//std::cout << *walk << std::endl;
-    	walk++;
+=======
+        psiArray.push_back(runningPsi/runningX);
+        psiRadius.push_back(runningX);
+
     }
+
+    std::vector<double>::iterator walk1 = psiRadius.begin();
+    std::vector<double>::iterator walk2 = psiArray.begin();
+    while (walk1 != psiRadius.end() && walk2 != psiArray.end())
+
+    {
+    	file << *walk1 << "\t"<< *walk2 << std::endl;
+    	//std::cout << *walk << std::endl;
+    	walk1++, walk2++;
+    }
+
 
     file.close();*/
 
 
-    //return runningPsi/x1;
+   /* const std::string f = "RKout.txt";
+    Gnuplot gp("lines");
+    gp.set_title("Plotfile\\nNew Line");
+    //gp.plotfile_xy(&f,1,2,'Psi');
+    gp.plotfile_xy("RKout.txt",1,2,"Psi");
+    gp.unset_title();*/
+
+
 
     //work out normalizatiion constant
     double psiSquared = 0;// normalPsi=0;

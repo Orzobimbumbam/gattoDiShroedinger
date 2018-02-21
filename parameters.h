@@ -37,11 +37,13 @@ double eigenvalue2=1.36256 ;
 double error=10e-8;*/
 
 // Runge-Kutta parameters
+
 const double x_in = -10*Rn;
 const double x_fin = 10*Rn;
 const double psi0= -0.0001;
 //const double Psi_0=;
 const double psiPrime0 = 0;
+
 //unsigned long N_step=10;
 
 // Other parameters
