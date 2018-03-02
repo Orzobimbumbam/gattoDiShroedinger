@@ -51,23 +51,24 @@ double TrialEigenvalues::getEigenval2()
     return m_trialEigenvalusObj -> m_eigenval2;
 }
 
-GenericEigenvalues::GenericEigenvalues (const Schroddy& sh, unsigned int nState): m_sh(sh), m_nState(nState) {}
+GenericEigenvalues::GenericEigenvalues (const Schroddy& sh, unsigned int nState, unsigned int lState):
+    m_sh(sh), m_nState(nState), m_lState(lState) {}
 
-double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int parity) const
+double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nState) const
 {
     const double error = 1e-8;
     int parityFlag = 1;
-    
-    if (parity%2 == 0)
-        parityFlag = -1;
+    /*
+    if (nState%2 == 0)
+        parityFlag = -1;*/
     
     std::vector <double> psiArray;
     unsigned int nodes = 0;
     while (true)
     {
         
-        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, parityFlag*Parameters::psi0,
-                                          Parameters::psiPrime0, E2 , psiArray);
+        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(m_lState),
+                                          psiPrime0(m_lState), E2 , psiArray);
         
         nodes = 0;
         for (unsigned long i = 0; i < psiArray.size()-1; ++i)
@@ -76,9 +77,9 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int par
                 ++ nodes;
         }
         
-        if (nodes > m_nState)
+        if (nodes > nState)
             E2 *= 0.99;
-        else if (nodes < m_nState)
+        else if (nodes < nState)
             E2 *= 1.11;
         else break;
     }
@@ -87,10 +88,10 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int par
     
     while (std::abs(E2 - E1) > error)
     {
-        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, parityFlag*Parameters::psi0,
-                                          Parameters::psiPrime0, midE , psiArray);
+        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(m_lState),
+                                          psiPrime0(m_lState), midE , psiArray);
         
-        if (s > 0)
+        if (parityFlag*s > 0)
             E1 = midE;
         else
             E2 = midE;
@@ -162,10 +163,9 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     //std::ofstream file("RKout.txt");
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
-    //std::vector<double> psiArray;
-    //std::vector<double> psiRadius;
-    //psiRadius.push_back(x0);
     psiArray.push_back(psi0);
+    std::vector<double> x;
+    x.push_back(runningX);
 
     for (unsigned long i = 0; i < NSteps ; ++i)
     {
@@ -184,7 +184,8 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         runningPsi += 1./6.*(k1 + 2*k2 + 2*k3 + k4);
         runningPsiPrime += 1./6.*(l1 + 2*l2 + 2*l3 + l4);
         runningX += m_h;
-        psiArray.push_back(runningPsi/runningX);
+        psiArray.push_back(runningPsi);
+        x.push_back(runningX);
     }
     /*
     std::vector <double>::iterator walk = psiArray.begin();
@@ -206,10 +207,10 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     }
 
 
-    file.close();*/
+    file.close();
 
 
-   /* const std::string f = "RKout.txt";
+    const std::string f = "RKout.txt";
     Gnuplot gp("lines");
     gp.set_title("Plotfile\\nNew Line");
     //gp.plotfile_xy(&f,1,2,'Psi');
@@ -220,12 +221,12 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     //work out normalizatiion constant
     double psiSquared = 0;// normalPsi=0;
-    for (std::vector<double>::iterator it = psiArray.begin(); it != psiArray.end(); ++it)
+    for (auto it = psiArray.begin(); it != psiArray.end(); ++it)
         psiSquared += (*it)*(*it); //derefence iterator at array's element and square (brackets are needed!)
 
     const double scalar = psiSquared*m_h;
-    for (std::vector<double>::iterator it = psiArray.begin(); it != psiArray.end(); ++it)
-        *it = *it/sqrt(scalar);
+    for (auto it = psiArray.begin(), itt = x.begin(); it != psiArray.end() && itt != x.end(); ++it, ++itt)
+        *it = *it/(*itt*sqrt(scalar));
 
     //return normalized eigenfunction (on interval [x0, x1]) and job done!
     const double normalPsi = runningPsi/sqrt(scalar);
@@ -238,13 +239,13 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
 //schroddywrapper::schroddywrapper (const Schroddy& sh, double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps): m_sh(sh), m_x0(x0), m_x1(x1), m_psi0(psi0), m_psiPrime0(psiPrime0), m_NSteps(NSteps) {}
 schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
-
+/*
 double schroddywrapper::eigenfunction(double E) const
 {
 	std::vector <double> psiArray;
     return m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
     		Parameters::psiPrime0, E, psiArray );
-}
+}*/
 
 
 /*

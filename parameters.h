@@ -5,6 +5,9 @@
 #include<cmath>
 
 
+double psi0(unsigned int l);
+double psiPrime0(unsigned int l);
+
 
 namespace Parameters
 {
@@ -40,9 +43,9 @@ double error=10e-8;*/
 //const double x_in = -10*Rn;
 const double x_in = 10e-5;
 const double x_fin = 10*Rn;
-const double psi0= 0.001;
-//const double Psi_0=;
-const double psiPrime0 = 1;
+//const double psi0= 0.001;
+    
+//const double psiPrime0 = 1;
 
 //unsigned long N_step=10;
 
@@ -57,6 +60,12 @@ const double hbarc= 197.3269788;					// [MeV*fm]
 const double hbar_omega=10;							// [MeV]
 
 }
+
+
+
+
+
+
 
 //#endif
 

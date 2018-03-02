@@ -16,6 +16,9 @@
 #include "Includes.h"
 
 
+
+
+
 int main(int argc, const char * argv[]) {
     
     double H = 0.001;
@@ -76,15 +79,15 @@ int main(int argc, const char * argv[]) {
      std::cout << mass_num << std::endl;
      }*/
     
-    unsigned int n=3;
-    int l_mom=0;
-    std::vector<double> vec;
+    unsigned int k=2; //same formula as yours, just keep this even
+    unsigned int l_mom=0;
+    unsigned int n = k + l_mom;
     
     HOPot pot (Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
-    //double eigenfun = Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 14.5, vec );
-    GenericEigenvalues GenEig(Sfunc, n);
+    GenericEigenvalues GenEig(Sfunc, n, l_mom);
     double eig = GenEig.eigenvalue();
+    //double eigenfun = Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 14.5, vec );
     //double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, );
     
     //std::cout << eigenfun << std::endl;
@@ -188,3 +191,6 @@ int main(int argc, const char * argv[]) {
     std::cout << "Program executed successfully." << std::endl;
     return 0;
 }
+
+
+
