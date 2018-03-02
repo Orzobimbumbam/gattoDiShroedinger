@@ -68,8 +68,9 @@ int main(int argc, const char * argv[]) {
 		std::cout << mass_num << std::endl;
 	}*/
 
-    unsigned int n=3;
-    int l_mom=0;
+    unsigned int nr=5;
+    int l_mom=2;
+    unsigned int n = 2*(nr-1) + l_mom;
 
 	HOPot pot (Parameters::mn, l_mom);
 	Schroddy Sfunc (pot, H);

@@ -33,7 +33,7 @@ Eigenvalues* HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(100) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(200) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -184,7 +184,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         runningPsi += 1./6.*(k1 + 2*k2 + 2*k3 + k4);
         runningPsiPrime += 1./6.*(l1 + 2*l2 + 2*l3 + l4);
         runningX += m_h;
-        psiArray.push_back(runningPsi);
+        psiArray.push_back(runningPsi/runningX);
     }
     /*
     std::vector <double>::iterator walk = psiArray.begin();

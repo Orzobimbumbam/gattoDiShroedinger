@@ -29,8 +29,8 @@ HOPot::HOPot(double m, int anglmomentum): m_m(m), m_anglmomentum(anglmomentum){}
 double HOPot::potential(double x) const
 {
     double angularPart = 0;
-    //if (x != 0)
-      //  angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
+    if (x != 0)
+        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
     
     const double c =(m_m*Parameters::hbar_omega*Parameters::hbar_omega)/(Parameters::hbarc*Parameters::hbarc);
     //double c = m_m*Parameters::hbar_omega*Parameters::hbar_omega/(Parameters::hbar*Parameters::hbar);

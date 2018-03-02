@@ -37,25 +37,24 @@ double eigenvalue2=1.36256 ;
 double error=10e-8;*/
 
 // Runge-Kutta parameters
-
-const double x_in = -10*Rn;
+//const double x_in = -10*Rn;
+const double x_in = 10e-5;
 const double x_fin = 10*Rn;
-const double psi0= -0.0001;
+const double psi0= 0.001;
 //const double Psi_0=;
-const double psiPrime0 = 0;
+const double psiPrime0 = 1;
 
 //unsigned long N_step=10;
 
 // Other parameters
 //const unsigned int energyLevel = 1;
 //const int angularMomentum = 2;
-    const double PI = 4*atan(1);
+const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc= 197.3269788;					// [MeV*fm]
 //const double x_min=0;								// Integration
 //const double x_max=3*Rn;							// Interval
-    
-    const double hbar_omega=10;							// [MeV]
+const double hbar_omega=10;							// [MeV]
 
 }
 
