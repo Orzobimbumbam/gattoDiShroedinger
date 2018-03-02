@@ -48,8 +48,9 @@ int main(int argc, const char * argv[]) {
 
      while (mass_num > 0)
 	{
-    	int quantN=orbitals[i][0];
-		int quantL=orbitals[i][1];
+    	unsigned int int quantNr=orbitals[i][0];
+		unsigned int quantL=orbitals[i][1];
+		unsigned int quantN = 2*(quantNr - 1) + quantL;
 		HOPot pot (Parameters::mn, Parameters::hbar_omega, quantL);
 		Schroddy Sfunc (pot, H);
 		GenericEigenvalues GenEig(pot, quantN);
@@ -68,8 +69,8 @@ int main(int argc, const char * argv[]) {
 		std::cout << mass_num << std::endl;
 	}*/
 
-    unsigned int nr=5;
-    int l_mom=2;
+    unsigned int nr=1;
+    int l_mom=1;
     unsigned int n = 2*(nr-1) + l_mom;
 
 	HOPot pot (Parameters::mn, l_mom);
