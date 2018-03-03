@@ -9,11 +9,15 @@ class InitialPot
 {
 public:
     virtual double potential(double x) const = 0;
+    virtual void setL(unsigned int l) = 0;
     virtual ~InitialPot();
 
     virtual InitialPot* clone() const = 0; //virtual constructor
-
-private:
+    
+protected:
+    const double m_m;
+    unsigned int m_anglmomentum;
+    InitialPot(double m, unsigned int l);
 
 };
 
@@ -25,8 +29,9 @@ class WSaxPot: public InitialPot //derived class
 {
 
 public:
-    WSaxPot(double V0, double Rn, double a0);
+    WSaxPot(double V0, double Rn, double a0, double m, unsigned int l);
     double potential(double x) const override;
+    virtual void setL(unsigned int l) override;
 
     InitialPot* clone() const override;
 
@@ -45,15 +50,16 @@ class HOPot: public InitialPot //derived class
 {
 public:
 
-    HOPot(double m, int anglmomentum);
+    HOPot(double m, unsigned int l);
     double potential(double x) const override;
+    virtual void setL(unsigned int l) override;
 
     //double getOmega() const;
     InitialPot* clone() const override;
 
 private:
     HOPot(); //same as before
-    const double m_m, m_anglmomentum;
+    const double m_m;
 };
 
 /*=====================================================================
@@ -79,7 +85,7 @@ private:
 /*======================================================================
  * Kohn-Sham potential class
  *====================================================================*/
-
+/*
 class potOut: public InitialPot
 {
 public:
@@ -90,7 +96,7 @@ public:
 
 private:
 	double m_potKS;
-};
+};*/
 
 
 

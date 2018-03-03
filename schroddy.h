@@ -59,6 +59,7 @@ public:
     
     double getH() const {return m_h;}
     void setH(double H) {m_h = H;}
+    InitialPot* getInitialPotPtr() const {return m_pot;};
 
     double solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray ) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
 

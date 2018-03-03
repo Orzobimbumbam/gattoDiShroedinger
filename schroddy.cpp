@@ -62,13 +62,27 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
     if (nState%2 == 0)
         parityFlag = -1;*/
     
+    unsigned int lState = m_lState;
+    
+    while (true)
+    {
+        if (lState <= nState)
+            break;
+        if (lState > nState)
+            --lState;
+        //if (lState < nState)
+          //  ++lState;
+    }
+    
+    m_sh.getInitialPotPtr() -> setL(lState);
+    
     std::vector <double> psiArray;
     unsigned int nodes = 0;
     while (true)
     {
         
-        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(m_lState),
-                                          psiPrime0(m_lState), E2 , psiArray);
+        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+                                          psiPrime0(lState), E2 , psiArray);
         
         nodes = 0;
         for (unsigned long i = 0; i < psiArray.size()-1; ++i)
@@ -88,8 +102,8 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
     
     while (std::abs(E2 - E1) > error)
     {
-        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(m_lState),
-                                          psiPrime0(m_lState), midE , psiArray);
+        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+                                          psiPrime0(lState), midE , psiArray);
         
         if (parityFlag*s > 0)
             E1 = midE;
