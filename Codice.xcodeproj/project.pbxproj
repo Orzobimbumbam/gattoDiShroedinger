@@ -12,6 +12,14 @@
 		D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
 		D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
 		D3DBD28A2049CABD002BD241 /* parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD2892049CABD002BD241 /* parameters.cpp */; };
+		D3DBD292204B6B26002BD241 /* UTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD291204B6B26002BD241 /* UTests.cpp */; };
+		D3DBD298204B705B002BD241 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
+		D3DBD299204B705B002BD241 /* initpot.h in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FB200FF6CE00F1E661 /* initpot.h */; };
+		D3DBD29A204B705B002BD241 /* parameters.h in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FD200FF6CE00F1E661 /* parameters.h */; };
+		D3DBD29B204B705B002BD241 /* parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD2892049CABD002BD241 /* parameters.cpp */; };
+		D3DBD29C204B705B002BD241 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
+		D3DBD29D204B705B002BD241 /* schroddy.h in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FF200FF6CE00F1E661 /* schroddy.h */; };
+		D3DBD29E204B7065002BD241 /* Includes.h in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD297204B6F1B002BD241 /* Includes.h */; };
 		D3E9F77D20210BB400DAAAB7 /* empidensity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77820210BB400DAAAB7 /* empidensity.cpp */; };
 		D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */; };
 		D3E9F78120210BD300DAAAB7 /* NLSolverClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77F20210BD300DAAAB7 /* NLSolverClass.cpp */; };
@@ -19,6 +27,15 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		D3C601EC200FF6A900F1E661 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		D3DBD28D204B6B26002BD241 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -40,6 +57,9 @@
 		D3C601FE200FF6CE00F1E661 /* schroddy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = schroddy.cpp; sourceTree = "<group>"; };
 		D3C601FF200FF6CE00F1E661 /* schroddy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = schroddy.h; sourceTree = "<group>"; };
 		D3DBD2892049CABD002BD241 /* parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameters.cpp; sourceTree = "<group>"; };
+		D3DBD28F204B6B26002BD241 /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3DBD291204B6B26002BD241 /* UTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UTests.cpp; sourceTree = "<group>"; };
+		D3DBD297204B6F1B002BD241 /* Includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Includes.h; sourceTree = "<group>"; };
 		D3E9F77820210BB400DAAAB7 /* empidensity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = empidensity.cpp; sourceTree = "<group>"; };
 		D3E9F77920210BB400DAAAB7 /* empidensity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = empidensity.h; sourceTree = "<group>"; };
 		D3E9F77A20210BB400DAAAB7 /* Includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Includes.h; sourceTree = "<group>"; };
@@ -51,6 +71,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		D3C601EB200FF6A900F1E661 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3DBD28C204B6B26002BD241 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -79,6 +106,7 @@
 				D3C601FE200FF6CE00F1E661 /* schroddy.cpp */,
 				D3C601FF200FF6CE00F1E661 /* schroddy.h */,
 				D3C601F0200FF6AB00F1E661 /* Codice */,
+				D3DBD290204B6B26002BD241 /* UnitTests */,
 				D3C601EF200FF6AB00F1E661 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				D3C601EE200FF6AB00F1E661 /* Codice */,
+				D3DBD28F204B6B26002BD241 /* UnitTests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,9 +123,18 @@
 		D3C601F0200FF6AB00F1E661 /* Codice */ = {
 			isa = PBXGroup;
 			children = (
+				D3DBD297204B6F1B002BD241 /* Includes.h */,
 				D3C601F1200FF6AB00F1E661 /* main.cpp */,
 			);
 			path = Codice;
+			sourceTree = "<group>";
+		};
+		D3DBD290204B6B26002BD241 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				D3DBD291204B6B26002BD241 /* UTests.cpp */,
+			);
+			path = UnitTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +157,23 @@
 			productReference = D3C601EE200FF6AB00F1E661 /* Codice */;
 			productType = "com.apple.product-type.tool";
 		};
+		D3DBD28E204B6B26002BD241 /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3DBD293204B6B26002BD241 /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				D3DBD28B204B6B26002BD241 /* Sources */,
+				D3DBD28C204B6B26002BD241 /* Frameworks */,
+				D3DBD28D204B6B26002BD241 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = D3DBD28F204B6B26002BD241 /* UnitTests */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -129,6 +184,10 @@
 				ORGANIZATIONNAME = "Alberto Campi";
 				TargetAttributes = {
 					D3C601ED200FF6A900F1E661 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					D3DBD28E204B6B26002BD241 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 					};
@@ -147,6 +206,7 @@
 			projectRoot = "";
 			targets = (
 				D3C601ED200FF6A900F1E661 /* Codice */,
+				D3DBD28E204B6B26002BD241 /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -164,6 +224,21 @@
 				D3C60200200FF6CE00F1E661 /* functions.cpp in Sources */,
 				D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */,
 				D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3DBD28B204B6B26002BD241 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3DBD29E204B7065002BD241 /* Includes.h in Sources */,
+				D3DBD298204B705B002BD241 /* initpot.cpp in Sources */,
+				D3DBD299204B705B002BD241 /* initpot.h in Sources */,
+				D3DBD29A204B705B002BD241 /* parameters.h in Sources */,
+				D3DBD29B204B705B002BD241 /* parameters.cpp in Sources */,
+				D3DBD29C204B705B002BD241 /* schroddy.cpp in Sources */,
+				D3DBD29D204B705B002BD241 /* schroddy.h in Sources */,
+				D3DBD292204B6B26002BD241 /* UTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +350,24 @@
 			};
 			name = Release;
 		};
+		D3DBD294204B6B26002BD241 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/boost_1_62_0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D3DBD295204B6B26002BD241 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/boost_1_62_0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -295,6 +388,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D3DBD293204B6B26002BD241 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3DBD294204B6B26002BD241 /* Debug */,
+				D3DBD295204B6B26002BD241 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

@@ -79,8 +79,8 @@ int main(int argc, const char * argv[]) {
      std::cout << mass_num << std::endl;
      }*/
     
-    unsigned int k = 0; //same formula as yours, just keep this even
-    unsigned int l_mom=3;
+    unsigned int k = 1; //same formula as yours, just keep this even
+    unsigned int l_mom=0;
     unsigned int n = 2*k + l_mom;
     
     HOPot pot (Parameters::mn, l_mom);

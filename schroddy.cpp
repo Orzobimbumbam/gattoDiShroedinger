@@ -63,18 +63,19 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
         parityFlag = -1;*/
     
     unsigned int lState = m_lState;
-    
+    /*
     while (true)
     {
+        
         if (lState <= nState)
             break;
         if (lState > nState)
             --lState;
         //if (lState < nState)
           //  ++lState;
-    }
+    }*/
     
-    m_sh.getInitialPotPtr() -> setL(lState);
+    //m_sh.getInitialPotPtr() -> setL(lState);
     
     std::vector <double> psiArray;
     unsigned int nodes = 0;
@@ -120,11 +121,17 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
     double E1 = TrialEigenvalues::getEigenval1();
     
-    for (unsigned int i = 1; i <= m_nState; ++i)
+    for (unsigned int i = 0; i <= m_nState; ++i)
     {
-        E1 = shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
+        for (int j = i % 2 ; j <= i;)
+        {
+            m_sh.getInitialPotPtr() -> setL(j);
+            E1 = shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
+            if (j == m_lState && i == m_nState)
+                break;
+            j = j + 2;
+        }
     }
-    
     return E1;
 
 }
