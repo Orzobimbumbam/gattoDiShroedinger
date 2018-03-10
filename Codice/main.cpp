@@ -79,13 +79,13 @@ int main(int argc, const char * argv[]) {
      std::cout << mass_num << std::endl;
      }*/
     
-    unsigned int k = 1; //same formula as yours, just keep this even
-    unsigned int l_mom=0;
-    unsigned int n = 2*k + l_mom;
+    unsigned int k = 3;
+    unsigned int l_mom = 1;
+    unsigned int n = 2*(k-1) + l_mom; //2*(k-1) + l_mom;
     
     HOPot pot (Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
-    GenericEigenvalues GenEig(Sfunc, n, l_mom);
+    GenericEigenvalues GenEig(Sfunc, k, l_mom); //we MUST look for the radial nodes only as we solve the radial part of S.
     double eig = GenEig.eigenvalue();
     //double eigenfun = Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 14.5, vec );
     //double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, );

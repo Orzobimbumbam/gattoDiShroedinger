@@ -41,7 +41,7 @@ double error=10e-8;*/
 
 // Runge-Kutta parameters
 //const double x_in = -10*Rn;
-const double x_in = 10e-5;
+const double x_in = 1e-12;
 const double x_fin = 10*Rn;
 //const double psi0= 0.001;
     

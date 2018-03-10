@@ -63,19 +63,7 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
         parityFlag = -1;*/
     
     unsigned int lState = m_lState;
-    /*
-    while (true)
-    {
-        
-        if (lState <= nState)
-            break;
-        if (lState > nState)
-            --lState;
-        //if (lState < nState)
-          //  ++lState;
-    }*/
     
-    //m_sh.getInitialPotPtr() -> setL(lState);
     
     std::vector <double> psiArray;
     unsigned int nodes = 0;
@@ -99,17 +87,40 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
         else break;
     }
     
-    double midE = (E1 + E2)/2.;
+    if (nState == 0)
+        return E2;
     
+    int endPointSign = 1;
+    if (*(psiArray.end() -1) < 0)
+        endPointSign = -1;
+    
+    
+    double midE = (E1 + E2)/2.;
     while (std::abs(E2 - E1) > error)
     {
-        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
-                                          psiPrime0(lState), midE , psiArray);
+        //double s1 = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+         //                                  psiPrime0(lState), E1 , psiArray);
+        //double s2 = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+         //                                  psiPrime0(lState), E2 , psiArray);
+
         
-        if (parityFlag*s > 0)
-            E1 = midE;
+        //if (s1*s2 < 0)
+        //{
+        
+            double sMid = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+                                                 psiPrime0(lState), midE , psiArray);
+            
+            if (/*s2*/endPointSign*sMid > 0)
+                E2 = midE;
+            else /*if (s1*sMid < 0)*/
+                E1 = midE;
+        //}
+        /*
         else
-            E2 = midE;
+        {
+            midE = E2;
+            break;
+        }*/
         
         midE = (E1 + E2)/2.;
     }
@@ -120,18 +131,9 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
     double E1 = TrialEigenvalues::getEigenval1();
-    
     for (unsigned int i = 0; i <= m_nState; ++i)
-    {
-        for (int j = i % 2 ; j <= i;)
-        {
-            m_sh.getInitialPotPtr() -> setL(j);
-            E1 = shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
-            if (j == m_lState && i == m_nState)
-                break;
-            j = j + 2;
-        }
-    }
+        E1 = shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
+    
     return E1;
 
 }
