@@ -2,9 +2,9 @@
 //double schrodinger (double r, double l, double vks, double u);
 #pragma once
 #include <vector>
+#include <memory>
+#include "initpot.h"
 
-class InitialPot;
-class Schroddy;
 
 /*=======================================================================
  * Shroedinger class + solver
@@ -13,22 +13,21 @@ class Schroddy;
 class Schroddy
 {
 public:
-    Schroddy(const InitialPot& pot/*, double H*/);
+    Schroddy(const InitialPot& pot);
     Schroddy(const InitialPot& pot, double H);
     Schroddy(const Schroddy& sourceSh);
     Schroddy& operator=(const Schroddy& rhsSchroddy);
     
     double getH() const {return m_h;}
     void setH(double H) {m_h = H;}
-    InitialPot* getInitialPotPtr() const {return m_pot;};
+    std::unique_ptr<InitialPot>& getInitialPotPtr() {return m_pot;};
 
-    double solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray ) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
+    double solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
 
-    ~Schroddy();
 
 private:
     Schroddy();
-    InitialPot* m_pot;
+    std::unique_ptr<InitialPot> m_pot;
     mutable double m_h;
 };
 

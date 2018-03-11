@@ -13,6 +13,7 @@
  * Pure virtual class for eigenvalues
  *================================================================*/
 #include "schroddy.h"
+#include <memory>
 
 class Eigenvalues
 {
@@ -20,7 +21,7 @@ public:
     virtual double eigenvalue() const = 0;
     virtual ~Eigenvalues();
     
-    virtual Eigenvalues* clone() const = 0;
+    virtual std::unique_ptr<Eigenvalues> clone() const = 0;
     
 private:
     
@@ -33,18 +34,18 @@ private:
 class HarmonicEigenvalues: public Eigenvalues
 {
 public:
-    HarmonicEigenvalues(unsigned int n, int l);
+    HarmonicEigenvalues(unsigned int nr, int l);
     double eigenvalue() const override;
     //setEnergyLevel(unsigned int n);
     //setAngularMomentum(int l);
     
-    Eigenvalues* clone() const override;
+    std::unique_ptr<Eigenvalues> clone() const override;
     
 private:
     HarmonicEigenvalues();
     
     //if you want to be able to change quantum numbers within same object, implement set methods and remove const keyword
-    const unsigned int m_n;
+    const unsigned int m_nr;
     const int m_l;
 };
 
@@ -73,7 +74,7 @@ public:
     GenericEigenvalues (const Schroddy& sh, unsigned int nState, unsigned int lState);
     double eigenvalue() const override;
     
-    Eigenvalues* clone() const override;
+    std::unique_ptr<Eigenvalues> clone() const override;
     
 private:
     GenericEigenvalues();

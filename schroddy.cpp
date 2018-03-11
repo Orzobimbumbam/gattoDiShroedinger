@@ -30,16 +30,11 @@ Schroddy& Schroddy::operator=(const Schroddy& rhsSchroddy) //copy assignment
 {
     if (&rhsSchroddy != this)
     {
-        delete m_pot;
+        //no need to release pointer as it is done automatically
         m_pot = rhsSchroddy.m_pot -> clone();
         m_h = rhsSchroddy.m_h;
     }
     return *this;
-}
-
-Schroddy::~Schroddy()
-{
-    delete m_pot;
 }
 
 double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const
@@ -47,7 +42,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     psiArray.clear();
     const unsigned long NSteps = std::abs(x1 - x0)/m_h;
     const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
-    const double eigenvalue = E;//m_eigenval -> eigenvalue();
+    const double eigenvalue = E;
     //std::ofstream file("RKout.txt");
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
@@ -108,15 +103,17 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
 
     //work out normalizatiion constant
-    double psiSquared = 0;// normalPsi=0;
-    for (auto it = psiArray.begin(); it != psiArray.end(); ++it)
-        psiSquared += (*it)*(*it); //derefence iterator at array's element and square (brackets are needed!)
+    double psiSquared = 0;
+    for (auto& it : psiArray)
+        psiSquared += (it)*(it);
 
     const double scalar = psiSquared*m_h;
+    
+    //normalize radial eigenfunction element-wise -> [u(r)/r]*scalar^-1
     for (auto it = psiArray.begin(), itt = x.begin(); it != psiArray.end() && itt != x.end(); ++it, ++itt)
         *it = *it/(*itt*sqrt(scalar));
 
-    //return normalized eigenfunction (on interval [x0, x1]) and job done!
+    //return terminal value of normalized radial eigenfunction (on interval [x0, x1]) and job done!
     const double normalPsi = runningPsi/sqrt(scalar);
     return normalPsi;
 }

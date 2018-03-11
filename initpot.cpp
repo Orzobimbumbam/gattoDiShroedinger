@@ -24,9 +24,9 @@ void WSaxPot::setL(unsigned int l)
     m_anglmomentum = l;
 }
 
-InitialPot* WSaxPot::clone() const
+std::unique_ptr<InitialPot> WSaxPot::clone() const
 {
-    return new WSaxPot(*this); //return a derived class object through a base class pointer
+    return std::make_unique<WSaxPot> (*this); //return a derived class object through a base class pointer
 }
 
 
@@ -59,9 +59,9 @@ double HOPot::getOmega() const
     return m_omega;
 }*/
 
-InitialPot* HOPot::clone() const
+std::unique_ptr<InitialPot> HOPot::clone() const
 {
-    return new HOPot(*this); //return a derived class object through a base class pointer
+    return std::make_unique<HOPot> (*this); //return a derived class object through a base class pointer
 }
 
 //=====================================================================
