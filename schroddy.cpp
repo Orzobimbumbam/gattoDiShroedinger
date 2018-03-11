@@ -104,7 +104,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     //work out normalizatiion constant
     double psiSquared = 0;
-    for (auto& it : psiArray)
+    for (const auto& it : psiArray)
         psiSquared += (it)*(it);
 
     const double scalar = psiSquared*m_h;
