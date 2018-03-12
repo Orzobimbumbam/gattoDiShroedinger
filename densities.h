@@ -1,5 +1,6 @@
-
 #pragma once
+#include <memory>
+#include <vector>
 
 class Densities
 {
@@ -7,7 +8,7 @@ public:
     virtual double density() const = 0;
     virtual ~Densities();
 
-    virtual Densities* clone() const = 0;
+    virtual std::unique_ptr<Densities> clone() const = 0;
 
 private:
 
@@ -17,16 +18,19 @@ private:
 class Theoreticaldensity: public Densities
 {
 public:
-	Theoreticaldensity(double eigenfunc, int degen, double x);
-    double density() const override;
+	Theoreticaldensity(char namefile);
+    double density(double x0, double x1) const override;
+
+    double getH() const {return m_h;}
+    void setH(double H) {m_h = H;}
 
     Densities* clone() const override;
 
 private:
     Theoreticaldensity();
-    const double m_x;
-    double m_eigenfunc;
-    double m_degen;
+    char m_namefile;
+    mutable double m_h;
+
 };
 
 

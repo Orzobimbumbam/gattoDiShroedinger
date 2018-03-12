@@ -7,14 +7,15 @@ Eigenvalues::~Eigenvalues() {}
  * HO Eigenvalues generator
  *=====================================================================*/
 
-HarmonicEigenvalues::HarmonicEigenvalues(unsigned int n, int l): m_n(n), m_l(l) {}
+HarmonicEigenvalues::HarmonicEigenvalues(unsigned int nr, int l): m_nr(nr), m_l(l) {}
 double HarmonicEigenvalues::eigenvalue() const
 {
-    return Parameters::hbar_omega*(2*(m_n-1)+m_l+(3/2));
+    return Parameters::hbar_omega*(2*(m_nr-1)+m_l+(3/2));
 }
-Eigenvalues* HarmonicEigenvalues::clone() const
+
+std::unique_ptr<Eigenvalues> HarmonicEigenvalues::clone() const
 {
-    return new HarmonicEigenvalues(*this);
+    return std::make_unique<HarmonicEigenvalues>(*this);
 }
 
 
@@ -126,13 +127,7 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
 
 }
 
-
-
-Eigenvalues* GenericEigenvalues::clone() const
+std::unique_ptr<Eigenvalues> GenericEigenvalues::clone() const
 {
-    return new GenericEigenvalues(*this);
+    return std::make_unique<GenericEigenvalues>(*this);
 }
-
-
-
-

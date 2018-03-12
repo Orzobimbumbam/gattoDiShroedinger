@@ -1,8 +1,7 @@
-# include "initpot.h"
 # include "parameters.h"
-# include "schroddy.h"
-# include "kohn-sham.h"
-# include <cmath>
+# include "densities.h"
+# include <fstream>
+# include <vector>
 
 
 /*============================================
@@ -10,17 +9,52 @@
  *==========================================*/
 Densities::~Densities() {}
 
-Theoreticaldensity::Theoreticaldensity(double eigenfunc, int degen, double x): m_eigenfunc(eigenfunc), m_degen(degen), m_x(x) {}
+Theoreticaldensity::Theoreticaldensity(char namefile): m_namefile(namefile) {}
 
-double Theoreticaldensity::density() const
+double Theoreticaldensity::density(double x0, double x1) const
 {
+	//load eigenfunctions and nucleons number for level from file
+	std::vector <std::vector <int> > efunctions ();
+	std::vector <int> data (4);
+	std::fstream in ("m_namefile", std::ios::in);
 
-    return (1/(4*Parameters::PI*(m_x*m_x)))*m_degen*(m_eigenfunc*m_eigenfunc);
+	for (int i = 0; i < in.eof(); ++i)
+	{
+		for (int j=0; j<4; ++j)
+		{
+			int temp;
+			in >> temp;
+			efunctions[i].push_back(temp);
+		}
+	}
+
+	//calculate the theoretical density
+	int deg = 0;
+	double efunc = 0, thdensity = 0, radiusx = x0;
+	std::vector<double> thDensArray();
+	std::vector<double> xArray(radiusx);
+	const unsigned long NSteps = std::abs(x1 - x0)/m_h;
+
+	for (int i = 0; i < efunctions.size(); ++i)
+	{
+		for (unsigned long r =0; r < NSteps; ++r)
+		{
+			deg = efunctions[i][3];
+			efunc = efunctions[i][4];
+			thdensity = (1/(4*Parameters::PI*(radiusx*radiusx)))*deg*(efunc*efunc);
+			thDensArray.push_back(thdensity);
+			xArray.push_back(radiusx);
+			radiusx += m_h;
+		}
+	}
+
+
+    return ;
 }
 
-Densities* Theoreticaldensity::clone() const
+std::unique_ptr<Densities> Theoreticaldensity::clone() const
 {
-    return new Theoreticaldensity(*this);
+    return std::make_unique<Theoreticaldensity> (*this); //return a derived class object through a base class pointer
 }
 
 

@@ -46,9 +46,10 @@ int main(int argc, const char * argv[]) {
 	int degen = 0;
 	unsigned int nuclNumb = 0;
 	std::vector <double> psiArray;
-    std::vector<double> evalArray;
+    /*std::vector<double> evalArray;
     std::vector<double> efuncArray;
-    std::vector<int> nuclnumbArray;
+    std::vector<int> nuclnumbArray;*/
+    std::ofstream file("eigenfunc.txt");
 
      while (massNumb > 0)
 	{
@@ -69,15 +70,25 @@ int main(int argc, const char * argv[]) {
 			nuclNumb = massNumb + degen; // nucleons number on last orbital in not filled case
 		else nuclNumb = degen; // nucleons number in filled orbital
 
-		evalArray.push_back(eigval);
+	    std::vector<double>::iterator walk1 = psiArray.begin();
+	    while (walk1 != psiArray.end())
+
+	    {
+	    	file << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
+	    	walk1++;
+	    }
+
+		/*evalArray.push_back(eigval);
 		efuncArray.push_back(eigfunc);
-		nuclnumbArray.push_back(nuclNumb);
+		nuclnumbArray.push_back(nuclNumb);*/
 
 		std::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << eigfunc << std::endl;
 
 		i++;
 		//std::cout << massNumb << std::endl;
 	}
+
+     file.close();
 
 /*=========================================================================================
  * STEP-2
