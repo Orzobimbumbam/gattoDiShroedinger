@@ -14,7 +14,7 @@ Theoreticaldensity::Theoreticaldensity(char namefile): m_namefile(namefile) {}
 double Theoreticaldensity::density(double x0, double x1) const
 {
 	//load eigenfunctions and nucleons number for level from file
-	std::vector <std::vector <int> > efunctions ();
+	std::vector <std::vector <int> > efunctions;
 	std::vector <int> data (4);
 	std::fstream in ("m_namefile", std::ios::in);
 
@@ -31,7 +31,7 @@ double Theoreticaldensity::density(double x0, double x1) const
 	//calculate the theoretical density
 	int deg = 0;
 	double efunc = 0, thdensity = 0, radiusx = x0;
-	std::vector<double> thDensArray();
+	std::vector<double> thDensArray;
 	std::vector<double> xArray(radiusx);
 	const unsigned long NSteps = std::abs(x1 - x0)/m_h;
 
