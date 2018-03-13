@@ -95,12 +95,21 @@ int main(int argc, const char * argv[]) {
  * Calculate the theoretical density
  *=======================================================================================*/
 
+     std::ofstream file2("density.txt");
+     std::vector<double> thDensArray;
+     std::vector<double> xArray;
+     Theoreticaldensity densy ("eigenfunc.txt");
+     double den = densy.density(Parameters::x_in, Parameters::x_fin, thDensArray, xArray);
 
+     std::vector<double>::iterator walk2 = thDensArray.begin();
+     std::vector<double>::iterator walk3 = xArray.begin();
+     while (walk2 != thDensArray.end() && walk3 != xArray.end())
+     {
+     	file2 << *walk3 << "\t"<< *walk2 << std::endl;
+     	walk2++, walk3++;
+     }
 
-
-
-
-
+     file2.close();
 
 
 /*======================================================================================

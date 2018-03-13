@@ -9,9 +9,9 @@
  *==========================================*/
 Densities::~Densities() {}
 
-Theoreticaldensity::Theoreticaldensity(char namefile): m_namefile(namefile) {}
+Theoreticaldensity::Theoreticaldensity(char namefile): m_namefile(namefile), m_h(0.001) {}
 
-double Theoreticaldensity::density(double x0, double x1) const
+double Theoreticaldensity::density(double x0, double x1, std::vector<double> thDensArray, std::vector<double> xArray) const
 {
 	//load eigenfunctions and nucleons number for level from file
 	std::vector <std::vector <int> > efunctions;
@@ -31,13 +31,11 @@ double Theoreticaldensity::density(double x0, double x1) const
 	//calculate the theoretical density
 	int deg = 0;
 	double efunc = 0, thdensity = 0, radiusx = x0;
-	std::vector<double> thDensArray;
-	std::vector<double> xArray(radiusx);
 	const unsigned long NSteps = std::abs(x1 - x0)/m_h;
 
 	for (int i = 0; i < efunctions.size(); ++i)
 	{
-		for (unsigned long r =0; r < NSteps; ++r)
+		for (unsigned long r = 0; r < NSteps; ++r)
 		{
 			deg = efunctions[i][3];
 			efunc = efunctions[i][4];
@@ -48,8 +46,7 @@ double Theoreticaldensity::density(double x0, double x1) const
 		}
 	}
 
-
-    return ;
+    return thdensity;
 }
 
 std::unique_ptr<Densities> Theoreticaldensity::clone() const

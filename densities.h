@@ -19,12 +19,12 @@ class Theoreticaldensity: public Densities
 {
 public:
 	Theoreticaldensity(char namefile);
-    double density(double x0, double x1) const override;
+    double density(double x0, double x1, std::vector<double> thDensArray, std::vector<double> xArray) const override;
 
     double getH() const {return m_h;}
     void setH(double H) {m_h = H;}
 
-    Densities* clone() const override;
+    virtual std::unique_ptr<Densities> clone() const override;
 
 private:
     Theoreticaldensity();
