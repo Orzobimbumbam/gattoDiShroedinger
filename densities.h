@@ -18,7 +18,7 @@ private:
 class Theoreticaldensity: public Densities
 {
 public:
-	Theoreticaldensity(char namefile);
+	Theoreticaldensity(char filename);
     double density(double x0, double x1, std::vector<double> thDensArray, std::vector<double> xArray) const override;
 
     double getH() const {return m_h;}
@@ -28,7 +28,7 @@ public:
 
 private:
     Theoreticaldensity();
-    char m_namefile;
+    char m_filename;
     mutable double m_h;
 
 };

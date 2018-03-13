@@ -9,14 +9,14 @@
  *==========================================*/
 Densities::~Densities() {}
 
-Theoreticaldensity::Theoreticaldensity(char namefile): m_namefile(namefile), m_h(0.001) {}
+Theoreticaldensity::Theoreticaldensity(char filename): m_filename(filename), m_h(0.001) {}
 
 double Theoreticaldensity::density(double x0, double x1, std::vector<double> thDensArray, std::vector<double> xArray) const
 {
 	//load eigenfunctions and nucleons number for level from file
 	std::vector <std::vector <int> > efunctions;
 	std::vector <int> data (4);
-	std::fstream in ("m_namefile", std::ios::in);
+	std::fstream in ("m_filename", std::ios::in);
 
 	for (int i = 0; i < in.eof(); ++i)
 	{
