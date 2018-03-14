@@ -1,8 +1,20 @@
 #pragma once
 #include <memory>
+#include <string>
 #include <vector>
 
-class Densities
+class Theoreticaldensity
+{
+public:
+	Theoreticaldensity();
+    double density(double psi, int degen, double x) const;
+
+private:
+    //Theoreticaldensity();
+};
+
+
+/*class Densities
 {
 public:
     virtual double density() const = 0;
@@ -31,8 +43,5 @@ private:
     char m_filename;
     mutable double m_h;
 
-};
-
-
-
+};*/
 

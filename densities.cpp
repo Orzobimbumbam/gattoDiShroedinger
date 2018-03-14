@@ -7,7 +7,19 @@
 /*============================================
  * Theoretical density
  *==========================================*/
-Densities::~Densities() {}
+//Theoreticaldensity::~Theoreticaldensity() {}
+
+Theoreticaldensity::Theoreticaldensity() {}
+
+double Theoreticaldensity::density(double psi, int degen, double x) const
+{
+	double thdensity = (1/(4*Parameters::PI*(x*x)))*degen*(psi*psi);
+	return thdensity;
+}
+
+
+
+/*Densities::~Densities() {}
 
 Theoreticaldensity::Theoreticaldensity(char filename): m_filename(filename), m_h(0.001) {}
 
@@ -52,7 +64,4 @@ double Theoreticaldensity::density(double x0, double x1, std::vector<double> thD
 std::unique_ptr<Densities> Theoreticaldensity::clone() const
 {
     return std::make_unique<Theoreticaldensity> (*this); //return a derived class object through a base class pointer
-}
-
-
-
+}*/

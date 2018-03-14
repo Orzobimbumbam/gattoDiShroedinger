@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 /*#include <jsoncpp/json/json.h>
 #include <jsoncpp/json/reader.h>
 #include <jsoncpp/json/writer.h>
@@ -20,13 +21,13 @@ int main(int argc, const char * argv[]) {
 
 	//Load the matrix with quantum numbers of each state from "orbitals.txt"
 	std::vector <std::vector <int> > orbitals (36);// std::vector <int> (3,0));
-	std::vector <int> state (2);
+	//std::vector <int> state (2);
 	//std::vector <std::vector <int> > orbitals;
-	std::fstream in ("orbitals.txt", std::ios::in);
+	//std::fstream in ("orbitals.txt", std::ios::in);
 
-	for (int i=0; i<36; ++i)
+	for (int i = 0; i < 36; ++i)
 	{
-		for (int j=0; j<2; ++j)
+		for (int j = 0; j < 2; ++j)
 		{
 			int temp;
 			in >> temp;
@@ -55,7 +56,7 @@ int main(int argc, const char * argv[]) {
 	{
     	unsigned int quantNr = orbitals[i][0];
 		unsigned int quantL = orbitals[i][1];
-		//unsigned int quantN = 2*(quantNr - 1) + quantL;
+		unsigned int quantN = 2*(quantNr - 1) + quantL;
 		HOPot pot (Parameters::mn, quantL);
 		Schroddy Sfunc (pot, H);
 		GenericEigenvalues GenEig(Sfunc, quantNr, quantL);
@@ -74,7 +75,7 @@ int main(int argc, const char * argv[]) {
 	    while (walk1 != psiArray.end())
 
 	    {
-	    	file << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
+	    	file << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
 	    	walk1++;
 	    }
 
@@ -89,27 +90,83 @@ int main(int argc, const char * argv[]) {
 	}
 
      file.close();
+     in.clear();
 
 /*=========================================================================================
  * STEP-2
  * Calculate the theoretical density
  *=======================================================================================*/
 
-     std::ofstream file2("density.txt");
+ 	 std::vector <std::vector <double> > efunctions (63500);
+ 	 //std::vector <int> data (4);
+ 	 //std::fstream in ("eigenfunc.txt", std::ios::in);
+ 	 //in.open ("eigenfunc.txt");
+ 	std::fstream in ("eigenfunc.txt", std::ios::in);
+
+ 	 for (int i = 0; i < 63500; ++i)
+ 	 {
+ 		 for (int j = 0; j < 2; ++j)
+ 		 {
+ 			 double temp;
+ 			 in >> temp;
+ 			 efunctions[i].push_back(temp);
+ 		 }
+ 		 //if (in.eof()) break;
+ 	 }
+
+ 	/*for (int i=0; i<63500; ++i)
+ 			{
+ 				for (int j=0; j<2; ++j)
+ 					std::cout << efunctions[i][j];
+ 					std::cout << std::endl;
+ 			}*/
+
+
      std::vector<double> thDensArray;
      std::vector<double> xArray;
-     Theoreticaldensity densy ("eigenfunc.txt");
-     double den = densy.density(Parameters::x_in, Parameters::x_fin, thDensArray, xArray);
+     std::ofstream file2("density.csv");
+ 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
+
+	int deg = 0;
+	double efunc = 0, radiusx = Parameters::x_in;
+	for (unsigned long i = 0; i < NSteps + 1; ++i)
+	{
+		deg = efunctions[i][0];
+		efunc = efunctions[i][1];
+		Theoreticaldensity densy;
+		double thdensity = densy.density(efunc,deg,radiusx);
+		thDensArray.push_back(thdensity);
+		xArray.push_back(radiusx);
+		radiusx += H;
+	}
 
      std::vector<double>::iterator walk2 = thDensArray.begin();
      std::vector<double>::iterator walk3 = xArray.begin();
      while (walk2 != thDensArray.end() && walk3 != xArray.end())
      {
-     	file2 << *walk3 << "\t"<< *walk2 << std::endl;
+     	file2 << *walk3 << ","<< *walk2 << std::endl;
      	walk2++, walk3++;
      }
 
      file2.close();
+
+/*=========================================================================================
+ * STEP-3
+ * Calculate empirical densities from MC simulations or scattering
+ *=======================================================================================*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*======================================================================================
