@@ -11,10 +11,17 @@
 
 Theoreticaldensity::Theoreticaldensity() {}
 
-double Theoreticaldensity::density(double psi, int degen, double x) const
+double Theoreticaldensity::density(std::vector<double> psi, std::vector<double> thDensArray, int degen, double step) const
 {
-	double thdensity = (1/(4*Parameters::PI*(x*x)))*degen*(psi*psi);
-	return thdensity;
+	double radiusx = Parameters::x_in;
+	for ( int i = 0; i < psi.size(); ++i)
+	{
+		double thdensity = (1/(4*Parameters::PI*(radiusx*radiusx)))*degen*(psi[i]*psi[i]);
+		thDensArray[i] += thdensity;
+		//thDensArray.push_back(thdensity);
+		radiusx += step;
+	}
+	return radiusx;
 }
 
 

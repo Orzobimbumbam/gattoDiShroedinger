@@ -23,7 +23,7 @@ int main(int argc, const char * argv[]) {
 	std::vector <std::vector <int> > orbitals (36);// std::vector <int> (3,0));
 	//std::vector <int> state (2);
 	//std::vector <std::vector <int> > orbitals;
-	//std::fstream in ("orbitals.txt", std::ios::in);
+	std::fstream in ("orbitals.txt", std::ios::in);
 
 	for (int i = 0; i < 36; ++i)
 	{
@@ -46,14 +46,26 @@ int main(int argc, const char * argv[]) {
 	int i = 0;
 	int degen = 0;
 	unsigned int nuclNumb = 0;
+	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
 	std::vector <double> psiArray;
+	std::vector<double> thdensArray;
     /*std::vector<double> evalArray;
     std::vector<double> efuncArray;
     std::vector<int> nuclnumbArray;*/
     std::ofstream file("eigenfunc.txt");
 
+
+
      while (massNumb > 0)
 	{
+    	if(massNumb == Parameters::A)
+    	{
+    		for (int i = 0; i < NSteps + 1; ++i)
+    		{
+    			thdensArray.push_back(0);
+    		}
+    	}
+
     	unsigned int quantNr = orbitals[i][0];
 		unsigned int quantL = orbitals[i][1];
 		unsigned int quantN = 2*(quantNr - 1) + quantL;
@@ -61,7 +73,7 @@ int main(int argc, const char * argv[]) {
 		Schroddy Sfunc (pot, H);
 		GenericEigenvalues GenEig(Sfunc, quantNr, quantL);
 		double eigval = GenEig.eigenvalue();
-		double eigfunc= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(quantL),
+		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(quantL),
                 psiPrime0(quantL), eigval , psiArray);
 
 		degen = 2*(2*quantL+1); // orbital degeneration
@@ -70,6 +82,11 @@ int main(int argc, const char * argv[]) {
 		if (massNumb < 0)
 			nuclNumb = massNumb + degen; // nucleons number on last orbital in not filled case
 		else nuclNumb = degen; // nucleons number in filled orbital
+
+		// Claculate theoretical density for involved state
+		Theoreticaldensity densy;
+		densy.density(psiArray,thdensArray,nuclNumb,H);
+
 
 	    std::vector<double>::iterator walk1 = psiArray.begin();
 	    while (walk1 != psiArray.end())
@@ -83,25 +100,36 @@ int main(int argc, const char * argv[]) {
 		efuncArray.push_back(eigfunc);
 		nuclnumbArray.push_back(nuclNumb);*/
 
-		std::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << eigfunc << std::endl;
+		//dstd::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << eigfunc << std::endl;
 
 		i++;
 		//std::cout << massNumb << std::endl;
 	}
+     double rad = Parameters::x_in;
+     std::ofstream file2("density.txt");
+     std::vector<double>::iterator walk2 = thdensArray.begin();
+     //std::vector<double>::iterator walk3 = xArray.begin();
+     while (walk2 != thdensArray.end() /*&& walk3 != xArray.end()*/)
+     {
+         file2 << rad << "\t"<< *walk2 << std::endl;
+         walk2++, rad + H;
+     }
+
+     file2.close();
 
      file.close();
-     in.clear();
+     //in.clear();
 
 /*=========================================================================================
  * STEP-2
  * Calculate the theoretical density
  *=======================================================================================*/
 
- 	 std::vector <std::vector <double> > efunctions (63500);
+ 	// std::vector <std::vector <double> > efunctions (63500);
  	 //std::vector <int> data (4);
  	 //std::fstream in ("eigenfunc.txt", std::ios::in);
  	 //in.open ("eigenfunc.txt");
- 	std::fstream in ("eigenfunc.txt", std::ios::in);
+ 	/*std::fstream in ("eigenfunc.txt", std::ios::in);
 
  	 for (int i = 0; i < 63500; ++i)
  	 {
@@ -112,7 +140,7 @@ int main(int argc, const char * argv[]) {
  			 efunctions[i].push_back(temp);
  		 }
  		 //if (in.eof()) break;
- 	 }
+ 	 }*/
 
  	/*for (int i=0; i<63500; ++i)
  			{
@@ -122,7 +150,7 @@ int main(int argc, const char * argv[]) {
  			}*/
 
 
-     std::vector<double> thDensArray;
+    /*std::vector<double> thDensArray;
      std::vector<double> xArray;
      std::ofstream file2("density.csv");
  	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
@@ -148,7 +176,7 @@ int main(int argc, const char * argv[]) {
      	walk2++, walk3++;
      }
 
-     file2.close();
+     file2.close();*/
 
 /*=========================================================================================
  * STEP-3
