@@ -11,7 +11,7 @@
 
 Theoreticaldensity::Theoreticaldensity() {}
 
-double Theoreticaldensity::density(std::vector<double> psi, std::vector<double> thDensArray, int degen, double step) const
+void Theoreticaldensity::density(std::vector<double>& psi, std::vector<double>& thDensArray, int degen, double step) const
 {
 	double radiusx = Parameters::x_in;
 	for ( int i = 0; i < psi.size(); ++i)
@@ -21,7 +21,7 @@ double Theoreticaldensity::density(std::vector<double> psi, std::vector<double> 
 		//thDensArray.push_back(thdensity);
 		radiusx += step;
 	}
-	return radiusx;
+	return void();
 }
 
 

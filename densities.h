@@ -7,7 +7,7 @@ class Theoreticaldensity
 {
 public:
 	Theoreticaldensity();
-    double density(std::vector<double> psi, std::vector<double> thDensArray, int degen, double step) const;
+    void density(std::vector<double>& psi, std::vector<double>& thDensArray, int degen, double step) const;
 
 private:
     //Theoreticaldensity();

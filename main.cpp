@@ -53,6 +53,7 @@ int main(int argc, const char * argv[]) {
     std::vector<double> efuncArray;
     std::vector<int> nuclnumbArray;*/
     std::ofstream file("eigenfunc.txt");
+    std::ofstream file2("density.txt");
 
 
 
@@ -105,78 +106,25 @@ int main(int argc, const char * argv[]) {
 		i++;
 		//std::cout << massNumb << std::endl;
 	}
+
+
      double rad = Parameters::x_in;
-     std::ofstream file2("density.txt");
-     std::vector<double>::iterator walk2 = thdensArray.begin();
-     //std::vector<double>::iterator walk3 = xArray.begin();
-     while (walk2 != thdensArray.end() /*&& walk3 != xArray.end()*/)
+     for (int i = 0; i < thdensArray.size(); ++i)
      {
-         file2 << rad << "\t"<< *walk2 << std::endl;
-         walk2++, rad + H;
+    	 file2 << rad << "\t" << thdensArray[i] << std::endl;
+    	 rad += H;
+
      }
+
+     /*std::vector<double>::iterator walk2 = thdensArray.begin();
+     while (walk2 != thdensArray.end())
+     {
+    	 file2 << rad << "\t"<< *walk2 << std::endl;
+    	 walk2++, rad += H;
+     }*/
 
      file2.close();
-
      file.close();
-     //in.clear();
-
-/*=========================================================================================
- * STEP-2
- * Calculate the theoretical density
- *=======================================================================================*/
-
- 	// std::vector <std::vector <double> > efunctions (63500);
- 	 //std::vector <int> data (4);
- 	 //std::fstream in ("eigenfunc.txt", std::ios::in);
- 	 //in.open ("eigenfunc.txt");
- 	/*std::fstream in ("eigenfunc.txt", std::ios::in);
-
- 	 for (int i = 0; i < 63500; ++i)
- 	 {
- 		 for (int j = 0; j < 2; ++j)
- 		 {
- 			 double temp;
- 			 in >> temp;
- 			 efunctions[i].push_back(temp);
- 		 }
- 		 //if (in.eof()) break;
- 	 }*/
-
- 	/*for (int i=0; i<63500; ++i)
- 			{
- 				for (int j=0; j<2; ++j)
- 					std::cout << efunctions[i][j];
- 					std::cout << std::endl;
- 			}*/
-
-
-    /*std::vector<double> thDensArray;
-     std::vector<double> xArray;
-     std::ofstream file2("density.csv");
- 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
-
-	int deg = 0;
-	double efunc = 0, radiusx = Parameters::x_in;
-	for (unsigned long i = 0; i < NSteps + 1; ++i)
-	{
-		deg = efunctions[i][0];
-		efunc = efunctions[i][1];
-		Theoreticaldensity densy;
-		double thdensity = densy.density(efunc,deg,radiusx);
-		thDensArray.push_back(thdensity);
-		xArray.push_back(radiusx);
-		radiusx += H;
-	}
-
-     std::vector<double>::iterator walk2 = thDensArray.begin();
-     std::vector<double>::iterator walk3 = xArray.begin();
-     while (walk2 != thDensArray.end() && walk3 != xArray.end())
-     {
-     	file2 << *walk3 << ","<< *walk2 << std::endl;
-     	walk2++, walk3++;
-     }
-
-     file2.close();*/
 
 /*=========================================================================================
  * STEP-3
