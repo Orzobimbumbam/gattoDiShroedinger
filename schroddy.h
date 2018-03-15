@@ -25,6 +25,7 @@ public:
 
 private:
     Schroddy();
+    void swap(Schroddy& sourceSh);
     std::unique_ptr<InitialPot> m_pot;
     mutable double m_h;
 };

@@ -80,22 +80,46 @@ int main(int argc, const char * argv[]) {
      }*/
     
     unsigned int k = 3;
-    unsigned int l_mom = 1;
+    unsigned int l_mom = 0;
     unsigned int n = 2*(k-1) + l_mom; //2*(k-1) + l_mom;
     
     HOPot pot (Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     GenericEigenvalues GenEig(Sfunc, k, l_mom); //we MUST look for the radial nodes only as we solve the radial part of S.
     double eig = GenEig.eigenvalue();
-    //double eigenfun = Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, 14.5, vec );
-    //double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, );
+    std::vector<double> psiArray;
+    double s = Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(l_mom),
+                                       psiPrime0(l_mom), eig , psiArray);
+    
     
     //std::cout << eigenfun << std::endl;
     std::cout << eig << std::endl;
     
-    
-    
-    
+    /*
+    std::ofstream fOut;
+    fOut.open("Outputs/eigenfunctions.txt", std::ios_base::out | std::ios_base::app);
+    for (unsigned int i = 1; i <= 3; ++i)
+    {
+        for (unsigned int j = 0; j <= i; ++j)
+        {
+            HOPot pot_ (Parameters::mn, j);
+            Schroddy Sfunc_ (pot_, H);
+            GenericEigenvalues GenEig_(Sfunc_, i, j);
+            double eig_ = GenEig_.eigenvalue();
+            std::vector<double> psiArray_;
+            double s_ = Sfunc_.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(j),
+                                               psiPrime0(j), eig_ , psiArray_);
+            
+            for (const auto& v : psiArray_)
+            {
+                
+                fOut << v << ";";
+                
+            }
+            
+            fOut << std::endl;
+        }
+    }
     
     
     
@@ -107,87 +131,7 @@ int main(int argc, const char * argv[]) {
     
     
     
-    
-    
-    
-    
-    
-    
-    /*======================================================================================
-     * FANCULO IL JSON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     *====================================================================================*/
-    
-    /*Json::Value root;
-     Json::Reader reader;
-     std::ifstream ifs ("orbitals3.json");    // this read
-     ifs >> root;							 // the entire file
-     //Json::Value obj;
-     //reader.parse(ifs, obj);
-     
-     const Json::Value array = root["orbitals"]["levels"];
-     //const Json::Value& orbital = obj["orbital"];
-     //const Json::Value& properties = obj["properties"];
-     
-     //std::cout << "orbital " << obj["orbital"].asString() << std::endl;
-     
-     
-     for (int i=0; i<array.size(); ++i)
-     {
-    	std::cout << array[i].asInt() << std::endl;
-     }
-     for (int i=0; i<orbital.size(); ++i)
-     {
-    	std::cout << "orbitals " << orbital[i]["orbital"].asString() << std::endl;
-     }
-     */
-    //const double omega = 2*Parameters::PI*Parameters::f;
-    /*
-     for ( int i=0; i<=Parameters::angularMomentum; ++i)
-     {
-     int l_mom=i;
-     HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
-     GenericEigenvalues GenEig(pot);
-     double eig = GenEig.eigenvalue();
-     Schroddy Sfunc (pot);
-     double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, N_step);
-     
-     std::cout << "l value: "<< i << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
-     //std::cout << "l value: "<< i << "Bisected Eigenvalue: " << eig << std::endl;
-     
-     }*/
-    
-    /*========================================================================================
-     * TEST to find the correct eigenvalues range for shooting method
-     * Set two eigenvalues E, Emax and see if there is a change of sign in eigenfunctions
-     *======================================================================================*/
-    /*double Emax=400, E=250, pass=0.001;
-     int N=(Emax-E)/pass, l_mom=1;
-     std::vector<double> arrayeval;
-     std::vector<double> arrayefun;
-     HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
-     std::ofstream file("test_range.txt");
-     
-     for (int i=0; i<=N; ++i)
-     {
-    	Schroddy s(pot);
-    	arrayeval.push_back(E);
-    	double eigfun=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, N_step);
-    	arrayefun.push_back(eigfun);
-    	E+=pass;
-     }
-     
-     std::vector <double>::iterator walk1 = arrayeval.begin();
-     std::vector <double>::iterator walk2 = arrayefun.begin();
-     while (walk1 != arrayeval.end() && walk2 != arrayefun.end())
-     {
-    	file << *walk1 << "\t\t" << *walk2 << std::endl;
-    	std::cout << *walk1 << "\t\t" << *walk2 << std::endl;
-    	walk1++;
-    	walk2++;
-     }
-     
-     file.close();*/
-    
+
     std::cout << "Program executed successfully." << std::endl;
     return 0;
 }

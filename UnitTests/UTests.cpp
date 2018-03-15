@@ -15,7 +15,6 @@
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
-
 BOOST_AUTO_TEST_SUITE(shroddy)
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
@@ -24,7 +23,7 @@ BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
     
     const unsigned int k = 1;
     const unsigned int l_mom=0;
-    const unsigned int n = 2*(k-1) + l_mom;
+    //const unsigned int n = 2*(k-1) + l_mom;
     
     HOPot pot (Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
@@ -41,7 +40,7 @@ BOOST_AUTO_TEST_CASE(shootingHO11, *utf::tolerance(0.1))
     
     const unsigned int k = 1;
     const unsigned int l_mom = 1;
-    const unsigned int n = 2*(k-1) + l_mom;
+    //const unsigned int n = 2*(k-1) + l_mom;
     
     HOPot pot (Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
@@ -58,7 +57,7 @@ BOOST_AUTO_TEST_CASE(shootingHO2012, *utf::tolerance(0.1))
     
     unsigned int k = 2;
     unsigned int l_mom = 0;
-    unsigned int n = 2*(k-1) + l_mom;
+    //unsigned int n = 2*(k-1) + l_mom;
     
     HOPot pot10 (Parameters::mn, l_mom);
     Schroddy Sfunc10 (pot10, H);
@@ -68,7 +67,7 @@ BOOST_AUTO_TEST_CASE(shootingHO2012, *utf::tolerance(0.1))
     
     k = 1;
     l_mom = 2;
-    n = 2*(k-1) + l_mom;
+    //n = 2*(k-1) + l_mom;
     
     HOPot pot02 (Parameters::mn, l_mom);
     Schroddy Sfunc02 (pot02, H);
@@ -105,23 +104,24 @@ BOOST_AUTO_TEST_CASE(shootingHO2113, *utf::tolerance(0.1))
 
 BOOST_AUTO_TEST_CASE(shootingHORandom, *utf::tolerance(0.1))
 {
-    const double H = 0.001;
+    const double H = 0.01;
     //int mass_num=Parameters::A;
     
-    const unsigned int k = rand()%21 + 1;
-    const unsigned int l_mom = rand()%20;
-    const unsigned int n = 2*(k-1) + l_mom;
+    unsigned int N = 10;
+    for (unsigned int i = 0; i < N; ++i)
+    {
+        const unsigned int k = rand()%10 + 1;
+        const unsigned int l_mom = rand()%10;
+        const unsigned int n = 2*(k-1) + l_mom;
     
-    HOPot pot (Parameters::mn, l_mom);
-    Schroddy Sfunc (pot, H);
-    GenericEigenvalues GenEig(Sfunc, k, l_mom);
+        HOPot pot (Parameters::mn, l_mom);
+        Schroddy Sfunc (pot, H);
+        GenericEigenvalues GenEig(Sfunc, k, l_mom);
     
-    BOOST_TEST(GenEig.eigenvalue() == (n + 3./2.)*Parameters::hbar_omega);
+        BOOST_TEST(GenEig.eigenvalue() == (n + 3./2.)*Parameters::hbar_omega);
+    }
     
 }
-
-
-
 
 
 

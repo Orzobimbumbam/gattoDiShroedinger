@@ -14,27 +14,29 @@
  * Schrodinger equation solver by Runge-Kutta method
  *=======================================================================*/
 
-Schroddy::Schroddy(const InitialPot& pot): m_pot(pot.clone()), m_h(0.001) {}//default precision
-Schroddy::Schroddy(const InitialPot& pot, double H): m_pot(pot.clone()), m_h(H) {}
+Schroddy::Schroddy(const InitialPot& pot) : m_pot(pot.clone()), m_h(0.001) {} //default precision
+Schroddy::Schroddy(const InitialPot& pot, double H) : m_pot(pot.clone()), m_h(H) {}
 
-Schroddy::Schroddy(const Schroddy& sourceSchroddy) //copy constructor
+Schroddy::Schroddy(const Schroddy& sourceSchroddy) : m_pot(sourceSchroddy.m_pot -> clone()), m_h(sourceSchroddy.m_h) {} //copy constructor
+
+void Schroddy::swap(Schroddy& sourceSh)
 {
-    if (&sourceSchroddy != this)
-    {
-    	m_pot = sourceSchroddy.m_pot -> clone();
-    	m_h = sourceSchroddy.m_h;
-    }
+    std::swap(m_h, sourceSh.m_h);
+    std::swap(m_pot, sourceSh.m_pot);
 }
 
 Schroddy& Schroddy::operator=(const Schroddy& rhsSchroddy) //copy assignment
 {
+    Schroddy tempSh(rhsSchroddy); //cloning takes place here in the copy ctor
+    swap(tempSh);
+    /*
     if (&rhsSchroddy != this)
     {
         //no need to release pointer as it is done automatically
         m_pot = rhsSchroddy.m_pot -> clone();
         m_h = rhsSchroddy.m_h;
-    }
-    return *this;
+    }*/
+    return *this; //memory automatically released here by smart pointer as method goes out of scope
 }
 
 double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const
@@ -109,9 +111,9 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     const double scalar = psiSquared*m_h;
     
-    //normalize radial eigenfunction element-wise -> [u(r)/r]*scalar^-1
-    for (auto it = psiArray.begin(), itt = x.begin(); it != psiArray.end() && itt != x.end(); ++it, ++itt)
-        *it = *it/(*itt*sqrt(scalar));
+    //normalize radial eigenfunction element-wise -> [u(r)]*scalar^-1
+    for (auto& it : psiArray)
+        it = it/(sqrt(scalar));
 
     //return terminal value of normalized radial eigenfunction (on interval [x0, x1]) and job done!
     const double normalPsi = runningPsi/sqrt(scalar);

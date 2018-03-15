@@ -14,8 +14,11 @@ WSaxPot::WSaxPot(double V0, double Rn, double a0, double m, unsigned int l): Ini
 
 double WSaxPot::potential(double x) const
 {
+    double angularPart = 0;
+    if (x != 0)
+        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
     
-    double wspot = -m_V0/(1+exp ((x-m_Rn)/m_a0));
+    double wspot = -m_V0/(1+exp ((x-m_Rn)/m_a0)) + angularPart;
     return wspot;
 }
 
