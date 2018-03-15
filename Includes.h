@@ -8,6 +8,8 @@
 #include "schroddy.h"
 #include "parameters.h"
 #include "initpot.h"
+#include "eigenvalues.hpp"
+#include "densities.h"
 
 
 

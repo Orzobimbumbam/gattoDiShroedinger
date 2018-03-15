@@ -12,12 +12,12 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-const int NN=8;										// Neutrons number
+const int NN=21;										// Neutrons number
 const int NP=0;										// Protons number
-//const double mp= 1.6726219e-27;					// Proton mass
-//const double mn= 1.6749273e-27;					// Neutron mass
+//const double mp= 1.6726219e-27;					// Proton mass [kg]
+//const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn= 939.565378;                        // Neutron mass in mnc^2 [MeV]
-    const double me = 0.510;
+const double me = 938.28;							// Proton mass in mpc^2 [MeV]
 const int A=NN+NP; 									// Mass number
 const double R0= 1.27; 								// [fm]
 
@@ -31,7 +31,8 @@ const double a0 = 0.67;
 
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
-    //const double k = 1e-24;
+const double hbar_omega=10;							// [MeV]
+//const double k = 1e-24;
 
 
 // Eigenvalues generator parameters
@@ -44,9 +45,7 @@ double error=10e-8;*/
 const double x_in = 1e-12;
 const double x_fin = 10*Rn;
 //const double psi0= 0.001;
-    
 //const double psiPrime0 = 1;
-
 //unsigned long N_step=10;
 
 // Other parameters
@@ -57,15 +56,8 @@ const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc= 197.3269788;					// [MeV*fm]
 //const double x_min=0;								// Integration
 //const double x_max=3*Rn;							// Interval
-const double hbar_omega=10;							// [MeV]
 
 }
-
-
-
-
-
-
 
 //#endif
 
