@@ -52,13 +52,12 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
     const double error = 1e-10;
     const unsigned int lState = m_lState;
 
-
     std::vector <double> psiArray;
     unsigned int nodes = 0;
     while (true)
     {
 
-        double s = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+        m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
                                           psiPrime0(lState), E2 , psiArray);
 
         nodes = 0;

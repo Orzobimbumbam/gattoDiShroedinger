@@ -45,12 +45,9 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     const unsigned long NSteps = std::abs(x1 - x0)/m_h;
     const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;
-    //std::ofstream file("RKout.txt");
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
     psiArray.push_back(psi0);
-    std::vector<double> x;
-    x.push_back(runningX);
 
     for (unsigned long i = 0; i < NSteps ; ++i)
     {
@@ -70,40 +67,8 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         runningPsiPrime += 1./6.*(l1 + 2*l2 + 2*l3 + l4);
         runningX += m_h;
         psiArray.push_back(runningPsi);
-        x.push_back(runningX);
     }
-    /*
-    std::vector <double>::iterator walk = psiArray.begin();
-    while (walk != psiArray.end())
-=======
-        psiArray.push_back(runningPsi/runningX);
-        psiRadius.push_back(runningX);
-
-    }
-
-    std::vector<double>::iterator walk1 = psiRadius.begin();
-    std::vector<double>::iterator walk2 = psiArray.begin();
-    while (walk1 != psiRadius.end() && walk2 != psiArray.end())
-
-    {
-    	file << *walk1 << "\t"<< *walk2 << std::endl;
-    	//std::cout << *walk << std::endl;
-    	walk1++, walk2++;
-    }
-
-
-    file.close();
-
-
-    const std::string f = "RKout.txt";
-    Gnuplot gp("lines");
-    gp.set_title("Plotfile\\nNew Line");
-    //gp.plotfile_xy(&f,1,2,'Psi');
-    gp.plotfile_xy("RKout.txt",1,2,"Psi");
-    gp.unset_title();*/
-
-
-
+    
     //work out normalizatiion constant
     double psiSquared = 0;
     for (const auto& it : psiArray)
@@ -116,7 +81,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         it = it/(sqrt(scalar));
 
     //return terminal value of normalized radial eigenfunction (on interval [x0, x1]) and job done!
-    const double normalPsi = runningPsi/sqrt(scalar);
+    const double normalPsi = *(psiArray.end() - 1);
     return normalPsi;
 }
 
