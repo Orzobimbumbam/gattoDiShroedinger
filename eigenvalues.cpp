@@ -49,7 +49,7 @@ m_sh(sh), m_nState(nState), m_lState(lState) {}
 double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nState) const
 {
 
-    const double error = 1e-10;
+    const double error = 1e-12;
     const unsigned int lState = m_lState;
 
     std::vector <double> psiArray;
@@ -77,7 +77,6 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
     int endPointSign = 1;
     if (*(psiArray.end() -1) < 0)
         endPointSign = -1;
-
 
     double midE = (E1 + E2)/2.;
     while (std::abs(E2 - E1) > error)

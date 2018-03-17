@@ -18,7 +18,6 @@ void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<dou
 	{
 		double thdensity = (1/(4*Parameters::PI*(radiusx*radiusx)))*degen*(psi[i]*psi[i]);
 		thDensArray[i] += thdensity;
-		//thDensArray.push_back(thdensity);
 		radiusx += step;
 	}
 	return;

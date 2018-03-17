@@ -29,13 +29,7 @@ Schroddy& Schroddy::operator=(const Schroddy& rhsSchroddy) //copy assignment
 {
     Schroddy tempSh(rhsSchroddy); //cloning takes place here in the copy ctor
     swap(tempSh);
-    /*
-    if (&rhsSchroddy != this)
-    {
-        //no need to release pointer as it is done automatically
-        m_pot = rhsSchroddy.m_pot -> clone();
-        m_h = rhsSchroddy.m_h;
-    }*/
+    
     return *this; //memory automatically released here by smart pointer as method goes out of scope
 }
 

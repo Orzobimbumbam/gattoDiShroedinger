@@ -9,19 +9,16 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-/*#include <jsoncpp/json/json.h>
- #include <jsoncpp/json/reader.h>
- #include <jsoncpp/json/writer.h>
- #include <jsoncpp/json/value.h>*/
 #include "Includes.h"
 
 
+typedef std::vector<double>::const_iterator cwalk;
+typedef std::vector<double>::iterator walk;
 
-
-
-int main(int argc, const char * argv[]) {
+int main(int argc, const char * argv[])
+{
     
-    const double H = 0.001;
+    const double H = 0.01;
     int massNumb=Parameters::A;
     
     /*==========================================================================================
@@ -30,9 +27,7 @@ int main(int argc, const char * argv[]) {
     *========================================================================================*/
         
     //Load the matrix with quantum numbers of each state from "orbitals.txt"
-    std::vector <std::vector <int>> orbitals (36);// std::vector <int> (3,0));
-    //std::vector <int> state (2);
-    //std::vector <std::vector <int> > orbitals;
+    std::vector <std::vector <int>> orbitals (36);
     std::fstream in ("../orbitals.txt", std::ios::in);
     
     for (int i = 0; i < 36; ++i)
@@ -58,31 +53,21 @@ int main(int argc, const char * argv[]) {
     unsigned int nuclNumb = 0;
     const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
     std::vector <double> psiArray;
-    std::vector<double> thdensArray;
-    /*std::vector<double> evalArray;
-     std::vector<double> efuncArray;
-     std::vector<int> nuclnumbArray;*/
-    std::ofstream file("Outputs/eigenfunc.txt");
+    std::vector<double> thdensArray(NSteps + 1);
     
+    std::ofstream file;
+    file.open("Outputs/eigenfunc.txt");
     
     
     while (massNumb > 0)
     {
-        if(massNumb == Parameters::A)
-        {
-            for (int i = 0; i < NSteps + 1; ++i)
-            {
-                thdensArray.push_back(0);
-            }
-        }
-        
-        unsigned int quantNr = orbitals[i][0];
-        unsigned int quantL = orbitals[i][1];
-        unsigned int quantN = 2*(quantNr - 1) + quantL;
+        const unsigned int quantNr = orbitals[i][0];
+        const unsigned int quantL = orbitals[i][1];
+        const unsigned int quantN = 2*(quantNr - 1) + quantL;
         HOPot pot (Parameters::mn, quantL);
         Schroddy Sfunc (pot, H);
         GenericEigenvalues GenEig(Sfunc, quantNr, quantL);
-        double eigval = GenEig.eigenvalue();
+        const double eigval = GenEig.eigenvalue();
         Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(quantL),
                                 psiPrime0(quantL), eigval , psiArray);
         
@@ -97,13 +82,11 @@ int main(int argc, const char * argv[]) {
         Theoreticaldensity densy;
         densy.density(psiArray,thdensArray,nuclNumb,H);
         
-        
-        std::vector<double>::iterator walk1 = psiArray.begin();
-        while (walk1 != psiArray.end())
-            
+        cwalk wk = psiArray.begin();
+        while (wk != psiArray.end())
         {
-            file << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
-            ++walk1;
+            file << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *wk << std::endl;
+            ++wk;
         }
         
         /*evalArray.push_back(eigval);
@@ -112,24 +95,22 @@ int main(int argc, const char * argv[]) {
         
         //dstd::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << eigfunc << std::endl;
         
-        i++;
+        ++i;
         //std::cout << massNumb << std::endl;
     }
+    file.close();
+    
+    file.open("Outputs/density.txt");
     double rad = Parameters::x_in;
-    std::ofstream file2("Outputs/density.txt");
-    std::vector<double>::iterator walk2 = thdensArray.begin();
-    //std::vector<double>::iterator walk3 = xArray.begin();
-    while (walk2 != thdensArray.end() /*&& walk3 != xArray.end()*/)
+    cwalk wk = thdensArray.begin();
+    while (wk != thdensArray.end())
     {
-        file2 << rad << "\t"<< *walk2 << std::endl;
-        walk2++;
+        file << rad << "\t"<< *wk << std::endl;
+        ++wk;
         rad = rad + H;
     }
     
-    file2.close();
-    
     file.close();
-    //in.clear();
     
     /*=========================================================================================
      * STEP-2
