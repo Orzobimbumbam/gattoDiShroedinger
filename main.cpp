@@ -125,14 +125,45 @@ int main(int argc, const char * argv[]) {
 
      file2.close();
      file.close();
+     in.close();
+     in.clear();
 
 /*=========================================================================================
- * STEP-3
- * Calculate empirical densities from MC simulations or scattering
+ * STEP-2
+ * Calculate empirical densities from MC simulations or scattering (SOG densities)
  *=======================================================================================*/
 
+     std::fstream in ("Ca48.txt", std::ios::in);
+     std::ofstream file3("SOGdensity.txt");
+     std::vector <std::vector <double> > QRparam (12);
+     std::vector<double> empidensity;
+
+ 	for (int i = 0; i < 12; ++i)
+ 	{
+ 		for (int j = 0; j < 2; ++j)
+ 		{
+ 			int temp;
+ 			in >> temp;
+ 			QRparam[i].push_back(temp);
+ 		}
+ 	}
+
+	for (int i = 0; i < 12; ++i)
+	{
+		for (int j=0; j<2; ++j)
+			std::cout << QRparam[i][j];
+			std::cout << std::endl;
+	}
+
+	SOGdensity sogdensy;
+	sogdensy.sogDensity(QRparam, empidensity, H);
 
 
+    for (int i = 0; i < empidensity.size(); ++i)
+    {
+   	 file3 << rad << "\t" << empidensity[i] << std::endl;
+   	 rad += H;
+    }
 
 
 
@@ -155,14 +186,10 @@ int main(int argc, const char * argv[]) {
     ifs >> root;							 // the entire file
     //Json::Value obj;
     //reader.parse(ifs, obj);
-
     const Json::Value array = root["orbitals"]["levels"];
     //const Json::Value& orbital = obj["orbital"];
     //const Json::Value& properties = obj["properties"];
-
     //std::cout << "orbital " << obj["orbital"].asString() << std::endl;
-
-
    for (int i=0; i<array.size(); ++i)
   {
     	std::cout << array[i].asInt() << std::endl;
@@ -182,10 +209,8 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
     double eig = GenEig.eigenvalue();
     Schroddy Sfunc (pot);
     double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, N_step);
-
     std::cout << "l value: "<< i << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
     //std::cout << "l value: "<< i << "Bisected Eigenvalue: " << eig << std::endl;
-
 }*/
 
  /*===============================================================================
@@ -197,23 +222,19 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
      unsigned int n = 2*(nr-1) + l_mom;*/
  	/*std::vector <double> psiArray;
      unsigned int nmax = 5;
-
      for (unsigned int n = 0; n <= nmax; ++n)
      {
      	unsigned int nr = 1;
      	for (int l = n; l >= 0; l -= 2)
      	{
      		unsigned int l_mom = l;
-
      		HOPot pot (Parameters::mn, l_mom);
      		Schroddy Sfunc (pot, H);
      		GenericEigenvalues GenEig(Sfunc, nr, l_mom);
      		double eig = GenEig.eigenvalue();
      		double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(l_mom),
                      psiPrime0(l_mom), eig , psiArray);
-
      		std::cout << n << "\t" << nr << "\t" << l << "\t" << eig << "\t" << eigfun << std::endl;
-
      		++nr;
      	}
      }*/
@@ -228,7 +249,6 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
     std::vector<double> arrayefun;
     HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
     std::ofstream file("test_range.txt");
-
     for (int i=0; i<=N; ++i)
     {
     	Schroddy s(pot);
@@ -237,7 +257,6 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
     	arrayefun.push_back(eigfun);
     	E+=pass;
     }
-
     std::vector <double>::iterator walk1 = arrayeval.begin();
     std::vector <double>::iterator walk2 = arrayefun.begin();
     while (walk1 != arrayeval.end() && walk2 != arrayefun.end())
@@ -247,7 +266,6 @@ for ( int i=0; i<=Parameters::angularMomentum; ++i)
     	walk1++;
     	walk2++;
     }
-
     file.close();*/
 
     std::cout << "Program executed successfully." << std::endl;

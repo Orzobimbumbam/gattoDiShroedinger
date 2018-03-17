@@ -12,7 +12,7 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-const int NN=21;										// Neutrons number
+const int NN=48;									// Neutrons number
 const int NP=0;										// Protons number
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
@@ -43,7 +43,7 @@ double error=10e-8;*/
 // Runge-Kutta parameters
 //const double x_in = -10*Rn;
 const double x_in = 1e-12;
-const double x_fin = 10*Rn;
+const double x_fin = 5*Rn;
 //const double psi0= 0.001;
 //const double psiPrime0 = 1;
 //unsigned long N_step=10;
@@ -53,7 +53,9 @@ const double x_fin = 10*Rn;
 //const int angularMomentum = 2;
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
-const double hbarc= 197.3269788;					// [MeV*fm]
+const double hbarc = 197.3269788;					// [MeV*fm]
+const double rms = 3.460;							// root-mean-square radius of the charge distribution [fm]
+const double rp = 0.7956;							// [fm]
 //const double x_min=0;								// Integration
 //const double x_max=3*Rn;							// Interval
 
