@@ -18,7 +18,7 @@ class SOGdensity
 {
 public:
 	SOGdensity();
-	void sogDensity (std::vector<std::vector<double> >& QRparameters, std::vector<double>& sogdensity, double h)const;
+	void sogDensity (const std::vector<std::vector<double> >& QRparameters, std::vector<double>& sogdensity, double h)const;
 
 private:
 
