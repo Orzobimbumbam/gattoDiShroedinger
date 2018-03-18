@@ -32,6 +32,7 @@ int main(int argc, const char * argv[]) {
 		}
 	}
 	in.close();
+	in.clear();
 
 		/*for (int i=0; i<36; ++i)
 		{

@@ -34,14 +34,14 @@ void SOGdensity::sogDensity (const std::vector<std::vector<double> >& QRparamete
 {
 
 	sogdensity.clear();
-	double alpha = sqrt(3/2)*Parameters::rp;
-	double gamma = sqrt((3/2)*(Parameters::rms*Parameters::rms));
+	double alpha = sqrt(3./2)*Parameters::rp;
+	double gamma = sqrt((3./2)*(Parameters::rms*Parameters::rms));
 	double beta = sqrt((gamma*gamma)-(alpha*alpha));
 
 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/h;
 	for ( int r = 0 ; r < NSteps +1; ++r)
 	{
-		double c1 = 1/(2*pow(Parameters::PI,(3/2))*r);
+		double c1 = 1/(2*pow(Parameters::PI,(3./2))*r);
 		double c3 = 0;
 		for (int i = 0; i < 11; ++i)
 		{
