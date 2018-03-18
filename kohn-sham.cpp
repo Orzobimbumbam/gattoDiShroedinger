@@ -2,30 +2,32 @@
 # include "parameters.h"
 # include "schroddy.h"
 # include "kohn-sham.h"
+# include <vector>
 # include <cmath>
-
-
-/*============================================
- * Theoretical density
- *==========================================*/
-Densities::~Densities() {}
-
-Theoreticaldensity::Theoreticaldensity(double eigenfunc, int degen, double x): m_eigenfunc(eigenfunc), m_degen(degen), m_x(x) {}
-
-double Theoreticaldensity::density() const
-{
-
-    return (1/(4*Parameters::PI*(m_x*m_x)))*m_degen*(m_eigenfunc*m_eigenfunc);
-}
-
-Densities* Theoreticaldensity::clone() const
-{
-    return new Theoreticaldensity(*this);
-}
 
 /*=============================================
  * Kohm-Sham inverse equations
  *===========================================*/
+
+KohnShamInverse::KohnShamInverse () {}
+
+void KohnShamInverse::KSinverse(const std::vector<double>& inTheoDensity, const std::vector<double>& empiDensity,
+    	const std::vector<double>& inPot, std::vector<double>& outPot) const
+{
+	outPot.clear();
+	double newPot = 0;
+	for (int i = 0; i < inPot.size(); ++i)
+	{
+		if (inPot[i] < 0)
+			newPot = (2 - (inTheoDensity[i]/empiDensity[i]))*inPot[i];
+		else
+			newPot = (inTheoDensity[i]/empiDensity[i])*inPot[i];
+
+		outPot.push_back(newPot);
+	}
+	return;
+}
+
 
 
 

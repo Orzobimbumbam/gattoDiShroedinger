@@ -2,10 +2,6 @@
 #include <fstream>
 #include <vector>
 #include <string>
-/*#include <jsoncpp/json/json.h>
-#include <jsoncpp/json/reader.h>
-#include <jsoncpp/json/writer.h>
-#include <jsoncpp/json/value.h>*/
 #include "Includes.h"
 
 
@@ -23,7 +19,8 @@ int main(int argc, const char * argv[]) {
 	std::vector <std::vector <int> > orbitals (36);// std::vector <int> (3,0));
 	//std::vector <int> state (2);
 	//std::vector <std::vector <int> > orbitals;
-	std::fstream in ("orbitals.txt", std::ios::in);
+	std::ifstream in ;//("orbitals.txt", std::ios::in);
+	in.open("orbitals.txt");
 
 	for (int i = 0; i < 36; ++i)
 	{
@@ -34,6 +31,8 @@ int main(int argc, const char * argv[]) {
 			orbitals[i].push_back(temp);
 		}
 	}
+	in.close();
+	in.clear();
 
 		/*for (int i=0; i<36; ++i)
 		{
@@ -49,10 +48,11 @@ int main(int argc, const char * argv[]) {
 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
 	std::vector <double> psiArray;
 	std::vector<double> thdensArray;
+	double rad = Parameters::x_in;
     /*std::vector<double> evalArray;
     std::vector<double> efuncArray;
     std::vector<int> nuclnumbArray;*/
-    std::ofstream file("eigenfunc.txt");
+    std::ofstream file1("eigenfunc.txt");
     std::ofstream file2("density.txt");
 
 
@@ -93,7 +93,7 @@ int main(int argc, const char * argv[]) {
 	    while (walk1 != psiArray.end())
 
 	    {
-	    	file << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
+	    	file1 << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
 	    	walk1++;
 	    }
 
@@ -107,8 +107,6 @@ int main(int argc, const char * argv[]) {
 		//std::cout << massNumb << std::endl;
 	}
 
-
-     double rad = Parameters::x_in;
      for (int i = 0; i < thdensArray.size(); ++i)
      {
     	 file2 << rad << "\t" << thdensArray[i] << std::endl;
@@ -123,17 +121,16 @@ int main(int argc, const char * argv[]) {
     	 walk2++, rad += H;
      }*/
 
+     file1.close();
      file2.close();
-     file.close();
-     in.close();
-     in.clear();
 
 /*=========================================================================================
  * STEP-2
  * Calculate empirical densities from MC simulations or scattering (SOG densities)
  *=======================================================================================*/
 
-     std::fstream in ("Ca48.txt", std::ios::in);
+     //std::fstream in ("Ca48.txt", std::ios::in);
+     in.open("Ca48.txt");
      std::ofstream file3("SOGdensity.txt");
      std::vector <std::vector <double> > QRparam (12);
      std::vector<double> empidensity;
@@ -147,6 +144,8 @@ int main(int argc, const char * argv[]) {
  			QRparam[i].push_back(temp);
  		}
  	}
+
+ 	in.close();
 
 	for (int i = 0; i < 12; ++i)
 	{
@@ -165,53 +164,45 @@ int main(int argc, const char * argv[]) {
    	 rad += H;
     }
 
+    file3.close();
 
+/*=========================================================================================
+* STEP-3
+* Calculate new potential by inverse Kohn-Sham equations
+*=======================================================================================*/
 
+    std::ofstream file4("newpotential.txt");
+    std::vector<double> newpotArray;
+    std::vector<double> inpotArray;
+	HOPot inpotential (Parameters::mn, 0);
 
+	double radius = Parameters::x_in;
+	for (int i = 0; i < NSteps; ++i)
+	{
+		double inpot = inpotential.potential(radius);
+		inpotArray.push_back(inpot);
+		radius += H;
+	}
 
+	KohnShamInverse inversion;
+	inversion.KSinverse(thdensArray,empidensity,inpotArray,newpotArray);
 
-
-
-
-
-
-
-/*======================================================================================
- * FANCULO IL JSON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- *====================================================================================*/
-
-	/*Json::Value root;
-    Json::Reader reader;
-	std::ifstream ifs ("orbitals3.json");    // this read
-    ifs >> root;							 // the entire file
-    //Json::Value obj;
-    //reader.parse(ifs, obj);
-    const Json::Value array = root["orbitals"]["levels"];
-    //const Json::Value& orbital = obj["orbital"];
-    //const Json::Value& properties = obj["properties"];
-    //std::cout << "orbital " << obj["orbital"].asString() << std::endl;
-   for (int i=0; i<array.size(); ++i)
-  {
-    	std::cout << array[i].asInt() << std::endl;
-  }
-    for (int i=0; i<orbital.size(); ++i)
+    for (int i = 0; i < newpotArray.size(); ++i)
     {
-    	std::cout << "orbitals " << orbital[i]["orbital"].asString() << std::endl;
+   	 file4 << rad << "\t" << newpotArray[i] << std::endl;
+   	 rad += H;
     }
-*/
-    //const double omega = 2*Parameters::PI*Parameters::f;
-/*
-for ( int i=0; i<=Parameters::angularMomentum; ++i)
-{
-	int l_mom=i;
-    HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
-    GenericEigenvalues GenEig(pot);
-    double eig = GenEig.eigenvalue();
-    Schroddy Sfunc (pot);
-    double eigfun= Sfunc.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, eig, N_step);
-    std::cout << "l value: "<< i << "\t"<< "Bisected Eigenvalue: " << eig << "\t" << "Eigenfunction: " << eigfun << std::endl;
-    //std::cout << "l value: "<< i << "Bisected Eigenvalue: " << eig << std::endl;
-}*/
+
+    file4.close();
+
+
+
+
+
+
+
+
+
 
  /*===============================================================================
   * TEST - Calculate first 12 levels eigenvalues for HO potential
