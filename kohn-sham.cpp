@@ -2,6 +2,7 @@
 # include "parameters.h"
 # include "schroddy.h"
 # include "kohn-sham.h"
+# include <vector>
 # include <cmath>
 
 /*=============================================
@@ -10,7 +11,7 @@
 
 KohnShamInverse::KohnShamInverse () {}
 
-void KSinverse(const std::vector<double>& inTheoDensity, const std::vector<double>& empiDensity,
+void KohnShamInverse::KSinverse(const std::vector<double>& inTheoDensity, const std::vector<double>& empiDensity,
     	const std::vector<double>& inPot, std::vector<double>& outPot) const
 {
 	outPot.clear();

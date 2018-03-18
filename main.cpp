@@ -172,9 +172,19 @@ int main(int argc, const char * argv[]) {
 
     std::ofstream file4("newpotential.txt");
     std::vector<double> newpotArray;
-	HOPot inpot (Parameters::mn, 0);
+    std::vector<double> inpotArray;
+	HOPot inpotential (Parameters::mn, 0);
+
+	double radius = Parameters::x_in;
+	for (int i = 0; i < NSteps; ++i)
+	{
+		double inpot = inpotential.potential(radius);
+		inpotArray.push_back(inpot);
+		radius += H;
+	}
+
 	KohnShamInverse inversion;
-	inversion.KSinverse(thdensArray,empidensity,inpot,newpotArray);
+	inversion.KSinverse(thdensArray,empidensity,inpotArray,newpotArray);
 
     for (int i = 0; i < newpotArray.size(); ++i)
     {
