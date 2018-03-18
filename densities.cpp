@@ -30,9 +30,10 @@ void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<dou
 
 SOGdensity::SOGdensity() {}
 
-void SOGdensity::sogDensity (std::vector<std::vector<double> >& QRparameters, std::vector<double>& sogdensity, double h)const
+void SOGdensity::sogDensity (const std::vector<std::vector<double> >& QRparameters, std::vector<double>& sogdensity, double h)const
 {
 
+	sogdensity.clear();
 	double alpha = sqrt(3/2)*Parameters::rp;
 	double gamma = sqrt((3/2)*(Parameters::rms*Parameters::rms));
 	double beta = sqrt((gamma*gamma)-(alpha*alpha));
@@ -44,11 +45,11 @@ void SOGdensity::sogDensity (std::vector<std::vector<double> >& QRparameters, st
 		double c3 = 0;
 		for (int i = 0; i < 11; ++i)
 		{
-			double Ai = (Parameters::NN*QRparameters[1])/(1 + 2*(QRparameters[0]*QRparameters[0])/(gamma*gamma));
-			double exp1 = exp(-((r - QRparameters[0])/beta)*((r - QRparameters[0])/beta));
-			double exp2 = exp(-((r + QRparameters[0])/beta)*((r + QRparameters[0])/beta));
-			double c2 = exp1*((r + QRparameters[0])/(beta*beta*beta) - QRparameters[0]/(beta*gamma*gamma)) +
-					exp2*((r - QRparameters[0])/(beta*beta*beta) - QRparameters[0]/(beta*gamma*gamma));
+			double Ai = (Parameters::NN*QRparameters[i][1])/(1 + 2*(QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
+			double exp1 = exp(-((r - QRparameters[i][0])/beta)*((r - QRparameters[i][0])/beta));
+			double exp2 = exp(-((r + QRparameters[i][0])/beta)*((r + QRparameters[i][0])/beta));
+			double c2 = exp1*((r + QRparameters[i][0])/(beta*beta*beta) - QRparameters[i][0]/(beta*gamma*gamma)) +
+					exp2*((r - QRparameters[i][0])/(beta*beta*beta) - QRparameters[i][0]/(beta*gamma*gamma));
 
 			c3 += Ai*c2;
 		}
@@ -59,60 +60,3 @@ void SOGdensity::sogDensity (std::vector<std::vector<double> >& QRparameters, st
 	return;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*Densities::~Densities() {}
-Theoreticaldensity::Theoreticaldensity(char filename): m_filename(filename), m_h(0.001) {}
-double Theoreticaldensity::density(double x0, double x1, std::vector<double> thDensArray, std::vector<double> xArray) const
-{
-	//load eigenfunctions and nucleons number for level from file
-	std::vector <std::vector <int> > efunctions;
-	std::vector <int> data (4);
-	std::fstream in ("m_filename", std::ios::in);
-	for (int i = 0; i < in.eof(); ++i)
-	{
-		for (int j=0; j<4; ++j)
-		{
-			int temp;
-			in >> temp;
-			efunctions[i].push_back(temp);
-		}
-	}
-	//calculate the theoretical density
-	int deg = 0;
-	double efunc = 0, thdensity = 0, radiusx = x0;
-	const unsigned long NSteps = std::abs(x1 - x0)/m_h;
-	for (int i = 0; i < efunctions.size(); ++i)
-	{
-		for (unsigned long r = 0; r < NSteps; ++r)
-		{
-			deg = efunctions[i][3];
-			efunc = efunctions[i][4];
-			thdensity = (1/(4*Parameters::PI*(radiusx*radiusx)))*deg*(efunc*efunc);
-			thDensArray.push_back(thdensity);
-			xArray.push_back(radiusx);
-			radiusx += m_h;
-		}
-	}
-    return thdensity;
-}
-std::unique_ptr<Densities> Theoreticaldensity::clone() const
-{
-    return std::make_unique<Theoreticaldensity> (*this); //return a derived class object through a base class pointer
-}*/
