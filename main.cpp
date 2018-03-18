@@ -47,10 +47,11 @@ int main(int argc, const char * argv[]) {
 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
 	std::vector <double> psiArray;
 	std::vector<double> thdensArray;
+	double rad = Parameters::x_in;
     /*std::vector<double> evalArray;
     std::vector<double> efuncArray;
     std::vector<int> nuclnumbArray;*/
-    std::ofstream file("eigenfunc.txt");
+    std::ofstream file1("eigenfunc.txt");
     std::ofstream file2("density.txt");
 
 
@@ -91,7 +92,7 @@ int main(int argc, const char * argv[]) {
 	    while (walk1 != psiArray.end())
 
 	    {
-	    	file << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
+	    	file1 << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
 	    	walk1++;
 	    }
 
@@ -105,8 +106,6 @@ int main(int argc, const char * argv[]) {
 		//std::cout << massNumb << std::endl;
 	}
 
-
-     double rad = Parameters::x_in;
      for (int i = 0; i < thdensArray.size(); ++i)
      {
     	 file2 << rad << "\t" << thdensArray[i] << std::endl;
@@ -121,8 +120,8 @@ int main(int argc, const char * argv[]) {
     	 walk2++, rad += H;
      }*/
 
+     file1.close();
      file2.close();
-     file.close();
 
 /*=========================================================================================
  * STEP-2
@@ -171,8 +170,19 @@ int main(int argc, const char * argv[]) {
 * Calculate new potential by inverse Kohn-Sham equations
 *=======================================================================================*/
 
+    std::ofstream file4("newpotential.txt");
+    std::vector<double> newpotArray;
+	HOPot inpot (Parameters::mn, 0);
+	KohnShamInverse inversion;
+	inversion.KSinverse(thdensArray,empidensity,inpot,newpotArray);
 
+    for (int i = 0; i < newpotArray.size(); ++i)
+    {
+   	 file4 << rad << "\t" << newpotArray[i] << std::endl;
+   	 rad += H;
+    }
 
+    file4.close();
 
 
 
