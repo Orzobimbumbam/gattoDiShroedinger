@@ -14,12 +14,13 @@ void KSinverse(const std::vector<double>& inTheoDensity, const std::vector<doubl
     	const std::vector<double>& inPot, std::vector<double>& outPot) const
 {
 	outPot.clear();
+	double newPot = 0;
 	for (int i = 0; i < inPot.size(); ++i)
 	{
 		if (inPot[i] < 0)
-			double newPot = (2 - (inTheoDensity[i]/empiDensity[i]))*inPot[i];
+			newPot = (2 - (inTheoDensity[i]/empiDensity[i]))*inPot[i];
 		else
-			double newPot = (inTheoDensity[i]/empiDensity[i])*inPot[i];
+			newPot = (inTheoDensity[i]/empiDensity[i])*inPot[i];
 
 		outPot.push_back(newPot);
 	}
