@@ -15,8 +15,7 @@ void KohnShamInverse::KSinverse(const std::vector<double>& inTheoDensity, const 
     	const std::vector<double>& inPot, std::vector<double>& outPot) const
 {
 	outPot.clear();
-	double ratio1, ratio2;
-	double newPot = 0;
+	double ratio1, ratio2, newPot = 0;
 	for (int i = 0; i < inPot.size(); ++i)
 	{
 

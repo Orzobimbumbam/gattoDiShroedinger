@@ -10,6 +10,4 @@
 #include "densities.h"
 #include "kohn-sham.h"
 
-
-
 #endif /* Includes_h */

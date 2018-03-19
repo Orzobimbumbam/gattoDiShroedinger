@@ -1,4 +1,7 @@
-//Parameters
+/*========================================================================
+ * Parameters and constants
+ *======================================================================*/
+
 #pragma once
 //#ifndef parameters_h
 //#define parameters_h
