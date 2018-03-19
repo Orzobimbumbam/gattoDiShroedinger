@@ -23,7 +23,7 @@ const double R0= 1.27; 								// [fm]
 
 // Wood-Saxon potential parameters
 const double Rn = R0*pow(A,(1/3)); 					// Nuclear radius [fm]
-const double a0 = 0.67;
+const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 // Spin-Orbit potential parameters
 //const double k0=  ;

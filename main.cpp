@@ -149,7 +149,7 @@ int main(int argc, const char * argv[]) {
 
 	SOGdensity sogdensy;
 	sogdensy.sogDensity(QRparam, empidensity, H);
-	//double rad2 = Parameters::x_in;
+
 	rad = Parameters::x_in;
     for (int i = 0; i < empidensity.size(); ++i)
     {
