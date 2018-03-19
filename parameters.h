@@ -55,7 +55,8 @@ const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
 const double rms = 3.460;							// root-mean-square radius of the charge distribution [fm]
-const double rp = 0.7956;							// [fm]
+const double rp = 0.7956;							// (<rp^2>)^1/2 gaussian width [fm]
+const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 //const double x_min=0;								// Integration
 //const double x_max=3*Rn;							// Interval
 

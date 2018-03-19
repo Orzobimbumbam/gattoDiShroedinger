@@ -10,7 +10,7 @@
 #include "initpot.h"
 #include "eigenvalues.hpp"
 #include "densities.h"
-#include "khon-sham.h"
+#include "kohn-sham.h"
 
 
 

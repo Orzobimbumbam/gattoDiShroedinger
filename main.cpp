@@ -16,10 +16,8 @@ int main(int argc, const char * argv[]) {
  *========================================================================================*/
 
 	//Load the matrix with quantum numbers of each state from "orbitals.txt"
-	std::vector <std::vector <int> > orbitals (36);// std::vector <int> (3,0));
-	//std::vector <int> state (2);
-	//std::vector <std::vector <int> > orbitals;
-	std::ifstream in ;//("orbitals.txt", std::ios::in);
+	std::vector <std::vector <int> > orbitals (36);
+	std::ifstream in ;
 	in.open("orbitals.txt");
 
 	for (int i = 0; i < 36; ++i)
@@ -97,14 +95,9 @@ int main(int argc, const char * argv[]) {
 	    	walk1++;
 	    }
 
-		/*evalArray.push_back(eigval);
-		efuncArray.push_back(eigfunc);
-		nuclnumbArray.push_back(nuclNumb);*/
-
 		//dstd::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << eigfunc << std::endl;
 
 		i++;
-		//std::cout << massNumb << std::endl;
 	}
 
      for (int i = 0; i < thdensArray.size(); ++i)
@@ -129,7 +122,7 @@ int main(int argc, const char * argv[]) {
  * Calculate empirical densities from MC simulations or scattering (SOG densities)
  *=======================================================================================*/
 
-     //std::fstream in ("Ca48.txt", std::ios::in);
+     //std::fstream in2 ("Ca48.txt", std::ios::in);
      in.open("Ca48.txt");
      std::ofstream file3("SOGdensity.txt");
      std::vector <std::vector <double> > QRparam (12);
@@ -139,7 +132,7 @@ int main(int argc, const char * argv[]) {
  	{
  		for (int j = 0; j < 2; ++j)
  		{
- 			int temp;
+ 			double temp;
  			in >> temp;
  			QRparam[i].push_back(temp);
  		}
@@ -147,17 +140,17 @@ int main(int argc, const char * argv[]) {
 
  	in.close();
 
-	for (int i = 0; i < 12; ++i)
+	/*for (int i = 0; i < 12; ++i)
 	{
 		for (int j=0; j<2; ++j)
 			std::cout << QRparam[i][j];
 			std::cout << std::endl;
-	}
+	}*/
 
 	SOGdensity sogdensy;
 	sogdensy.sogDensity(QRparam, empidensity, H);
-
-
+	//double rad2 = Parameters::x_in;
+	rad = Parameters::x_in;
     for (int i = 0; i < empidensity.size(); ++i)
     {
    	 file3 << rad << "\t" << empidensity[i] << std::endl;
@@ -177,7 +170,7 @@ int main(int argc, const char * argv[]) {
 	HOPot inpotential (Parameters::mn, 0);
 
 	double radius = Parameters::x_in;
-	for (int i = 0; i < NSteps; ++i)
+	for (int i = 0; i < NSteps + 1; ++i)
 	{
 		double inpot = inpotential.potential(radius);
 		inpotArray.push_back(inpot);
@@ -187,6 +180,7 @@ int main(int argc, const char * argv[]) {
 	KohnShamInverse inversion;
 	inversion.KSinverse(thdensArray,empidensity,inpotArray,newpotArray);
 
+	rad = Parameters::x_in;
     for (int i = 0; i < newpotArray.size(); ++i)
     {
    	 file4 << rad << "\t" << newpotArray[i] << std::endl;
