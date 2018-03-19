@@ -41,7 +41,7 @@ void SOGdensity::sogDensity (const std::vector<std::vector<double>>& QRparameter
 	double radiusx = Parameters::x_in;
 	for (unsigned int r = 0 ; r < NSteps + 1; ++r)
 	{
-		const double c1 = 1/(2*pow(Parameters::PI,(3./2.))*r);
+		const double c1 = 1/(2*pow(Parameters::PI,(3./2.))*radiusx);
 		double c3 = 0;
 		for (unsigned int i = 0; i < 11; ++i)
 		{
