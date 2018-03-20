@@ -12,11 +12,13 @@
 KohnShamInverse::KohnShamInverse () {}
 
 void KohnShamInverse::KSinverse(const std::vector<double>& inTheoDensity, const std::vector<double>& empiDensity,
-    	const std::vector<double>& inPot, std::vector<double>& outPot) const
+    	const std::vector<double>& inPot)
 {
-	outPot.clear();
-	double ratio1, ratio2, newPot = 0;
-	for (int i = 0; i < inPot.size(); ++i)
+	m_outPot.clear();
+	unsigned long N = inPot.size();
+	const double H = (Parameters::x_fin - Parameters::x_in)/N;
+	double ratio1, ratio2, newPot, x = Parameters::x_in;
+	for (int i = 0; i < N; ++i)
 	{
 
 		if (inPot[i] < 0)
@@ -34,9 +36,17 @@ void KohnShamInverse::KSinverse(const std::vector<double>& inTheoDensity, const 
 			newPot = ratio2*inPot[i];
 		}
 
-		outPot.push_back(newPot);
+		//outPot.push_back(newPot);
+		m_outPot[x] = newPot;
+
+		x += H;
 	}
 	return;
+}
+
+void KohnShamInverse::getOutPot (std::map<double, double>& outPot) const
+{
+	outPot = m_outPot;
 }
 
 

@@ -81,19 +81,20 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
 /*=====================================================================
  * Kohn-Sham potential
  *===================================================================*/
-/*
-potOut::potOut(double potKS): m_potKS(potKS){}
+
+potOut::potOut(KohnShamInverse outpot): m_outpot(outpot){}
 double potOut::potential(double x) const
 {
-	//const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
-	return /*angularpart+*///m_potKS;
+	std::map<double, double> potMap;
+	m_outpot.getOutPot(potMap);
 
-//}
-/*
-InitialPot* potOut::clone() const
+	return potMap[x];
+}
+
+std::unique_ptr<InitialPot> potOut::clone() const
 {
-    return new potOut(*this); //return a derived class object through a base class pointer
-}*/
+	 return std::make_unique<potOut> (*this); //return a derived class object through a base class pointer
+}
 
 
 

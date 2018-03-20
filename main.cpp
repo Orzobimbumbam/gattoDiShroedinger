@@ -164,8 +164,8 @@ int main(int argc, const char * argv[]) {
 * Calculate new potential by inverse Kohn-Sham equations
 *=======================================================================================*/
 
+    while(!densy.convergence())
     std::ofstream file4("newpotential.txt");
-    std::vector<double> newpotArray;
     std::vector<double> inpotArray;
 	HOPot inpotential (Parameters::mn, 0);
 
@@ -178,16 +178,19 @@ int main(int argc, const char * argv[]) {
 	}
 
 	KohnShamInverse inversion;
-	inversion.KSinverse(thdensArray,empidensity,inpotArray,newpotArray);
+	inversion.KSinverse(thdensArray,empidensity,inpotArray);
 
-	rad = Parameters::x_in;
+
+
+
+	/*rad = Parameters::x_in;
     for (int i = 0; i < newpotArray.size(); ++i)
     {
    	 file4 << rad << "\t" << newpotArray[i] << std::endl;
    	 rad += H;
     }
 
-    file4.close();
+    file4.close();*/
 
 
 

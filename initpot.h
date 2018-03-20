@@ -1,5 +1,6 @@
 //class hierarchy interface goes in header
 #pragma once
+#include "kohn-sham.h"
 #include <memory>
 
 /*====================================================================
@@ -88,18 +89,20 @@ private:
 /*======================================================================
  * Kohn-Sham potential class
  *====================================================================*/
-/*
+
 class potOut: public InitialPot
 {
 public:
-	potOut(double potKS);
+	potOut(KohnShamInverse outpot);
 	double potential (double x) const override;
 
-	InitialPot* clone() const override;
+    std::unique_ptr<InitialPot> clone() const override;
 
 private:
-	double m_potKS;
-};*/
+	KohnShamInverse m_outpot;
+	//double m_potKS;
+
+};
 
 
 

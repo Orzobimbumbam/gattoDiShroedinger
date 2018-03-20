@@ -24,6 +24,24 @@ void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<dou
 	return;
 }
 
+bool Theoreticaldensity::convergence (const std::vector<double>& empidensity, const std::vector<double>& thdensity) const
+{
+	double maxDiff = std::abs(thdensity[0]-empidensity[0]);
+	unsigned int maxIndex = 0;
+	for (int i = 0; i < empidensity.size(); ++i)
+	{
+		if(std::abs(thdensity[i]-empidensity[i]) > maxDiff)
+		{
+			maxDiff = std::abs(thdensity[i]-empidensity[i]);
+			maxIndex = i;
+		}
+	}
+
+	const double epsilon = empidensity[maxIndex]*0.01;
+	return maxDiff < epsilon ? true : false;
+}
+
+
 /*===========================================
  * SOG density
  *=========================================*/

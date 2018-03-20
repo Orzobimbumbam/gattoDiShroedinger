@@ -8,6 +8,7 @@ class Theoreticaldensity
 public:
 	Theoreticaldensity();
     void density(const std::vector<double>& psi, std::vector<double>& thDensArray, unsigned int degen, double step) const;
+    bool convergence (const std::vector<double>& empidensity, const std::vector<double>& thdensity) const;
 
 private:
     //Theoreticaldensity();
