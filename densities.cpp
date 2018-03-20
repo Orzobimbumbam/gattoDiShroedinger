@@ -24,7 +24,6 @@ void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<dou
 	return;
 }
 
-
 /*===========================================
  * SOG density
  *=========================================*/

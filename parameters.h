@@ -9,7 +9,6 @@ double psi0(unsigned int l);
 double psiPrime0(unsigned int l);
 
 
-
 namespace Parameters
 {
 
