@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <time.h>
 #include "includes.h"
 
 
@@ -9,6 +10,9 @@ int main(int argc, const char * argv[]) {
 
 	double H = 0.001;
 	int massNumb = Parameters::A;
+	clock_t start = clock(); // start time
+	/*time_t t1, t2;
+	t1 = time(0); //start time*/
 
 /*==========================================================================================
  * STEP-1
@@ -60,7 +64,6 @@ int main(int argc, const char * argv[]) {
     // Load Qi and Ri parameters for SOG
     //std::fstream in2 ("Ca48.txt", std::ios::in);
     in.open("Ca48.txt");
-    std::ofstream file3("SOGdensity.txt");
     std::vector <std::vector <double> > QRparam (12);
     std::vector<double> empidensity;
 
@@ -87,6 +90,7 @@ int main(int argc, const char * argv[]) {
 	SOGdensity sogdensy;
 	sogdensy.sogDensity(QRparam, empidensity, H);
 
+    std::ofstream file3("SOGdensity.txt");
 	rad = Parameters::x_in;
     for (int i = 0; i < empidensity.size(); ++i)
     {
@@ -101,26 +105,38 @@ int main(int argc, const char * argv[]) {
 *=======================================================================================*/
 
 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
+	std::vector<double> inpotArray;
     Theoreticaldensity densy;
 
+    int count = 0; //Loop counter
     while(!densy.convergence(empidensity, thdensity))
     {
-    	std::vector<double> inpotArray;
-    	HOPot inpotential (Parameters::mn, 0);
+    	if (count == 0)
+    	{
+        	HOPot inpotential (Parameters::mn, 0);
 
- 		double radius = Parameters::x_in;
- 		for (int i = 0; i < NSteps + 1; ++i)
- 		{
- 			double inpot = inpotential.potential(radius);
- 			inpotArray.push_back(inpot);
- 			radius += H;
- 		}
+     		double radius = Parameters::x_in;
+     		for (int i = 0; i < NSteps + 1; ++i)
+     		{
+     			double inpot = inpotential.potential(radius);
+     			inpotArray.push_back(inpot);
+     			radius += H;
+     		}
+    	}
+    	else potOut()
 
  		KohnShamInverse inversion;
- 		inversion.KSinverse(thdensArray,empidensity,inpotArray);
+ 		inversion.KSinverse(thdensity,empidensity,inpotArray);
 
+ 		count++;
+ 		std::cout << "loop n. " << count << std::endl;
      }
 
+    //t2 = time(0);
+    clock_t end = clock(); // finish time
+
+    //std::cout << "CONVERGENCE IS DONE in: " << t2 - t1 << "sec.!" << "GREAT JOB!" << std::endl;
+    std::cout << "CONVERGENCE IS DONE in: " << ((double)(end - start)) / CLOCKS_PER_SEC); << "sec.!" << "GREAT JOB!" << std::endl;
 
     std::ofstream file4("newpotential.txt");
     rad = Parameters::x_in;
