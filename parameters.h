@@ -12,14 +12,14 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-const int NN=48;									// Neutrons number
-const int NP=0;										// Protons number
+const int NN = 48;									// Neutrons number
+const int NP = 0;									// Protons number
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
-const double mn= 939.565378;                        // Neutron mass in mnc^2 [MeV]
+const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]
 const double me = 938.28;							// Proton mass in mpc^2 [MeV]
-const int A=NN+NP; 									// Mass number
-const double R0= 1.27; 								// [fm]
+const int A = NN + NP; 								// Mass number
+const double R0 = 1.27; 							// [fm]
 
 // Wood-Saxon potential parameters
 const double Rn = R0*pow(A,(1/3)); 					// Nuclear radius [fm]
@@ -31,7 +31,7 @@ const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
-const double hbar_omega=10;							// [MeV]
+const double hbar_omega = 10;						// [MeV]
 //const double k = 1e-24;
 
 

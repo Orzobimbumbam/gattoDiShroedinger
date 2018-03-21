@@ -2,21 +2,22 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "Includes.h"
+#include "includes.h"
 
 
 int main(int argc, const char * argv[]) {
 
 	double H = 0.001;
-	int massNumb=Parameters::A;
+	int massNumb = Parameters::A;
 
 /*==========================================================================================
  * STEP-1
  * Calculate, by Schrodinger solver, the eigenfunctions for each quantum involved state
  *========================================================================================*/
 
-	//Load the matrix with quantum numbers of each state from "orbitals.txt"
+	// Load the matrix with quantum numbers of each state from "orbitals.txt"
 	std::vector <std::vector <int> > orbitals (36);
+	std::vector<double> thdensity;
 	std::ifstream in ;
 	in.open("orbitals.txt");
 
@@ -39,94 +40,29 @@ int main(int argc, const char * argv[]) {
 				std::cout << std::endl;
 		}*/
 
-	// Solve Schrodinger equation for each involved state
-	int i = 0;
-	int degen = 0;
-	unsigned int nuclNumb = 0;
-	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
-	std::vector <double> psiArray;
-	std::vector<double> thdensArray;
+	// Fill orbitals and calculate energies, eigenfunctions and theoretical density for first loop
+	OrbitalsFilling fill (massNumb, H);
+	fill.orbFilling(orbitals, thdensity);
+
+	std::ofstream file2("density.txt");
 	double rad = Parameters::x_in;
-    /*std::vector<double> evalArray;
-    std::vector<double> efuncArray;
-    std::vector<int> nuclnumbArray;*/
-    std::ofstream file1("eigenfunc.txt");
-    std::ofstream file2("density.txt");
-
-
-
-     while (massNumb > 0)
-	{
-    	if(massNumb == Parameters::A)
-    	{
-    		for (int i = 0; i < NSteps + 1; ++i)
-    		{
-    			thdensArray.push_back(0);
-    		}
-    	}
-
-    	unsigned int quantNr = orbitals[i][0];
-		unsigned int quantL = orbitals[i][1];
-		unsigned int quantN = 2*(quantNr - 1) + quantL;
-		HOPot pot (Parameters::mn, quantL);
-		Schroddy Sfunc (pot, H);
-		GenericEigenvalues GenEig(Sfunc, quantNr, quantL);
-		double eigval = GenEig.eigenvalue();
-		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(quantL),
-                psiPrime0(quantL), eigval , psiArray);
-
-		degen = 2*(2*quantL+1); // orbital degeneration
-		massNumb -= degen;
-
-		if (massNumb < 0)
-			nuclNumb = massNumb + degen; // nucleons number on last orbital in not filled case
-		else nuclNumb = degen; // nucleons number in filled orbital
-
-		// Claculate theoretical density for involved state
-		Theoreticaldensity densy;
-		densy.density(psiArray,thdensArray,nuclNumb,H);
-
-
-	    std::vector<double>::iterator walk1 = psiArray.begin();
-	    while (walk1 != psiArray.end())
-
-	    {
-	    	file1 << quantN << "\t" << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << *walk1 << std::endl;
-	    	walk1++;
-	    }
-
-		//dstd::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << eigfunc << std::endl;
-
-		i++;
-	}
-
-     for (int i = 0; i < thdensArray.size(); ++i)
-     {
-    	 file2 << rad << "\t" << thdensArray[i] << std::endl;
-    	 rad += H;
-
-     }
-
-     /*std::vector<double>::iterator walk2 = thdensArray.begin();
-     while (walk2 != thdensArray.end())
-     {
-    	 file2 << rad << "\t"<< *walk2 << std::endl;
-    	 walk2++, rad += H;
-     }*/
-
-     file1.close();
-     file2.close();
+    for (int i = 0; i < thdensity.size(); ++i)
+    {
+    	file2 << rad << "\t" << thdensity[i] << std::endl;
+    	rad += H;
+    }
+    file2.close();
 
 /*=========================================================================================
  * STEP-2
  * Calculate empirical densities from MC simulations or scattering (SOG densities)
  *=======================================================================================*/
-
-     //std::fstream in2 ("Ca48.txt", std::ios::in);
-     in.open("Ca48.txt");
-     std::ofstream file3("SOGdensity.txt");
-     std::vector <std::vector <double> > QRparam (12);
-     std::vector<double> empidensity;
+    // Load Qi and Ri parameters for SOG
+    //std::fstream in2 ("Ca48.txt", std::ios::in);
+    in.open("Ca48.txt");
+    std::ofstream file3("SOGdensity.txt");
+    std::vector <std::vector <double> > QRparam (12);
+    std::vector<double> empidensity;
 
  	for (int i = 0; i < 12; ++i)
  	{
@@ -147,6 +83,7 @@ int main(int argc, const char * argv[]) {
 			std::cout << std::endl;
 	}*/
 
+ 	// Claculate empiric density by SOG
 	SOGdensity sogdensy;
 	sogdensy.sogDensity(QRparam, empidensity, H);
 
@@ -156,7 +93,6 @@ int main(int argc, const char * argv[]) {
    	 file3 << rad << "\t" << empidensity[i] << std::endl;
    	 rad += H;
     }
-
     file3.close();
 
 /*=========================================================================================
@@ -164,33 +100,37 @@ int main(int argc, const char * argv[]) {
 * Calculate new potential by inverse Kohn-Sham equations
 *=======================================================================================*/
 
-    while(!densy.convergence())
+	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
+    Theoreticaldensity densy;
+
+    while(!densy.convergence(empidensity, thdensity))
+    {
+    	std::vector<double> inpotArray;
+    	HOPot inpotential (Parameters::mn, 0);
+
+ 		double radius = Parameters::x_in;
+ 		for (int i = 0; i < NSteps + 1; ++i)
+ 		{
+ 			double inpot = inpotential.potential(radius);
+ 			inpotArray.push_back(inpot);
+ 			radius += H;
+ 		}
+
+ 		KohnShamInverse inversion;
+ 		inversion.KSinverse(thdensArray,empidensity,inpotArray);
+
+     }
+
+
     std::ofstream file4("newpotential.txt");
-    std::vector<double> inpotArray;
-	HOPot inpotential (Parameters::mn, 0);
-
-	double radius = Parameters::x_in;
-	for (int i = 0; i < NSteps + 1; ++i)
-	{
-		double inpot = inpotential.potential(radius);
-		inpotArray.push_back(inpot);
-		radius += H;
-	}
-
-	KohnShamInverse inversion;
-	inversion.KSinverse(thdensArray,empidensity,inpotArray);
-
-
-
-
-	/*rad = Parameters::x_in;
+    rad = Parameters::x_in;
     for (int i = 0; i < newpotArray.size(); ++i)
     {
-   	 file4 << rad << "\t" << newpotArray[i] << std::endl;
-   	 rad += H;
+ 	   	 file4 << rad << "\t" << newpotArray[i] << std::endl;
+ 	   	 rad += H;
     }
+    file4.close();
 
-    file4.close();*/
 
 
 
