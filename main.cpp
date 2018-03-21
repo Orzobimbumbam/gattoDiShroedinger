@@ -23,7 +23,8 @@ int main(int argc, const char * argv[]) {
 	std::vector <std::vector <int> > orbitals (36);
 	std::vector<double> thdensity;
 	std::ifstream in ;
-	in.open("orbitals.txt");
+	std::string inputfile1 = Parameters::orbitalsfile;
+	in.open(inputfile1);
 
 	for (int i = 0; i < 36; ++i)
 	{
@@ -63,7 +64,8 @@ int main(int argc, const char * argv[]) {
  *=======================================================================================*/
     // Load Qi and Ri parameters for SOG
     //std::fstream in2 ("Ca48.txt", std::ios::in);
-    in.open("Ca48.txt");
+    std::string inputfile2 = Parameters::qrfile;
+    in.open(inputfile2);
     std::vector <std::vector <double> > QRparam (12);
     std::vector<double> empidensity;
 
@@ -106,7 +108,9 @@ int main(int argc, const char * argv[]) {
 
 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
 	std::vector<double> inpotArray;
+	std::vector<double> psiArray;
     Theoreticaldensity densy;
+    KohnShamInverse inversion;
 
     int count = 0; //Loop counter
     while(!densy.convergence(empidensity, thdensity))
@@ -126,18 +130,16 @@ int main(int argc, const char * argv[]) {
     	else
     	{
     		psiArray.clear();
-    		potOut newpot ();
+    		thdensity.clear();
+    		potOut newpot (inversion);
     		Schroddy Sfunc (newpot, H);
     		GenericEigenvalues GenEig(Sfunc, quantNr, quantL);
     		double eigval = GenEig.eigenvalue();
     		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(quantL),
     	             psiPrime0(quantL), eigval , psiArray)
-    		densy.density(psiArray,thdensArray,nuclNumb,H);
-
-
+    		densy.density(psiArray,thdensity,nuclNumb,H);
     	}
 
- 		KohnShamInverse inversion;
  		inversion.KSinverse(thdensity,empidensity,inpotArray);
 
  		count++;
@@ -146,7 +148,8 @@ int main(int argc, const char * argv[]) {
 
     //t2 = time(0);
     clock_t end = clock(); // finish time
-    double hours = (((double)(end - start))/CLOCKS_PER_SEC)/3600;
+    //double hours = (((double)(end - start))/CLOCKS_PER_SEC)/3600;
+    double hours = ((double)(end - start))/3600;
 
     //std::cout << "CONVERGENCE IS DONE in: " << t2 - t1 << "sec.!" << "GREAT JOB!" << std::endl;
     std::cout << "CONVERGENCE IS DONE in: " << hours << "hours!" << "GREAT JOB!" << std::endl;

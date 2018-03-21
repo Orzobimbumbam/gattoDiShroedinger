@@ -19,7 +19,7 @@ const int NP = 0;									// Protons number
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]
 const double mp = 938.28;							// Proton mass in mpc^2 [MeV]
 const int A = NN + NP; 								// Mass number
-const double R0 = 1.27; 							// [fm]
+const double R0= 1.27; 								// [fm]
 
 // Wood-Saxon potential parameters
 const double Rn = R0*pow(A,(1/3)); 					// Nuclear radius [fm]
@@ -31,7 +31,7 @@ const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
-const double hbar_omega = 10;						// [MeV]
+const double hbar_omega=10;							// [MeV]
 //const double k = 1e-24;
 
 
@@ -60,6 +60,8 @@ const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 //const double x_min=0;								// Integration
 //const double x_max=3*Rn;							// Interval
+char orbitalsfile = "orbitals.txt";					// file name for orbitals input
+char qrfile = "Ca48.txt";							// file name for SOG parameters input
 
 }
 
