@@ -113,7 +113,7 @@ int main(int argc, const char * argv[]) {
     {
     	if (count == 0)
     	{
-        	HOPot inpotential (Parameters::mn, 0);
+    		HOPot inpotential (Parameters::mn, 0);
 
      		double radius = Parameters::x_in;
      		for (int i = 0; i < NSteps + 1; ++i)
@@ -123,7 +123,17 @@ int main(int argc, const char * argv[]) {
      			radius += H;
      		}
     	}
-    	else potOut()
+    	else
+    	{
+    		potOut newpot ();
+    		Schroddy Sfunc (newpot, H);
+    		GenericEigenvalues GenEig(Sfunc);
+    		double eigval = GenEig.eigenvalue();
+    		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, eigval , psiArray);
+    		densy.density(psiArray,thdensArray,nuclNumb,H);
+
+
+    	}
 
  		KohnShamInverse inversion;
  		inversion.KSinverse(thdensity,empidensity,inpotArray);
@@ -134,9 +144,10 @@ int main(int argc, const char * argv[]) {
 
     //t2 = time(0);
     clock_t end = clock(); // finish time
+    double hours = (((double)(end - start))/CLOCKS_PER_SEC)/3600;
 
     //std::cout << "CONVERGENCE IS DONE in: " << t2 - t1 << "sec.!" << "GREAT JOB!" << std::endl;
-    std::cout << "CONVERGENCE IS DONE in: " << ((double)(end - start)) / CLOCKS_PER_SEC << "sec.!" << "GREAT JOB!" << std::endl;
+    std::cout << "CONVERGENCE IS DONE in: " << hours << "hours!" << "GREAT JOB!" << std::endl;
 
     std::ofstream file4("newpotential.txt");
     rad = Parameters::x_in;
