@@ -136,7 +136,7 @@ int main(int argc, const char * argv[]) {
     clock_t end = clock(); // finish time
 
     //std::cout << "CONVERGENCE IS DONE in: " << t2 - t1 << "sec.!" << "GREAT JOB!" << std::endl;
-    std::cout << "CONVERGENCE IS DONE in: " << ((double)(end - start)) / CLOCKS_PER_SEC); << "sec.!" << "GREAT JOB!" << std::endl;
+    std::cout << "CONVERGENCE IS DONE in: " << ((double)(end - start)) / CLOCKS_PER_SEC << "sec.!" << "GREAT JOB!" << std::endl;
 
     std::ofstream file4("newpotential.txt");
     rad = Parameters::x_in;

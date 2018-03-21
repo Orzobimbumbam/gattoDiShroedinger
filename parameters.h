@@ -17,7 +17,7 @@ const int NP = 0;									// Protons number
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]
-const double me = 938.28;							// Proton mass in mpc^2 [MeV]
+const double mp = 938.28;							// Proton mass in mpc^2 [MeV]
 const int A = NN + NP; 								// Mass number
 const double R0 = 1.27; 							// [fm]
 
