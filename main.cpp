@@ -125,11 +125,13 @@ int main(int argc, const char * argv[]) {
     	}
     	else
     	{
+    		psiArray.clear();
     		potOut newpot ();
     		Schroddy Sfunc (newpot, H);
-    		GenericEigenvalues GenEig(Sfunc);
+    		GenericEigenvalues GenEig(Sfunc, quantNr, quantL);
     		double eigval = GenEig.eigenvalue();
-    		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, eigval , psiArray);
+    		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(quantL),
+    	             psiPrime0(quantL), eigval , psiArray)
     		densy.density(psiArray,thdensArray,nuclNumb,H);
 
 
