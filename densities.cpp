@@ -24,6 +24,10 @@ void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<dou
 	return;
 }
 
+/*============================================
+ * Convergence condition
+ *==========================================*/
+
 bool Theoreticaldensity::convergence (const std::vector<double>& empidensity, const std::vector<double>& thdensity) const
 {
 	double maxDiff = std::abs(thdensity[0]-empidensity[0]);
@@ -38,7 +42,7 @@ bool Theoreticaldensity::convergence (const std::vector<double>& empidensity, co
 	}
 
 	const double epsilon = empidensity[maxIndex]*0.01;
-	return maxDiff < epsilon ? true : false;
+	return maxDiff < epsilon ? true : false; // convergence condition
 }
 
 
@@ -51,6 +55,9 @@ SOGdensity::SOGdensity() {}
 void SOGdensity::sogDensity (const std::vector<std::vector<double>>& QRparameters, std::vector<double>& sogdensity, double h) const
 {
     sogdensity.clear();
+    std::vector<double> notNormal;
+    notNormal.clear();
+    double scalar = 0;
 	const double alpha = sqrt(2./3.)*Parameters::rp;
 	const double gamma = sqrt(2./3.)*Parameters::rms;
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
@@ -72,10 +79,19 @@ void SOGdensity::sogDensity (const std::vector<std::vector<double>>& QRparameter
 			c3 += Ai*c2;
 		}
 		const double sogdens = c1*c3;
-		sogdensity.push_back(sogdens);
+		notNormal.push_back(sogdens);
+		scalar += sogdens*sogdens;
+		//sogdensity.push_back(sogdens);
 
 		radiusx += h;
 	}
+	// normalization
+	double squared = sqrt(scalar*h);
+    for (auto& it : notNormal)
+    {
+        it = it/squared;
+        sogdensity.push_back(it);
+    }
 	return;
 }
 

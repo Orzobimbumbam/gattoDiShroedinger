@@ -9,6 +9,8 @@
 int main(int argc, const char * argv[]) {
 
 	double H = 0.001;
+	std::string inputfile1 = "orbitals.txt";
+	std::string inputfile2 = "Ca48txt";
 	int massNumb = Parameters::A;
 	clock_t start = clock(); // start time
 	/*time_t t1, t2;
@@ -23,7 +25,7 @@ int main(int argc, const char * argv[]) {
 	std::vector <std::vector <int> > orbitals (36);
 	std::vector<double> thdensity;
 	std::ifstream in ;
-	std::string inputfile1 = Parameters::orbitalsfile;
+	//std::string inputfile1(Parameters::orbitalsfile);
 	in.open(inputfile1);
 
 	for (int i = 0; i < 36; ++i)
@@ -64,7 +66,7 @@ int main(int argc, const char * argv[]) {
  *=======================================================================================*/
     // Load Qi and Ri parameters for SOG
     //std::fstream in2 ("Ca48.txt", std::ios::in);
-    std::string inputfile2 = Parameters::qrfile;
+    //std::string inputfile2(Parameters::qrfile);
     in.open(inputfile2);
     std::vector <std::vector <double> > QRparam (12);
     std::vector<double> empidensity;
@@ -113,7 +115,7 @@ int main(int argc, const char * argv[]) {
     KohnShamInverse inversion;
 
     int count = 0; //Loop counter
-    while(!densy.convergence(empidensity, thdensity))
+    do
     {
     	if (count == 0)
     	{
@@ -133,26 +135,17 @@ int main(int argc, const char * argv[]) {
     		thdensity.clear();
     		potOut newpot (inversion);
     		Schroddy Sfunc (newpot, H);
-    		GenericEigenvalues GenEig(Sfunc, quantNr, quantL);
+    		GenericEigenvalues GenEig(Sfunc/*, quantNr, quantL*/);
     		double eigval = GenEig.eigenvalue();
-    		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(quantL),
-    	             psiPrime0(quantL), eigval , psiArray)
-    		densy.density(psiArray,thdensity,nuclNumb,H);
+    		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, 0, 0, eigval , psiArray);
+    		densy.density(psiArray,thdensity,massNumb,H);
     	}
 
  		inversion.KSinverse(thdensity,empidensity,inpotArray);
 
  		count++;
  		std::cout << "loop n. " << count << std::endl;
-     }
-
-    //t2 = time(0);
-    clock_t end = clock(); // finish time
-    //double hours = (((double)(end - start))/CLOCKS_PER_SEC)/3600;
-    double hours = ((double)(end - start))/3600;
-
-    //std::cout << "CONVERGENCE IS DONE in: " << t2 - t1 << "sec.!" << "GREAT JOB!" << std::endl;
-    std::cout << "CONVERGENCE IS DONE in: " << hours << "hours!" << "GREAT JOB!" << std::endl;
+     } while(!densy.convergence(empidensity, thdensity));
 
     std::ofstream file4("newpotential.txt");
     rad = Parameters::x_in;
@@ -163,7 +156,13 @@ int main(int argc, const char * argv[]) {
     }
     file4.close();
 
+    //t2 = time(0);
+    clock_t end = clock(); // finish time
+    //double hours = (((double)(end - start))/CLOCKS_PER_SEC)/3600;
+    double hours = ((double)(end - start))/3600;
 
+    //std::cout << "CONVERGENCE IS DONE in: " << t2 - t1 << "sec.!" << "GREAT JOB!" << std::endl;
+    std::cout << "CONVERGENCE IS DONE in: " << hours << "hours!" << "GREAT JOB!" << std::endl;
 
 
 

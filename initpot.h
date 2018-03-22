@@ -90,7 +90,7 @@ private:
  * Kohn-Sham potential class
  *====================================================================*/
 
-class potOut: public InitialPot
+class potOut/*: public InitialPot*/
 {
 public:
 	potOut(KohnShamInverse outpot);

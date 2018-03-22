@@ -3,6 +3,7 @@
 //#ifndef parameters_h
 //#define parameters_h
 #include<cmath>
+#include<string>
 
 
 double psi0(unsigned int l);
@@ -60,8 +61,8 @@ const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 //const double x_min=0;								// Integration
 //const double x_max=3*Rn;							// Interval
-char orbitalsfile = "orbitals.txt";					// file name for orbitals input
-char qrfile = "Ca48.txt";							// file name for SOG parameters input
+//const std::string& orbitalsfile = "orbitals.txt";			// file name for orbitals input
+//const std::string& qrfile = "Ca48.txt";					// file name for SOG parameters input
 
 }
 
