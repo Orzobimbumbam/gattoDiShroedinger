@@ -39,6 +39,7 @@ int main(int argc, const char * argv[])
             orbitals[i].push_back(temp);
         }
     }
+    in.close();
     
     /*for (int i=0; i<36; ++i)
      {
@@ -114,130 +115,77 @@ int main(int argc, const char * argv[])
     
     /*=========================================================================================
      * STEP-2
-     * Calculate the theoretical density
+     * Calculate empirical densities from MC simulations or scattering (SOG densities)
      *=======================================================================================*/
     
-    // std::vector <std::vector <double> > efunctions (63500);
-    //std::vector <int> data (4);
-    //std::fstream in ("eigenfunc.txt", std::ios::in);
-    //in.open ("eigenfunc.txt");
-    /*std::fstream in ("eigenfunc.txt", std::ios::in);
-     
-     for (int i = 0; i < 63500; ++i)
-     {
-     for (int j = 0; j < 2; ++j)
-     {
- 			 double temp;
- 			 in >> temp;
- 			 efunctions[i].push_back(temp);
-     }
-     //if (in.eof()) break;
-     }*/
+    //std::fstream in2 ("Ca48.txt", std::ios::in);
+    in.open("../Ca48.txt");
+    std::ofstream file3("Outputs/SOGdensity.txt");
+    std::vector <std::vector <double>> QRparam(12);
+    std::vector<double> empidensity;
     
-    /*for (int i=0; i<63500; ++i)
+    for (int i = 0; i < 12; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            double temp;
+            in >> temp;
+            QRparam[i].push_back(temp);
+        }
+    }
+    
+    in.close();
+    
+    /*for (int i = 0; i < 12; ++i)
      {
- 				for (int j=0; j<2; ++j)
-     std::cout << efunctions[i][j];
+     for (int j=0; j<2; ++j)
+     std::cout << QRparam[i][j];
      std::cout << std::endl;
      }*/
     
+    SOGdensity sogdensy;
+    sogdensy.sogDensity(QRparam, empidensity, H);
     
-    /*std::vector<double> thDensArray;
-     std::vector<double> xArray;
-     std::ofstream file2("density.csv");
-     const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
-     
-     int deg = 0;
-     double efunc = 0, radiusx = Parameters::x_in;
-     for (unsigned long i = 0; i < NSteps + 1; ++i)
-     {
-     deg = efunctions[i][0];
-     efunc = efunctions[i][1];
-     Theoreticaldensity densy;
-     double thdensity = densy.density(efunc,deg,radiusx);
-     thDensArray.push_back(thdensity);
-     xArray.push_back(radiusx);
-     radiusx += H;
-     }
-     
-     std::vector<double>::iterator walk2 = thDensArray.begin();
-     std::vector<double>::iterator walk3 = xArray.begin();
-     while (walk2 != thDensArray.end() && walk3 != xArray.end())
-     {
-     file2 << *walk3 << ","<< *walk2 << std::endl;
-     walk2++, walk3++;
-     }
-     
-     file2.close();*/
+    rad = Parameters::x_in;
+    for (int i = 0; i < empidensity.size(); ++i)
+    {
+        file3 << rad << "\t" << empidensity[i] << std::endl;
+        rad += H;
+    }
+    
+    file3.close();
     
     /*=========================================================================================
      * STEP-3
-     * Calculate empirical densities from MC simulations or scattering
+     * Calculate new potential by inverse Kohn-Sham equations
      *=======================================================================================*/
     
+    std::ofstream file4("Outputs/newpotential.txt");
+    std::vector<double> newpotArray;
+    std::vector<double> inpotArray;
+    HOPot inpotential (Parameters::mn, 0);
     
+    double radius = Parameters::x_in;
+    for (int i = 0; i < NSteps + 1; ++i)
+    {
+        double inpot = inpotential.potential(radius);
+        inpotArray.push_back(inpot);
+        radius += H;
+    }
     
-    /*===============================================================================
-     * TEST - Calculate first 12 levels eigenvalues for HO potential
-     *==============================================================================*/
+    KohnShamInverse inversion;
+    inversion.KSinverse(thdensArray,empidensity,inpotArray,newpotArray);
     
-    /*unsigned int nr=1;
-     int l_mom=2;
-     unsigned int n = 2*(nr-1) + l_mom;*/
-    /*std::vector <double> psiArray;
-     unsigned int nmax = 5;
-     
-     for (unsigned int n = 0; n <= nmax; ++n)
-     {
-     unsigned int nr = 1;
-     for (int l = n; l >= 0; l -= 2)
-     {
-     unsigned int l_mom = l;
-     
-     HOPot pot (Parameters::mn, l_mom);
-     Schroddy Sfunc (pot, H);
-     GenericEigenvalues GenEig(Sfunc, nr, l_mom);
-     double eig = GenEig.eigenvalue();
-     double eigfun= Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(l_mom),
-     psiPrime0(l_mom), eig , psiArray);
-     
-     std::cout << n << "\t" << nr << "\t" << l << "\t" << eig << "\t" << eigfun << std::endl;
-     
-     ++nr;
-     }
-     }*/
+    rad = Parameters::x_in;
+    for (int i = 0; i < newpotArray.size(); ++i)
+    {
+        file4 << rad << "\t" << newpotArray[i] << std::endl;
+        rad += H;
+    }
     
-    /*========================================================================================
-     * TEST to find the correct eigenvalues range for shooting method
-     * Set two eigenvalues E, Emax and see if there is a change of sign in eigenfunctions
-     *======================================================================================*/
-    /*double Emax=400, E=250, pass=0.001;
-     int N=(Emax-E)/pass, l_mom=1;
-     std::vector<double> arrayeval;
-     std::vector<double> arrayefun;
-     HOPot pot (Parameters::mn, Parameters::hbar_omega, l_mom);
-     std::ofstream file("test_range.txt");
-     
-     for (int i=0; i<=N; ++i)
-     {
-    	Schroddy s(pot);
-    	arrayeval.push_back(E);
-    	double eigfun=s.solveShroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0, Parameters::psiPrime0, E, N_step);
-    	arrayefun.push_back(eigfun);
-    	E+=pass;
-     }
-     
-     std::vector <double>::iterator walk1 = arrayeval.begin();
-     std::vector <double>::iterator walk2 = arrayefun.begin();
-     while (walk1 != arrayeval.end() && walk2 != arrayefun.end())
-     {
-    	file << *walk1 << "\t\t" << *walk2 << std::endl;
-    	std::cout << *walk1 << "\t\t" << *walk2 << std::endl;
-    	walk1++;
-    	walk2++;
-     }
-     
-     file.close();*/
+    file4.close();
+    
+
     
     std::cout << "Program executed successfully." << std::endl;
     return 0;

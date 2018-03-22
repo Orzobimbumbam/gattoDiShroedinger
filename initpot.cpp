@@ -33,7 +33,7 @@ std::unique_ptr<InitialPot> WSaxPot::clone() const
  * HO potential
  *=================================================================*/
 
-HOPot::HOPot(double m, unsigned int l): InitialPot(m, l), m_m(m) {}
+HOPot::HOPot(double m, unsigned int l): InitialPot(m, l) {}
 
 
 double HOPot::potential(double x) const
@@ -68,19 +68,20 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
 /*=====================================================================
  * Kohn-Sham potential
  *===================================================================*/
-/*
-potOut::potOut(double potKS): m_potKS(potKS){}
-double potOut::potential(double x) const
-{
-	//const double angularpart=((Parameters::hbar*Parameters::hbar)*Parameters::angularMomentum*(Parameters::angularMomentum+1))/(2*Parameters::mn*(x*x));
-	return /*angularpart+*///m_potKS;
 
-//}
-/*
-InitialPot* potOut::clone() const
+PotOut::PotOut(KohnShamInverse outpot): InitialPot(NULL, NULL), m_outpot(outpot){}
+double PotOut::potential(double x) const
 {
-    return new potOut(*this); //return a derived class object through a base class pointer
-}*/
+	std::map<double, double> potMap;
+    m_outpot.getOutPot(potMap);
+
+    return potMap[x];
+}
+
+std::unique_ptr<InitialPot> PotOut::clone() const
+{
+	 return std::make_unique<PotOut> (*this); //return a derived class object through a base class pointer
+}
 
 
 

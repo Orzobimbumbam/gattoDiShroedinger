@@ -1,6 +1,7 @@
 //class hierarchy interface goes in header
 #pragma once
 #include <memory>
+#include "kohn-sham.h"
 
 /*====================================================================
  * Pure virtual base class for in/out potentials
@@ -56,7 +57,7 @@ public:
 
 private:
     HOPot(); //same as before
-    const double m_m;
+    //const double m_m;
 };
 
 /*=====================================================================
@@ -82,18 +83,21 @@ private:
 /*======================================================================
  * Kohn-Sham potential class
  *====================================================================*/
-/*
-class potOut: public InitialPot
+
+class PotOut: public InitialPot
 {
 public:
-	potOut(double potKS);
+	PotOut(KohnShamInverse outpot);
 	double potential (double x) const override;
 
-	InitialPot* clone() const override;
+    std::unique_ptr<InitialPot> clone() const override;
 
 private:
-	double m_potKS;
-};*/
+    PotOut();
+	KohnShamInverse m_outpot;
+	//double m_potKS;
+
+};
 
 
 
