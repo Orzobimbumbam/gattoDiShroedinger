@@ -22,10 +22,6 @@ double WSaxPot::potential(double x) const
     return wspot;
 }
 
-void WSaxPot::setL(unsigned int l)
-{
-    m_anglmomentum = l;
-}
 
 std::unique_ptr<InitialPot> WSaxPot::clone() const
 {
@@ -39,11 +35,6 @@ std::unique_ptr<InitialPot> WSaxPot::clone() const
 
 HOPot::HOPot(double m, unsigned int l): InitialPot(m, l), m_m(m) {}
 
-void HOPot::setL(unsigned int l)
-{
-    m_anglmomentum = l;
-}
-
 
 double HOPot::potential(double x) const
 {
@@ -56,11 +47,7 @@ double HOPot::potential(double x) const
 
     return hopot;
 }
-/*
-double HOPot::getOmega() const
-{
-    return m_omega;
-}*/
+
 
 std::unique_ptr<InitialPot> HOPot::clone() const
 {

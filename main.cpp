@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
 	unsigned int nuclNumb = 0;
 	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
 	std::vector <double> psiArray;
-	std::vector<double> thdensArray;
+	std::vector<double> thdensArray(NSteps+1);
 	double rad = Parameters::x_in;
     /*std::vector<double> evalArray;
     std::vector<double> efuncArray;
@@ -57,14 +57,6 @@ int main(int argc, const char * argv[]) {
 
      while (massNumb > 0)
 	{
-    	if(massNumb == Parameters::A)
-    	{
-    		for (int i = 0; i < NSteps + 1; ++i)
-    		{
-    			thdensArray.push_back(0);
-    		}
-    	}
-
     	unsigned int quantNr = orbitals[i][0];
 		unsigned int quantL = orbitals[i][1];
 		unsigned int quantN = 2*(quantNr - 1) + quantL;
