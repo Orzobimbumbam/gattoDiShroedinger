@@ -1,7 +1,16 @@
+//
+//  schroddy.h
+//  Codice
+//
+//  Created by Alberto Campi on 02/03/2018.
+//  Copyright © 2018 Alberto Campi. All rights reserved.
+//
+
 #pragma once
 #include <vector>
 #include <memory>
 #include "initpot.h"
+#include "eigenfunction.hpp"
 
 
 /*=======================================================================
@@ -21,7 +30,8 @@ public:
     std::unique_ptr<InitialPot>& getInitialPotPtr() {return m_pot;};
 
     double solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
-
+    
+    const Eigenfunction solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const;
 
 private:
     Schroddy();
@@ -29,21 +39,6 @@ private:
     std::unique_ptr<InitialPot> m_pot;
     mutable double m_h;
 };
-
-/*=======================================================================
- * Wrapper for resolve arguments inconsistency between schroddy and NLSolver classes
- *=====================================================================*/
-
-class schroddywrapper
-{
-public:
-	schroddywrapper (const Schroddy& sh);
-	double eigenfunction (double E) const;
-
-private:
-	Schroddy m_sh;
-};
-
 
 
 

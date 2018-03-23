@@ -1,4 +1,10 @@
-//Class for Schrodinger equation solver
+//
+//  schroddy.cpp
+//  Codice
+//
+//  Created by Alberto Campi on 02/03/2018.
+//  Copyright © 2018 Alberto Campi. All rights reserved.
+//
 
 # include "initpot.h"
 # include "parameters.h"
@@ -7,7 +13,6 @@
 # include <vector>
 # include <fstream>
 # include "NLSolverClass.hpp"
-//# include "gnuplot_i.hpp"
 
 
 /*=========================================================================
@@ -79,35 +84,23 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     return normalPsi;
 }
 
-/*========================================================================
- * Wrapper for resolve arguments inconsistency between schroddy and NLSolver classes
- *======================================================================*/
 
-//schroddywrapper::schroddywrapper (const Schroddy& sh, double x0, double x1, double psi0, double psiPrime0, unsigned long NSteps): m_sh(sh), m_x0(x0), m_x1(x1), m_psi0(psi0), m_psiPrime0(psiPrime0), m_NSteps(NSteps) {}
-schroddywrapper::schroddywrapper (const Schroddy& sh): m_sh(sh) {}
-/*
-double schroddywrapper::eigenfunction(double E) const
+const Eigenfunction Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const
 {
-	std::vector <double> psiArray;
-    return m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, Parameters::psi0,
-    		Parameters::psiPrime0, E, psiArray );
-}*/
-
-
-/*
-    double integral(double(*fun)(double), double xmin, double xmax, int n_int );
-    // Eigenfunction normalization by trapezes method
-    double h_t=0, scalarPsi=0, normalPsi=0;
-    double integralPsi=runningPsi*runningPsi;
-    h_t=(Parameters::x_min-Parameters::x_max)/NSteps;
-    double integral(double(*fun)(double), double xmin, double xmax, int n_int )
+    Eigenfunction psi;
+    std::vector<double> psiArray;
+    
+    double x = x0;
+    solveSchroddyByRK(x0, x1, psi0, psiPrime0, E, psiArray);
+    for (const auto& it : psiArray)
     {
-    	double hint=0, i=0, value=0;
-    	hint=(xmin-xmax)/n_int;
-    	for (i = xmin; i < xmax; i+=n_int)
-    		value+=(((*fun)(i)+(*fun)(i+hint))*hint/2)
-    	return value;
+        psi(x) = it;
+        x += m_h;
     }
-    scalarPsi=integral(integralPsi, Parameters::x_min, Parameters::x_max, h_t)
-    normalPsi=runningPsi/sqrt(scalarPsi);
-}*/
+    
+    return psi; //return an object with implemented move semantic
+}
+
+
+
+
