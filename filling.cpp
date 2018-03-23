@@ -6,7 +6,7 @@
 
 OrbitalsFilling::OrbitalsFilling(int massNumber, const double h): m_massNumber(massNumber), m_h(h) {}
 
-void OrbitalsFilling::orbFilling(std::vector <std::vector <int> >& orbiMatrix, std::vector<double>& thdensArray)
+void OrbitalsFilling::orbFilling(std::vector <std::vector <int> >& orbiMatrix, std::vector<double>& thdensArray, std::vector<int>& quantMax)
 {
 	// Solve Schrodinger equation for each involved state
 	int i = 0, degen = 0;
@@ -55,11 +55,13 @@ void OrbitalsFilling::orbFilling(std::vector <std::vector <int> >& orbiMatrix, s
 		    walk1++;
 		}
 
-		std::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << std::endl;
+		//std::cout << quantNr << "\t" << quantL << "\t" << nuclNumb << "\t" << eigval << "\t" << std::endl;
+		quantMax[0] = quantNr, quantMax[1] = quantL; // maximum orbital quantum number
 
 		i++;
 
 	}
+	//std::cout << quantMax[0] << "\t" << quantMax[1] <<  std::endl;
 	file1.close();
 	return;
 

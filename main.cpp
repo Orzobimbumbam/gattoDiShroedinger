@@ -3,12 +3,17 @@
 #include <vector>
 #include <string>
 #include <time.h>
+#include <cmath>
+#include <sys/stat.h>
+#include <sys/types.h>
+//#include <direct.h>
 #include "includes.h"
 
 
 int main(int argc, const char * argv[]) {
 
 	double H = 0.001;
+	std::string folder =  "outputs";
 	std::string inputfile1 = "orbitals.txt";
 	std::string inputfile2 = "Ca48txt";
 	int massNumb = Parameters::A;
@@ -24,6 +29,7 @@ int main(int argc, const char * argv[]) {
 	// Load the matrix with quantum numbers of each state from "orbitals.txt"
 	std::vector <std::vector <int> > orbitals (36);
 	std::vector<double> thdensity;
+	std::vector<int> maxQuant (2);
 	std::ifstream in ;
 	//std::string inputfile1(Parameters::orbitalsfile);
 	in.open(inputfile1);
@@ -49,7 +55,7 @@ int main(int argc, const char * argv[]) {
 
 	// Fill orbitals and calculate energies, eigenfunctions and theoretical density for first loop
 	OrbitalsFilling fill (massNumb, H);
-	fill.orbFilling(orbitals, thdensity);
+	fill.orbFilling(orbitals, thdensity, maxQuant);
 
 	std::ofstream file2("density.txt");
 	double rad = Parameters::x_in;
@@ -108,7 +114,7 @@ int main(int argc, const char * argv[]) {
 * Calculate new potential by inverse Kohn-Sham equations
 *=======================================================================================*/
 
-	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
+	/*const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
 	std::vector<double> inpotArray;
 	std::vector<double> psiArray;
     Theoreticaldensity densy;
@@ -133,11 +139,12 @@ int main(int argc, const char * argv[]) {
     	{
     		psiArray.clear();
     		thdensity.clear();
-    		potOut newpot (inversion);
+    		PotOut newpot (inversion);
     		Schroddy Sfunc (newpot, H);
-    		GenericEigenvalues GenEig(Sfunc/*, quantNr, quantL*/);
+    		GenericEigenvalues GenEig(Sfunc, maxQuant[0], maxQuant[1]);
     		double eigval = GenEig.eigenvalue();
-    		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, 0, 0, eigval , psiArray);
+    		Sfunc.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(maxQuant[1]),
+    	             psiPrime0(maxQuant[1]), eigval , psiArray);
     		densy.density(psiArray,thdensity,massNumb,H);
     	}
 
@@ -162,7 +169,7 @@ int main(int argc, const char * argv[]) {
     double hours = ((double)(end - start))/3600;
 
     //std::cout << "CONVERGENCE IS DONE in: " << t2 - t1 << "sec.!" << "GREAT JOB!" << std::endl;
-    std::cout << "CONVERGENCE IS DONE in: " << hours << "hours!" << "GREAT JOB!" << std::endl;
+    std::cout << "CONVERGENCE IS DONE in: " << hours << "hours!" << "GREAT JOB!" << std::endl;*/
 
 
 

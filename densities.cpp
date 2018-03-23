@@ -81,16 +81,19 @@ void SOGdensity::sogDensity (const std::vector<std::vector<double>>& QRparameter
 		}
 		const double sogdens = c1*c3;
 		notNormal.push_back(sogdens);
-		scalar += sogdens*sogdens;
+		//scalar += sogdens*sogdens;
+		scalar += ((notNormal[r]*radiusx*radiusx)+(notNormal[r - 1]*(radiusx - h)*(radiusx - h)))*h/2.; // integral by trapezes method for normalization
 		//sogdensity.push_back(sogdens);
 
 		radiusx += h;
 	}
-	// normalization
-	double squared = sqrt(scalar*h);
+
+	// Normalization
+	double norm = Parameters::NN/scalar/4/Parameters::PI;
+	//double squared = sqrt(scalar*h);
     for (auto& it : notNormal)
     {
-        it = it/squared;
+        it = it*norm;
         sogdensity.push_back(it);
     }
 	return;

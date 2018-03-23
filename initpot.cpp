@@ -69,7 +69,7 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
  * Kohn-Sham potential
  *===================================================================*/
 
-PotOut::PotOut(KohnShamInverse outpot): InitialPot(NULL, NULL), m_outpot(outpot){}
+PotOut::PotOut(KohnShamInverse outpot): InitialPot(0, 0), m_outpot(outpot){}
 double PotOut::potential(double x) const
 {
 	std::map<double, double> potMap;
