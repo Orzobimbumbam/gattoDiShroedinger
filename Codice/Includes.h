@@ -17,6 +17,7 @@
 #include "eigenvalues.hpp"
 #include "densities.h"
 #include "kohn-sham.h"
+#include "eigenfunction.hpp"
 
 
 #endif /* Includes_h */

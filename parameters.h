@@ -25,6 +25,7 @@ const double R0= 1.27; 								// [fm]
 // Wood-Saxon potential parameters
 const double Rn = R0*pow(A,(1/3)); 					// Nuclear radius [fm]
 const double a0 = 0.67;								// Nuclear surface thickness [fm]
+const double V0 = 50.0;
 
 // Spin-Orbit potential parameters
 //const double k0=  ;
@@ -44,7 +45,7 @@ double error=10e-8;*/
 // Runge-Kutta parameters
 //const double x_in = -10*Rn;
 const double x_in = 1e-12;
-const double x_fin = 5*Rn;
+const double x_fin = 10*Rn;
 //const double psi0= 0.001;
 //const double psiPrime0 = 1;
 //unsigned long N_step=10;

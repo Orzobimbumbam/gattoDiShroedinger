@@ -1,5 +1,6 @@
 # include "parameters.h"
 # include "densities.h"
+# include "eigenfunction.hpp"
 # include <fstream>
 # include <vector>
 
@@ -9,17 +10,14 @@
  *==========================================*/
 //Theoreticaldensity::~Theoreticaldensity() {}
 
-Theoreticaldensity::Theoreticaldensity() {}
+//Theoreticaldensity::Theoreticaldensity() {}
 
-void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<double>& thDensArray, unsigned int degen, double step) const
+void Theoreticaldensity::density(const Eigenfunction& psi, unsigned int degen, double step)
 {
-	double radiusx = Parameters::x_in;
-	for ( int i = 0; i < psi.size(); ++i)
+    for (const auto& it : psi.keyValues())
 	{
-		double thdensity = (1/(4*Parameters::PI*(radiusx*radiusx)))*degen*(psi[i]*psi[i]);
-		thDensArray[i] += thdensity;
-		//thDensArray.push_back(thdensity);
-		radiusx += step;
+		const double thdensity = (1/(4*Parameters::PI*(it.first*it.first)))*degen*(it.second*it.second);
+		m_thDensity[it.first] += thdensity;
 	}
 	return;
 }
@@ -28,20 +26,20 @@ void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<dou
  * Convergence condition
  *==========================================*/
 
-bool Theoreticaldensity::convergence (const std::vector<double>& empidensity, const std::vector<double>& thdensity) const
+bool Theoreticaldensity::hasConverged (const std::map<double, double>& empidensity) const
 {
-	double maxDiff = std::abs(thdensity[0]-empidensity[0]);
-	unsigned int maxIndex = 0;
-	for (int i = 0; i < empidensity.size(); ++i)
+	double maxDiff = std::abs(m_thDensity.begin() -> second - empidensity.begin() -> second);
+	double xMax = 0;
+    for (const auto& it : m_thDensity)
 	{
-		if(std::abs(thdensity[i]-empidensity[i]) > maxDiff)
+		if(std::abs(it.second - empidensity.at(it.first)) > maxDiff) //access only, throw exception if not key is not found
 		{
-			maxDiff = std::abs(thdensity[i]-empidensity[i]);
-			maxIndex = i;
+			maxDiff = std::abs(it.second - empidensity.at(it.first));
+			xMax = it.first;
 		}
 	}
 
-	const double epsilon = empidensity[maxIndex]*0.01;
+	const double epsilon = empidensity.at(xMax)*0.01;
 	return maxDiff < epsilon ? true : false; // convergence condition
 }
 
@@ -82,7 +80,7 @@ void SOGdensity::sogDensity (const std::vector<std::vector<double>>& QRparameter
 		const double sogdens = c1*c3;
 		notNormal.push_back(sogdens);
 		//scalar += sogdens*sogdens;
-		scalar += ((notNormal[r]*radiusx*radiusx)+(notNormal[r - 1]*(radiusx - h)*(radiusx - h)))*h/2.; // integral by trapezes method for normalization
+		scalar += ((notNormal[r]*radiusx*radiusx)+(notNormal[r - 1]*(radiusx - h)*(radiusx - h)))*h/2.; // integral by trapezoid method for normalization
 		//sogdensity.push_back(sogdens);
 
 		radiusx += h;

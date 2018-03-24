@@ -26,3 +26,12 @@ Eigenfunction& Eigenfunction::operator=(const Eigenfunction& rhsEigenfunction)
     swap(tempEigenfunction);
     return *this;
 }
+
+PsiArrayKVP Eigenfunction::keyValues() const
+{
+    PsiArrayKVP kvp;
+    for (const auto& it : m_psi)
+        kvp.push_back(std::make_pair(it.first, it.second));
+    
+    return kvp;
+}

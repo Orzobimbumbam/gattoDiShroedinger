@@ -2,16 +2,19 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <map>
+
+class Eigenfunction;
+typedef std::map<double, double> ThDensity;
 
 class Theoreticaldensity
 {
 public:
-	Theoreticaldensity();
-    void density(const std::vector<double>& psi, std::vector<double>& thDensArray, unsigned int degen, double step) const;
-    bool convergence (const std::vector<double>& empidensity, const std::vector<double>& thdensity) const;
+    void density(const Eigenfunction& psi, unsigned int degen, double step);
+    bool hasConverged (const std::map<double, double>& empidensity) const; //empidensity should be wrapped up in a singleton object (static)
 
 private:
-    //Theoreticaldensity();
+    ThDensity m_thDensity;
 };
 
 

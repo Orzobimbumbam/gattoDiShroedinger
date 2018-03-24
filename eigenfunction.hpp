@@ -10,8 +10,10 @@
 #define eigenfunction_hpp
 
 #include <map>
+#include <vector>
 
 typedef std::map<double,double> Psi;
+typedef std::vector<std::pair<double, double>> PsiArrayKVP;
 
 class Eigenfunction
 {
@@ -19,6 +21,8 @@ class Eigenfunction
 public:
     double& operator()(double key);
     Eigenfunction& operator=(const Eigenfunction& rhsEigenfunction);
+    PsiArrayKVP keyValues() const;
+    
     
 private:
     void swap(Eigenfunction& rhsEigenfunction);
