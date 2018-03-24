@@ -8,9 +8,6 @@
 /*============================================
  * Theoretical density
  *==========================================*/
-//Theoreticaldensity::~Theoreticaldensity() {}
-
-//Theoreticaldensity::Theoreticaldensity() {}
 
 void Theoreticaldensity::density(const Eigenfunction& psi, unsigned int degen)
 {
@@ -45,7 +42,7 @@ bool Theoreticaldensity::hasConverged (const std::map<double, double>& empidensi
 
 std::ostream& Theoreticaldensity::operator<<(std::ostream& wStream) const
 {
-    return writeMap(m_thDensity, wStream);
+    return writeMap(m_thDensity, wStream, true);
 }
 
 

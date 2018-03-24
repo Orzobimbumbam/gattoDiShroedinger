@@ -8,7 +8,7 @@
 
 class Eigenfunction;
 //class
-typedef std::map<double, double> ThDensity;
+typedef std::map<double, double> Density;
 
 class Theoreticaldensity
 {
@@ -19,9 +19,9 @@ public:
     std::ostream& operator<<(std::ostream& wStream) const;
     
 private:
-    friend std::ostream& writeMap(const ThDensity&, std::ostream& wStream);
+    friend std::ostream& writeMap(const Density&, std::ostream& wStream, bool header);
     
-    ThDensity m_thDensity;
+    Density m_thDensity;
 };
 
 
