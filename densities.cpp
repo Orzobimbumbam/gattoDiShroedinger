@@ -12,7 +12,7 @@
 
 //Theoreticaldensity::Theoreticaldensity() {}
 
-void Theoreticaldensity::density(const Eigenfunction& psi, unsigned int degen, double step)
+void Theoreticaldensity::density(const Eigenfunction& psi, unsigned int degen)
 {
     for (const auto& it : psi.keyValues())
 	{
@@ -32,7 +32,7 @@ bool Theoreticaldensity::hasConverged (const std::map<double, double>& empidensi
 	double xMax = 0;
     for (const auto& it : m_thDensity)
 	{
-		if(std::abs(it.second - empidensity.at(it.first)) > maxDiff) //access only, throw exception if not key is not found
+		if(std::abs(it.second - empidensity.at(it.first)) > maxDiff) //access only, throw exception if key is not found
 		{
 			maxDiff = std::abs(it.second - empidensity.at(it.first));
 			xMax = it.first;
@@ -41,6 +41,11 @@ bool Theoreticaldensity::hasConverged (const std::map<double, double>& empidensi
 
 	const double epsilon = empidensity.at(xMax)*0.01;
 	return maxDiff < epsilon ? true : false; // convergence condition
+}
+
+std::ostream& Theoreticaldensity::operator<<(std::ostream& wStream) const
+{
+    return writeMap(m_thDensity, wStream);
 }
 
 
