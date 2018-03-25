@@ -10,8 +10,14 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/included/unit_test.hpp>
 #include "../Codice/Includes.h"
+#include <fstream>
 #include <cmath>
 #include <vector>
+#include <map>
+#include <string>
+#include <iterator>
+
+//CALC UNIT TEST SPECIFICATIONS
 
 namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
@@ -115,11 +121,11 @@ BOOST_AUTO_TEST_CASE(shootingHORandom, *utf::tolerance(0.1))
         const unsigned int k = rand()%10 + 1;
         const unsigned int l_mom = rand()%10;
         const unsigned int n = 2*(k-1) + l_mom;
-    
+        
         HOPot pot (Parameters::mn, l_mom);
         Schroddy Sfunc (pot, H);
         GenericEigenvalues GenEig(Sfunc, k, l_mom);
-    
+        
         BOOST_TEST(GenEig.eigenvalue() == (n + 3./2.)*Parameters::hbar_omega);
     }
     
@@ -224,6 +230,80 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRKWSaxPot)
     BOOST_CHECK(eigfValues == psi);
 }
 
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+//UTILS UNIT TEST SPECIFICATIONS
+
+const std::string inputDir = "Inputs";
+const std::string outputDir = "Outputs";
+
+BOOST_AUTO_TEST_SUITE(Utils)
+BOOST_AUTO_TEST_CASE(IOUtils_writeMap)
+{
+    
+    std::pair<double, double> a = std::make_pair(1, 2); //y = 2x
+    std::pair<double, double> b = std::make_pair(2, 4);
+    std::pair<double, double> c = std::make_pair(3, 6);
+    std::map<double, double> dMap = {a, b, c};
+    
+    std::ofstream out(outputDir + "/writeMapTestResult.txt");
+    writeMap(dMap, out, true);
+    
+    std::ifstream inTestResult(outputDir + "/writeMapTestResult.txt");
+    std::ifstream inExpResult(outputDir + "/writeMapExpResult.txt");
+    
+    std::istream_iterator<char> bTestResult(inTestResult), eTestResult;
+    std::istream_iterator<char> bExpResult(inExpResult), eExpResult;
+    
+    BOOST_CHECK_EQUAL_COLLECTIONS(bTestResult, eTestResult, bExpResult, eExpResult);
+}
+
+BOOST_AUTO_TEST_CASE(IOUtils_readMap)
+{
+    
+    std::pair<double, double> a = std::make_pair(1, 2); //y = 2x
+    std::pair<double, double> b = std::make_pair(2, 4);
+    std::pair<double, double> c = std::make_pair(3, 6);
+    std::pair<double, double> d = std::make_pair(4, 8);
+    std::pair<double, double> e = std::make_pair(5, 10);
+    std::map<double, double> dMap = {a, b, c, d, e};
+    
+    std::ifstream in(inputDir + "/readMap.txt");
+    std::map<double, double> rMap;
+    readMap(rMap, in, true);
+    
+    BOOST_CHECK(rMap == dMap);
+}
+
+BOOST_AUTO_TEST_CASE(IOUtils_writeMatrix)
+{
+    std::vector<std::vector<double>> dMat = {{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,16}};
+    
+    std::ofstream out(outputDir + "/writeMatrixTestResult.txt");
+    writeMatrix(dMat, out, false);
+    
+    std::ifstream inTestResult(outputDir + "/writeMatrixTestResult.txt");
+    std::ifstream inExpResult(outputDir + "/writeMatrixExpResult.txt");
+    
+    std::istream_iterator<char> bTestResult(inTestResult), eTestResult;
+    std::istream_iterator<char> bExpResult(inExpResult), eExpResult;
+    
+    BOOST_CHECK_EQUAL_COLLECTIONS(bTestResult, eTestResult, bExpResult, eExpResult);
+}
+
+BOOST_AUTO_TEST_CASE(IOUtils_readMatrix)
+{
+    std::vector<std::vector<double>> dMat = {{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,16}};
+    
+    
+    std::ifstream in(inputDir + "/readMatrix.txt");
+    std::vector<std::vector<double>> rMat(4);
+    readMatrix(rMat, in, false);
+    
+    BOOST_CHECK(rMat == dMat);
+}
 
 
 BOOST_AUTO_TEST_SUITE_END()
