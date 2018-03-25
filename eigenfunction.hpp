@@ -22,7 +22,7 @@ public:
     double& operator()(double key);
     Eigenfunction& operator=(const Eigenfunction& rhsEigenfunction);
     PsiArrayKVP keyValues() const;
-    
+    Psi get() const;
     
 private:
     void swap(Eigenfunction& rhsEigenfunction);

@@ -3,7 +3,7 @@
 #include <vector>
 #include <map>
 
-typedef std::pair<double, double> KVP;
+//typedef std::pair<double, double> KVP;
 
 class KohnShamInverse
 {

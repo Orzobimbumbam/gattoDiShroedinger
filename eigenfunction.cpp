@@ -35,3 +35,10 @@ PsiArrayKVP Eigenfunction::keyValues() const
     
     return kvp;
 }
+
+Psi Eigenfunction::get() const
+{
+    return m_psi;
+}
+
+

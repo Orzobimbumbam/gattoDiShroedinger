@@ -11,7 +11,7 @@
 
 void Theoreticaldensity::density(const Eigenfunction& psi, unsigned int degen)
 {
-    for (const auto& it : psi.keyValues())
+    for (const auto& it : psi.get())
 	{
 		const double thdensity = (1/(4*Parameters::PI*(it.first*it.first)))*degen*(it.second*it.second);
 		m_thDensity[it.first] += thdensity;

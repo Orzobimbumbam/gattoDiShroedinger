@@ -25,7 +25,6 @@
 		D3DBD298204B705B002BD241 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
 		D3DBD29B204B705B002BD241 /* parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD2892049CABD002BD241 /* parameters.cpp */; };
 		D3DBD29C204B705B002BD241 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
-		D3E9F77D20210BB400DAAAB7 /* empidensity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77820210BB400DAAAB7 /* empidensity.cpp */; };
 		D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */; };
 /* End PBXBuildFile section */
 
@@ -72,8 +71,6 @@
 		D3DBD28F204B6B26002BD241 /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3DBD291204B6B26002BD241 /* UTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UTests.cpp; sourceTree = "<group>"; };
 		D3DBD297204B6F1B002BD241 /* Includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Includes.h; sourceTree = "<group>"; };
-		D3E9F77820210BB400DAAAB7 /* empidensity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = empidensity.cpp; sourceTree = "<group>"; };
-		D3E9F77920210BB400DAAAB7 /* empidensity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = empidensity.h; sourceTree = "<group>"; };
 		D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kohn-sham.cpp"; sourceTree = "<group>"; };
 		D3E9F77C20210BB400DAAAB7 /* kohn-sham.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kohn-sham.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,6 +140,17 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		D3A5871920672A0000E61067 /* DensityKS */ = {
+			isa = PBXGroup;
+			children = (
+				D3A58704205B2AB000E61067 /* densities.cpp */,
+				D3A58705205B2AB000E61067 /* densities.h */,
+				D3E9F77C20210BB400DAAAB7 /* kohn-sham.h */,
+				D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */,
+			);
+			name = DensityKS;
+			sourceTree = "<group>";
+		};
 		D3C601E5200FF6A800F1E661 = {
 			isa = PBXGroup;
 			children = (
@@ -151,12 +159,7 @@
 				D3672BBD2053FAED0032E3CA /* InitialPotentials */,
 				D3672BBC2053FADC0032E3CA /* Parameters */,
 				D3672BBB2053FACA0032E3CA /* Eigenvalues */,
-				D3A58704205B2AB000E61067 /* densities.cpp */,
-				D3A58705205B2AB000E61067 /* densities.h */,
-				D3E9F77920210BB400DAAAB7 /* empidensity.h */,
-				D3E9F77820210BB400DAAAB7 /* empidensity.cpp */,
-				D3E9F77C20210BB400DAAAB7 /* kohn-sham.h */,
-				D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */,
+				D3A5871920672A0000E61067 /* DensityKS */,
 				D3A587092064649D00E61067 /* filling.cpp */,
 				D3A5870A2064649D00E61067 /* filling.h */,
 				D3C601F0200FF6AB00F1E661 /* Codice */,
@@ -270,7 +273,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3E9F77D20210BB400DAAAB7 /* empidensity.cpp in Sources */,
 				D3C601F2200FF6AB00F1E661 /* main.cpp in Sources */,
 				D3A5870B2064649D00E61067 /* filling.cpp in Sources */,
 				D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */,

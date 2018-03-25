@@ -23,7 +23,7 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 typedef std::vector<double> PsiArray;
 
-BOOST_AUTO_TEST_SUITE(shroddy)
+BOOST_AUTO_TEST_SUITE(Calc)
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
     const double H = 0.001;
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
     
 }
 
-BOOST_AUTO_TEST_CASE(shootingHO11, *utf::tolerance(0.1))
+BOOST_AUTO_TEST_CASE(shooting_HO11, *utf::tolerance(0.1))
 {
     const double H = 0.001;
     //int mass_num=Parameters::A;
@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE(shootingHO11, *utf::tolerance(0.1))
     
 }
 
-BOOST_AUTO_TEST_CASE(shootingHO2012, *utf::tolerance(0.1))
+BOOST_AUTO_TEST_CASE(shooting_HO2012, *utf::tolerance(0.1))
 {
     const double H = 0.001;
     //int mass_num=Parameters::A;
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(shootingHO2012, *utf::tolerance(0.1))
     BOOST_TEST(GenEig02.eigenvalue() == 7./2.*Parameters::hbar_omega);
 }
 
-BOOST_AUTO_TEST_CASE(shootingHO2113, *utf::tolerance(0.1))
+BOOST_AUTO_TEST_CASE(shootingHO_2113, *utf::tolerance(0.1))
 {
     const double H = 0.001;
     //int mass_num=Parameters::A;
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(shootingHO2113, *utf::tolerance(0.1))
     BOOST_TEST(GenEig13.eigenvalue() == 9./2.*Parameters::hbar_omega);
 }
 
-BOOST_AUTO_TEST_CASE(shootingHORandom, *utf::tolerance(0.1))
+BOOST_AUTO_TEST_CASE(shooting_HORandom, *utf::tolerance(0.1))
 {
     const double H = 0.01;
     //int mass_num=Parameters::A;
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(shootingHORandom, *utf::tolerance(0.1))
     
 }
 
-BOOST_AUTO_TEST_CASE(solveSchroddyByRKHOPot1)
+BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot1_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
@@ -153,7 +153,36 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRKHOPot1)
     BOOST_CHECK(eigfValues == psi);
 }
 
-BOOST_AUTO_TEST_CASE(solveSchroddyByRKHOPot2)
+BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot1_KeyValues)
+{
+    using namespace Parameters;
+    const double H = 0.001;
+    const unsigned int l_mom = rand()%10;
+    const double E = rand()/static_cast<double>(RAND_MAX)*100;
+    
+    HOPot pot(Parameters::mn, l_mom);
+    Schroddy Sfunc (pot, H);
+    PsiArray psi;
+    
+    Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E, psi);
+    const Eigenfunction eigf = Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E);
+    
+    PsiArrayKVP kvp = eigf.keyValues();
+    PsiArray eigfValues, eigfx, x;
+    for (const auto& it : kvp)
+    {
+        eigfValues.push_back(it.second);
+        eigfx.push_back(it.first);
+    }
+    
+    x.push_back(x_in);
+    for (unsigned long i = 1; i < std::abs(x_fin - x_in)/H; ++i)
+        x.push_back(x[i-1] + H);
+    
+    BOOST_CHECK(eigfValues == psi && eigfx == x);
+}
+
+BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot2_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
@@ -179,7 +208,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRKHOPot2)
         BOOST_CHECK(eigfValues == psi);
 }
 
-BOOST_AUTO_TEST_CASE(solveSchroddyByRKHOPot3)
+BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot3_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
@@ -208,7 +237,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRKHOPot3)
 }
 
 
-BOOST_AUTO_TEST_CASE(solveSchroddyByRKWSaxPot)
+BOOST_AUTO_TEST_CASE(solveSchroddyByRK_WSaxPot_Values)
 {
     using namespace Parameters;
     const double H = 0.001;

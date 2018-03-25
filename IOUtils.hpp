@@ -17,7 +17,8 @@
 #include <vector>
 
 //declare IO global functions
-//can have templetized types
+//can have templetized types and be friended with relevant classes for I/O operator overloading
+//NB the following functions are tested to work on happy-path cases. Corner case behaviour must be specified.
 template <class T, class D> std::ostream& writeMap(const std::map<T, D>& inputMap, std::ostream& wStream, bool header)
 {
     if (header)
@@ -46,7 +47,6 @@ template <class T, class D> std::ifstream& readMap(std::map<T, D>& outputMap, st
         
         if (rStream.eof())
             break;
-        
     }
     
     return rStream;
@@ -55,7 +55,7 @@ template <class T, class D> std::ifstream& readMap(std::map<T, D>& outputMap, st
 template <class T> std::ostream& writeRowVector(const std::vector<T>& inputVector, std::ostream& wStream)
 {
     for (const auto& it : inputVector)
-        wStream << it << "\t" ; //tab delimiter
+        wStream << it << "\t" ; //tab delimiter, all values on same row
     
     return wStream;
 }
@@ -87,7 +87,7 @@ template <class T> std::istream& readMatrix(std::vector<std::vector<T>>& outputM
         std::istringstream sLine(line);
         std::string value;
         while (sLine >> value)
-            outputMatrix[rowIndex].push_back(std::stod(value));
+            outputMatrix[rowIndex].push_back(std::stod(value)); //convert string to double
         
         ++rowIndex;
      }
