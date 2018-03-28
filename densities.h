@@ -14,7 +14,6 @@ typedef std::map<double, double> Density;
 class Theoreticaldensity
 {
 public:
-    //void density(const Element& element);
     void density(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen);
     bool hasConverged (const std::map<double, double>& empidensity) const; 
 

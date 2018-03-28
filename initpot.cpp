@@ -70,7 +70,7 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
  * Kohn-Sham potential
  *===================================================================*/
 
-PotOut::PotOut(const KohnShamInverse& outpot): InitialPot(0, 0), m_outpot(outpot){}
+PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l): InitialPot(m, l), m_outpot(outpot){}
 double PotOut::potential(double x) const
 {
     double angularPart = 0;

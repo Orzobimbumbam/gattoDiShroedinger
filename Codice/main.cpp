@@ -14,9 +14,6 @@
 #include "Includes.h"
 
 
-typedef std::vector<double>::const_iterator cwalk;
-typedef std::vector<double>::iterator walk;
-
 int main(int argc, const char * argv[])
 {
     

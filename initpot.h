@@ -90,7 +90,7 @@ private:
 class PotOut: public InitialPot
 {
 public:
-	PotOut(const KohnShamInverse& outpot);
+	PotOut(const KohnShamInverse& outpot, double m, unsigned int l);
 	double potential (double x) const override;
 
     std::unique_ptr<InitialPot> clone() const override;
