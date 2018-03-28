@@ -1,5 +1,5 @@
 //
-//  main.cpp
+//  UTests.cpp
 //  UnitTests
 //
 //  Created by Alberto Campi on 04/03/2018.
@@ -10,6 +10,7 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/included/unit_test.hpp>
 #include "../Codice/Includes.h"
+
 #include <fstream>
 #include <cmath>
 #include <vector>
@@ -259,6 +260,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_WSaxPot_Values)
     BOOST_CHECK(eigfValues == psi);
 }
 
+//more calcs test cases here...
 
 BOOST_AUTO_TEST_SUITE_END()
 
@@ -334,5 +336,6 @@ BOOST_AUTO_TEST_CASE(IOUtils_readMatrix)
     BOOST_CHECK(rMat == dMat);
 }
 
+//more Utils test cases here...
 
 BOOST_AUTO_TEST_SUITE_END()

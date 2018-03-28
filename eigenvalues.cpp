@@ -97,12 +97,20 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
 
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
+    m_ELev.clear();
     double E1 = TrialEigenvalues::getEigenval1();
     for (unsigned int i = 1; i <= m_nState; ++i)
+    {
         E1 = shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
-
+        m_ELev[i] = E1;
+    }
     return E1;
 
+}
+
+EnergyLevels GenericEigenvalues::getAllLevels() const
+{
+    return m_ELev;
 }
 
 std::unique_ptr<Eigenvalues> GenericEigenvalues::clone() const

@@ -11,6 +11,7 @@ class InitialPot
 {
 public:
     virtual double potential(double x) const = 0;
+    virtual void setL(unsigned int l) {m_anglmomentum = l;};
     virtual ~InitialPot();
     
     virtual std::unique_ptr<InitialPot> clone() const = 0;
@@ -30,8 +31,10 @@ class WSaxPot: public InitialPot //derived class
 {
 
 public:
+    WSaxPot(double V0, double Rn, double a0, double m);
     WSaxPot(double V0, double Rn, double a0, double m, unsigned int l);
     double potential(double x) const override;
+    //void setL(unsigned int l) override;
     
     std::unique_ptr<InitialPot> clone() const override;
 
@@ -49,7 +52,7 @@ private:
 class HOPot: public InitialPot //derived class
 {
 public:
-
+    HOPot(double m); //l is assumed ground state
     HOPot(double m, unsigned int l);
     double potential(double x) const override;
 
@@ -87,7 +90,7 @@ private:
 class PotOut: public InitialPot
 {
 public:
-	PotOut(KohnShamInverse outpot);
+	PotOut(const KohnShamInverse& outpot);
 	double potential (double x) const override;
 
     std::unique_ptr<InitialPot> clone() const override;

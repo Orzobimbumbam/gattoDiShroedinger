@@ -19,6 +19,7 @@
 #include "kohn-sham.h"
 #include "eigenfunction.hpp"
 #include "IOUtils.hpp"
+#include "element.hpp"
 
 
 #endif /* Includes_h */

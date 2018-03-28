@@ -14,6 +14,7 @@
  *================================================================*/
 #include "schroddy.h"
 #include <memory>
+#include <map>
 
 class Eigenvalues
 {
@@ -67,12 +68,13 @@ private:
     TrialEigenvalues();
 };
 
-
+typedef std::map<unsigned int, double> EnergyLevels;
 class GenericEigenvalues: public Eigenvalues
 {
 public:
     GenericEigenvalues (const Schroddy& sh, unsigned int nState, unsigned int lState);
     double eigenvalue() const override;
+    EnergyLevels getAllLevels() const;
     
     std::unique_ptr<Eigenvalues> clone() const override;
     
@@ -82,7 +84,7 @@ private:
     
     const Schroddy m_sh;
     unsigned int m_nState, m_lState;
-    
+    mutable EnergyLevels m_ELev;
 };
 
 

@@ -10,6 +10,7 @@ InitialPot::InitialPot(double m, unsigned int l): m_m(m), m_anglmomentum(l) {};
  * Woods-Saxon potential
  *=================================================================*/
 
+WSaxPot::WSaxPot(double V0, double Rn, double a0, double m): InitialPot(m, 0), m_V0(V0), m_Rn(Rn), m_a0(a0) {};
 WSaxPot::WSaxPot(double V0, double Rn, double a0, double m, unsigned int l): InitialPot(m, l), m_V0(V0), m_Rn(Rn), m_a0(a0) {};
 
 double WSaxPot::potential(double x) const
@@ -34,7 +35,7 @@ std::unique_ptr<InitialPot> WSaxPot::clone() const
  *=================================================================*/
 
 HOPot::HOPot(double m, unsigned int l): InitialPot(m, l) {}
-
+HOPot::HOPot(double m): InitialPot(m, 0) {}
 
 double HOPot::potential(double x) const
 {
@@ -69,13 +70,17 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
  * Kohn-Sham potential
  *===================================================================*/
 
-PotOut::PotOut(KohnShamInverse outpot): InitialPot(0, 0), m_outpot(outpot){}
+PotOut::PotOut(const KohnShamInverse& outpot): InitialPot(0, 0), m_outpot(outpot){}
 double PotOut::potential(double x) const
 {
+    double angularPart = 0;
+    if (x != 0)
+        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
+    
 	std::map<double, double> potMap;
     m_outpot.getOutPot(potMap);
 
-    return potMap[x];
+    return potMap[x] + angularPart;
 }
 
 std::unique_ptr<InitialPot> PotOut::clone() const

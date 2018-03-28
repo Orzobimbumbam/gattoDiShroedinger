@@ -12,11 +12,12 @@
 		D3A58706205B2AB000E61067 /* densities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A58704205B2AB000E61067 /* densities.cpp */; };
 		D3A587072064623D00E61067 /* densities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A58704205B2AB000E61067 /* densities.cpp */; };
 		D3A587082064624A00E61067 /* kohn-sham.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */; };
-		D3A5870B2064649D00E61067 /* filling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A587092064649D00E61067 /* filling.cpp */; };
 		D3A5870E2065782600E61067 /* eigenfunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A5870C2065782600E61067 /* eigenfunction.cpp */; };
 		D3A5870F2065782600E61067 /* eigenfunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A5870C2065782600E61067 /* eigenfunction.cpp */; };
 		D3A5871320667DA700E61067 /* IOUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A5871120667DA700E61067 /* IOUtils.cpp */; };
 		D3A5871420667DA700E61067 /* IOUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A5871120667DA700E61067 /* IOUtils.cpp */; };
+		D3A5871D206AD0AA00E61067 /* element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A5871B206AD0AA00E61067 /* element.cpp */; };
+		D3A5871E206AD0AA00E61067 /* element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A5871B206AD0AA00E61067 /* element.cpp */; };
 		D3C601F2200FF6AB00F1E661 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601F1200FF6AB00F1E661 /* main.cpp */; };
 		D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
 		D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
@@ -54,12 +55,12 @@
 		D3672BB42053F3B30032E3CA /* eigenvalues.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = eigenvalues.hpp; sourceTree = "<group>"; };
 		D3A58704205B2AB000E61067 /* densities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = densities.cpp; sourceTree = "<group>"; };
 		D3A58705205B2AB000E61067 /* densities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = densities.h; sourceTree = "<group>"; };
-		D3A587092064649D00E61067 /* filling.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = filling.cpp; sourceTree = "<group>"; };
-		D3A5870A2064649D00E61067 /* filling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filling.h; sourceTree = "<group>"; };
 		D3A5870C2065782600E61067 /* eigenfunction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = eigenfunction.cpp; sourceTree = "<group>"; };
 		D3A5870D2065782600E61067 /* eigenfunction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = eigenfunction.hpp; sourceTree = "<group>"; };
 		D3A5871120667DA700E61067 /* IOUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IOUtils.cpp; sourceTree = "<group>"; };
 		D3A5871220667DA700E61067 /* IOUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IOUtils.hpp; sourceTree = "<group>"; };
+		D3A5871B206AD0AA00E61067 /* element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = element.cpp; sourceTree = "<group>"; };
+		D3A5871C206AD0AA00E61067 /* element.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = element.hpp; sourceTree = "<group>"; };
 		D3C601EE200FF6AB00F1E661 /* Codice */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Codice; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3C601F1200FF6AB00F1E661 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D3C601FA200FF6CE00F1E661 /* initpot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = initpot.cpp; sourceTree = "<group>"; };
@@ -151,6 +152,15 @@
 			name = DensityKS;
 			sourceTree = "<group>";
 		};
+		D3A5871A206AD05500E61067 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				D3A5871B206AD0AA00E61067 /* element.cpp */,
+				D3A5871C206AD0AA00E61067 /* element.hpp */,
+			);
+			name = Elements;
+			sourceTree = "<group>";
+		};
 		D3C601E5200FF6A800F1E661 = {
 			isa = PBXGroup;
 			children = (
@@ -158,10 +168,9 @@
 				D3672BBE2053FB060032E3CA /* RKSolverS */,
 				D3672BBD2053FAED0032E3CA /* InitialPotentials */,
 				D3672BBC2053FADC0032E3CA /* Parameters */,
+				D3A5871A206AD05500E61067 /* Elements */,
 				D3672BBB2053FACA0032E3CA /* Eigenvalues */,
 				D3A5871920672A0000E61067 /* DensityKS */,
-				D3A587092064649D00E61067 /* filling.cpp */,
-				D3A5870A2064649D00E61067 /* filling.h */,
 				D3C601F0200FF6AB00F1E661 /* Codice */,
 				D3DBD290204B6B26002BD241 /* UnitTests */,
 				D3C601EF200FF6AB00F1E661 /* Products */,
@@ -274,10 +283,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3C601F2200FF6AB00F1E661 /* main.cpp in Sources */,
-				D3A5870B2064649D00E61067 /* filling.cpp in Sources */,
 				D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */,
 				D3DBD28A2049CABD002BD241 /* parameters.cpp in Sources */,
 				D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */,
+				D3A5871D206AD0AA00E61067 /* element.cpp in Sources */,
 				D3A5871320667DA700E61067 /* IOUtils.cpp in Sources */,
 				D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */,
 				D3A58706205B2AB000E61067 /* densities.cpp in Sources */,
@@ -292,6 +301,7 @@
 			files = (
 				D3A5871420667DA700E61067 /* IOUtils.cpp in Sources */,
 				D3A5870F2065782600E61067 /* eigenfunction.cpp in Sources */,
+				D3A5871E206AD0AA00E61067 /* element.cpp in Sources */,
 				D3A587082064624A00E61067 /* kohn-sham.cpp in Sources */,
 				D3A587072064623D00E61067 /* densities.cpp in Sources */,
 				D3DBD298204B705B002BD241 /* initpot.cpp in Sources */,

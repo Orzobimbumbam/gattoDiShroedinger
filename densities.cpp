@@ -9,13 +9,16 @@
  * Theoretical density
  *==========================================*/
 
-void Theoreticaldensity::density(const Eigenfunction& psi, unsigned int degen)
+void Theoreticaldensity::density(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen)
 {
-    for (const auto& it : psi.get())
-	{
-		const double thdensity = (1/(4*Parameters::PI*(it.first*it.first)))*degen*(it.second*it.second);
-		m_thDensity[it.first] += thdensity;
-	}
+    std::vector<Eigenfunction>::const_iterator el = psi.begin();
+    std::vector<unsigned int>::const_iterator d = degen.begin();
+    for (; el != psi.end() && d != degen.end(); ++el, ++d)
+        for (const auto& it : el -> get())
+        {
+            const double thdensity = (1/(4*Parameters::PI*(it.first*it.first)))*(*d)*(it.second*it.second);
+            m_thDensity[it.first] += thdensity;
+        }
 	return;
 }
 
@@ -40,9 +43,9 @@ bool Theoreticaldensity::hasConverged (const std::map<double, double>& empidensi
 	return maxDiff < epsilon ? true : false; // convergence condition
 }
 
-std::ostream& Theoreticaldensity::operator<<(std::ostream& wStream) const
+std::ostream& operator<<(std::ostream& wStream, const Theoreticaldensity& thDensity)
 {
-    return writeMap(m_thDensity, wStream, true);
+    return writeMap(thDensity.m_thDensity, wStream, true);
 }
 
 

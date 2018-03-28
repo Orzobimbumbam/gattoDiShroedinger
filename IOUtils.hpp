@@ -18,7 +18,7 @@
 
 //declare IO global functions
 //can have templetized types and be friended with relevant classes for I/O operator overloading
-//NB the following functions are tested to work on happy-path cases. Corner case behaviour must be specified.
+//NB the following functions are tested to work on happy-path cases. Corner case behaviour must be specified or handled somewhere else.
 template <class T, class D> std::ostream& writeMap(const std::map<T, D>& inputMap, std::ostream& wStream, bool header)
 {
     if (header)
