@@ -9,7 +9,7 @@
  * Theoretical density
  *==========================================*/
 
-void Theoreticaldensity::density(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen)
+void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen)
 {
     std::vector<Eigenfunction>::const_iterator el = psi.begin();
     std::vector<unsigned int>::const_iterator d = degen.begin();
@@ -26,26 +26,31 @@ void Theoreticaldensity::density(const ElementEigenfunctions& psi, const Ordered
  * Convergence condition
  *==========================================*/
 
-bool Theoreticaldensity::hasConverged (const std::map<double, double>& empidensity) const
+bool NuclearDensity::hasConverged () const
 {
-	double maxDiff = std::abs(m_thDensity.begin() -> second - empidensity.begin() -> second);
+	double maxDiff = std::abs(m_thDensity.begin() -> second - m_sogDensity.begin() -> second);
 	double xMax = 0;
     for (const auto& it : m_thDensity)
 	{
-		if(std::abs(it.second - empidensity.at(it.first)) > maxDiff) //access only, throw exception if key is not found
+		if(std::abs(it.second - m_sogDensity.at(it.first)) > maxDiff) //access only, throw exception if key is not found
 		{
-			maxDiff = std::abs(it.second - empidensity.at(it.first));
+			maxDiff = std::abs(it.second - m_sogDensity.at(it.first));
 			xMax = it.first;
 		}
 	}
 
-	const double epsilon = empidensity.at(xMax)*0.01;
+	const double epsilon = m_sogDensity.at(xMax)*0.01;
 	return maxDiff < epsilon ? true : false; // convergence condition
 }
 
-std::ostream& operator<<(std::ostream& wStream, const Theoreticaldensity& thDensity)
+Density NuclearDensity::getTheoreticalDensity() const
 {
-    return writeMap(thDensity.m_thDensity, wStream, true);
+    return m_thDensity;
+}
+
+std::ostream& operator<<(std::ostream& wStream, const Density& density)
+{
+    return writeMap(density, wStream, false);
 }
 
 
@@ -53,52 +58,40 @@ std::ostream& operator<<(std::ostream& wStream, const Theoreticaldensity& thDens
  * SOG density
  *=========================================*/
 
-SOGdensity::SOGdensity() {}
-
-void SOGdensity::sogDensity (const std::vector<std::vector<double>>& QRparameters, std::vector<double>& sogdensity, double h) const
+void NuclearDensity::sogDensity(const std::vector<std::vector<double>>& QRparameters, double h)
 {
-    sogdensity.clear();
-    std::vector<double> notNormal;
-    notNormal.clear();
-    double scalar = 0;
-	const double alpha = sqrt(2./3.)*Parameters::rp;
+    const double alpha = sqrt(2./3.)*Parameters::rp;
 	const double gamma = sqrt(2./3.)*Parameters::rms;
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
 
-	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/h;
+	const unsigned long NSteps = static_cast<unsigned long>(std::abs(Parameters::x_fin - Parameters::x_in)/h);
 	double radiusx = Parameters::x_in;
 	for (unsigned int r = 0 ; r < NSteps + 1; ++r)
 	{
-		const double c1 = 1./(2*pow(Parameters::PI, (3./2.))*radiusx);
+        const double c1 = 1./(2*pow(Parameters::PI, 3./2.)*radiusx);
 
 		double c3 = 0;
-		for (unsigned int i = 0; i < 11; ++i)
+		for (unsigned int i = 0; i < QRparameters.size(); ++i)
 		{
-			const double Ai = (Parameters::NN*Parameters::qe*QRparameters[i][1])/(1 + 2*(QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
-			const double exp1 = exp((-1)*((radiusx - QRparameters[i][0])/beta)*((radiusx - QRparameters[i][0])/beta));
-			const double exp2 = exp((-1)*((radiusx + QRparameters[i][0])/beta)*((radiusx + QRparameters[i][0])/beta));
-			const double c2 = exp1*(((radiusx + QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma))) +
-					exp2*(((radiusx - QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma)));
-
-			c3 += Ai*c2;
+            const double Ai = (Parameters::NN*QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
+            const double exp1 = exp((-1)*((radiusx - QRparameters[i][0])/beta)*((radiusx - QRparameters[i][0])/beta));
+            const double exp2 = exp((-1)*((radiusx + QRparameters[i][0])/beta)*((radiusx + QRparameters[i][0])/beta));
+            const double c2p1 = ((radiusx + QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma));
+            const double c2p2 = ((radiusx - QRparameters[i][0])/(beta*beta*beta)) + (QRparameters[i][0]/(beta*gamma*gamma));
+            const double c2 = exp1*c2p1 + exp2*c2p2;
+            
+            c3 += Ai*c2;
 		}
 		const double sogdens = c1*c3;
-		notNormal.push_back(sogdens);
-		//scalar += sogdens*sogdens;
-		scalar += ((notNormal[r]*radiusx*radiusx)+(notNormal[r - 1]*(radiusx - h)*(radiusx - h)))*h/2.; // integral by trapezoid method for normalization
-		//sogdensity.push_back(sogdens);
-
+		m_sogDensity[radiusx] = sogdens;
 		radiusx += h;
 	}
-
-	// Normalization
-	double norm = Parameters::NN/scalar/4/Parameters::PI;
-	//double squared = sqrt(scalar*h);
-    for (auto& it : notNormal)
-    {
-        it = it*norm;
-        sogdensity.push_back(it);
-    }
+    
 	return;
+}
+
+Density NuclearDensity::getSOGDensity() const
+{
+    return m_sogDensity;
 }
 

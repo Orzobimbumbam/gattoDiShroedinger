@@ -77,10 +77,10 @@ double PotOut::potential(double x) const
     if (x != 0)
         angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
     
-	std::map<double, double> potMap;
-    m_outpot.getOutPot(potMap);
-
-    return potMap[x] + angularPart;
+    if (m_outpot.getKSPot().find(x) == m_outpot.getKSPot().end())
+        return interpolatedPotential(x);
+    
+    return m_outpot.getKSPot().at(x) + angularPart;
 }
 
 std::unique_ptr<InitialPot> PotOut::clone() const
@@ -88,7 +88,25 @@ std::unique_ptr<InitialPot> PotOut::clone() const
 	 return std::make_unique<PotOut> (*this); //return a derived class object through a base class pointer
 }
 
-
+double PotOut::interpolatedPotential(double x) const
+{
+    KSPotential ksp = m_outpot.getKSPot();
+    if (x < ksp.begin() -> first)
+        return ksp.begin() -> second; //lower extrapolation
+    
+    KSPotential::iterator it = ksp.begin();
+    KSPotential::iterator p = it;
+    ++it;
+    for (; it != ksp.end(); ++it)
+    {
+        if ( x > p -> first && x < it -> first)
+            return p -> second +
+            (it -> second - p -> second)/(it -> first - p -> first)*(x - p -> first); //interpolation
+        ++p;
+    }
+    
+    return p -> second; //at this level p points to last map element, which implies x > lastMapVaulue; upper extrapolation
+}
 
 
 

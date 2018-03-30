@@ -24,6 +24,7 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 typedef std::vector<double> PsiArray;
 
+
 BOOST_AUTO_TEST_SUITE(Calc)
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
@@ -259,6 +260,40 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_WSaxPot_Values)
     
     BOOST_CHECK(eigfValues == psi);
 }
+
+struct KSInverseFixture : public KohnShamInverse
+{
+    KSInverseFixture(const KSPotential& extPotential) {setInternalMap(extPotential);};
+    
+    void setInternalMap(const KSPotential& extPotential) {m_KSOutPot = extPotential;};
+};
+
+struct PotOutFixture : public PotOut
+{
+    PotOutFixture(const KSInverseFixture& ksif): PotOut(ksif, 0, 0) {}; //implicit cast to base class object
+    
+    //KSInverseFixture m_ksif;
+    double interpolate(double x) {return interpolatedPotential(x);};
+};
+
+BOOST_AUTO_TEST_CASE(PotOutInterpolate_straightLine)
+{
+    std::pair<double, double> a = std::make_pair(1, 2); //y = 2x
+    std::pair<double, double> b = std::make_pair(2, 4);
+    std::pair<double, double> c = std::make_pair(3, 6);
+    std::pair<double, double> d = std::make_pair(4, 8);
+    std::pair<double, double> e = std::make_pair(5, 10);
+    KSPotential f = {a, b, c, d, e}; //fill in map with some function
+    
+    KSInverseFixture ksif(f);
+    PotOutFixture poF(ksif);
+    
+    
+    BOOST_CHECK(poF.interpolate(0.5) == 2.);
+    BOOST_CHECK(poF.interpolate(7.) == 10.);
+    BOOST_CHECK(poF.interpolate(3.5) == 7.);
+}
+
 
 //more calcs test cases here...
 

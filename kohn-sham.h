@@ -3,19 +3,21 @@
 #include <vector>
 #include <map>
 
-//typedef std::pair<double, double> KVP;
+class NuclearDensity;
+class InitialPot;
+typedef std::map<double, double> KSPotential;
 
 class KohnShamInverse
 {
 public:
 	KohnShamInverse();
-    void KSinverse(const std::vector<double>& inTheoDensity, const std::vector<double>& empiDensity,
-    	const std::vector<double>& inPot);
+    KohnShamInverse(const InitialPot& iPot, double h);
+    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot);
 
-    void getOutPot (std::map<double, double>& outPot) const;
+    KSPotential getKSPot() const;
 
-private:
-    std::map<double, double> m_outPot;
+protected:
+    KSPotential m_KSOutPot;
 
 };
 

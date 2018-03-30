@@ -11,28 +11,23 @@ class Eigenfunction;
 class Element;
 typedef std::map<double, double> Density;
 
-class Theoreticaldensity
+class NuclearDensity
 {
 public:
-    void density(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen);
-    bool hasConverged (const std::map<double, double>& empidensity) const; 
+    void theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen);
+    void sogDensity (const std::vector<std::vector<double>>& QRparameters, double h);
+    bool hasConverged () const;
+    
+    Density getTheoreticalDensity() const;
+    Density getSOGDensity() const;
 
-    friend std::ostream& operator<<(std::ostream& wStream, const Theoreticaldensity& thDensity);
+    //friend std::ostream& operator<<(std::ostream& wStream, const NuclearDensity& thDensity);
     
 private:
-    friend std::ostream& writeMap(const Density&, std::ostream& wStream, bool header);
     
     Density m_thDensity;
+    Density m_sogDensity;
 };
 
-std::ostream& operator<<(std::ostream& wStream, const Theoreticaldensity& thDensity);
+std::ostream& operator<<(std::ostream& wStream, const Density& density);
 
-class SOGdensity
-{
-public:
-	SOGdensity();
-	void sogDensity (const std::vector<std::vector<double> >& QRparameters, std::vector<double>& sogdensity, double h)const;
-
-private:
-
-};

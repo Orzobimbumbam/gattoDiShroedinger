@@ -95,10 +95,12 @@ public:
 
     std::unique_ptr<InitialPot> clone() const override;
 
-private:
+protected:
     PotOut();
-	KohnShamInverse m_outpot;
-	//double m_potKS;
+	double interpolatedPotential(double x) const; //protected only for testing purposes
+    
+private:
+    KohnShamInverse m_outpot;
 
 };
 
