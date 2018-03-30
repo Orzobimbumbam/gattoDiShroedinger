@@ -25,7 +25,7 @@ std::unique_ptr<Eigenvalues> HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(200) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(100) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -49,7 +49,7 @@ m_sh(sh), m_nState(nState), m_lState(lState) {}
 double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nState) const
 {
 
-    const double error = 1e-12;
+    const double error = 1e-8;
     const unsigned int lState = m_lState;
 
     std::vector <double> psiArray;
@@ -68,9 +68,9 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
         }
 
         if (nodes > nState)
-            E2 *= 0.99;
+            E2 *= 0.6;
         else if (nodes < nState)
-            E2 *= 1.11;
+            E2 *= 1.4;
         else break;
     }
 

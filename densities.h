@@ -20,6 +20,8 @@ public:
     
     Density getTheoreticalDensity() const;
     Density getSOGDensity() const;
+    
+    double distanceToConvergence() const;
 
     //friend std::ostream& operator<<(std::ostream& wStream, const NuclearDensity& thDensity);
     
@@ -27,6 +29,7 @@ private:
     
     Density m_thDensity;
     Density m_sogDensity;
+    mutable double m_distanceToConvergenge;
 };
 
 std::ostream& operator<<(std::ostream& wStream, const Density& density);

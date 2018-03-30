@@ -77,7 +77,8 @@ double PotOut::potential(double x) const
     if (x != 0)
         angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
     
-    if (m_outpot.getKSPot().find(x) == m_outpot.getKSPot().end())
+    KSPotential ksp = m_outpot.getKSPot();
+    if (ksp.find(x) == ksp.end())
         return interpolatedPotential(x);
     
     return m_outpot.getKSPot().at(x) + angularPart;

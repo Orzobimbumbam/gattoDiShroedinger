@@ -29,6 +29,7 @@ public:
     
 private:
     OrderedLevelDegeneration m_levelDegen;
+    unsigned int m_orbitalMatrixRows;
 };
 
 #endif /* element_hpp */

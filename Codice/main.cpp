@@ -17,7 +17,7 @@
 int main(int argc, const char * argv[])
 {
     
-    const double H = 0.01;
+    const double H = 0.1;
     std::string inputPath = "Inputs/";
     std::string outputPath = "Outputs/";
         
@@ -33,6 +33,7 @@ int main(int argc, const char * argv[])
     
     Element ca48(orbitals);
     
+    //Test theoretical and sog density for initial harmonic potential
     const HOPot pot(Parameters::mn); //default is ground state
     const Schroddy sh(pot, H);
     ElementEigenfunctions elEigf = ca48.orbitalEigenfunction(sh, orbitals);
@@ -47,12 +48,33 @@ int main(int argc, const char * argv[])
     fOut.open(outputPath + "refSogDensity.txt");
     fOut << NDens.getSOGDensity();
     
+    //Test Kohn-Sham inversion for initial harmonic potential
     fOut.close();
     fOut.open(outputPath + "refFirstKSPotential.txt");
     KohnShamInverse ksi(pot, H);
     ksi.KSinverse(NDens, ksi);
     fOut << ksi.getKSPot();
+    fOut.close();
     
+    unsigned long loops = 0;
+    while (!NDens.hasConverged()) //simulation loop
+    {
+        const PotOut po(ksi, Parameters::mn, 0);
+        const Schroddy sh_(po, H);
+        elEigf = ca48.orbitalEigenfunction(sh_, orbitals);
+        NDens.theoreticalDensity(elEigf, ca48.getLevelDegeneration());
+        KohnShamInverse tempKsi = ksi;
+        ksi.KSinverse(NDens, tempKsi);
+        
+        ++loops;
+        //if (loops%10 == 0)
+            std::cerr << "Convergence distance: " << NDens.distanceToConvergence()
+            << " after " << loops << " iterations." << std::endl;
+    }
+    
+    KSPotential finalPotential = ksi.getKSPot();
+    fOut.open(outputPath + "refFinalPotential.txt");
+    fOut << finalPotential;
     
     std::cout << "Program executed successfully." << std::endl;
     return 0;

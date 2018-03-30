@@ -39,8 +39,14 @@ bool NuclearDensity::hasConverged () const
 		}
 	}
 
-	const double epsilon = m_sogDensity.at(xMax)*0.01;
-	return maxDiff < epsilon ? true : false; // convergence condition
+	const double epsilon = m_sogDensity.at(xMax)*0.1;
+    m_distanceToConvergenge = maxDiff - epsilon;
+	return maxDiff < epsilon; // convergence condition
+}
+
+double NuclearDensity::distanceToConvergence() const
+{
+    return m_distanceToConvergenge;
 }
 
 Density NuclearDensity::getTheoreticalDensity() const
