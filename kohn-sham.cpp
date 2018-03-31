@@ -33,14 +33,14 @@ void KohnShamInverse::KSinverse(const NuclearDensity& density, const KohnShamInv
     for (const auto& it : density.getTheoreticalDensity())
     {
         ratio1 = 2 - it.second/density.getSOGDensity().at(it.first);
-        const double alpha = 1 - Parameters::pregamma;
+        const double alpha = 1.;//ratio1;
         if ( inKSPot.getKSPot().at(it.first) < 0)
         {
             newPot = alpha*ratio1*inKSPot.getKSPot().at(it.first);
         }
         else
         {
-            ratio2 = it.second/inKSPot.getKSPot().at(it.first);
+            ratio2 = it.second/density.getSOGDensity().at(it.first);
             newPot = alpha*ratio2*inKSPot.getKSPot().at(it.first);
         }
         
