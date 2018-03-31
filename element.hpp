@@ -1,11 +1,3 @@
-//
-//  element.hpp
-//  Codice
-//
-//  Created by Alberto Campi on 27/03/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #ifndef element_hpp
 #define element_hpp
 
