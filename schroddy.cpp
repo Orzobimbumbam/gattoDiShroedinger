@@ -4,7 +4,6 @@
 # include <cmath>
 # include <vector>
 # include <fstream>
-# include "NLSolverClass.hpp"
 
 
 /*=========================================================================
