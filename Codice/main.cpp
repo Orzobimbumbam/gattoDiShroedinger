@@ -52,7 +52,8 @@ int main(int argc, const char * argv[])
     fOut.close();
     fOut.open(outputPath + "refFirstKSPotential.txt");
     KohnShamInverse ksi(pot, H);
-    ksi.KSinverse(NDens, ksi);
+    KohnShamInverse tempKsi = ksi;
+    ksi.KSinverse(NDens, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
     
@@ -63,8 +64,8 @@ int main(int argc, const char * argv[])
         const Schroddy sh_(po, H);
         elEigf = ca48.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, ca48.getLevelDegeneration());
-        KohnShamInverse tempKsi = ksi;
-        ksi.KSinverse(NDens, tempKsi);
+        KohnShamInverse tempKsi_ = ksi;
+        ksi.KSinverse(NDens, tempKsi_);
         
         ++loops;
         //if (loops%10 == 0)
@@ -72,9 +73,11 @@ int main(int argc, const char * argv[])
             << " after " << loops << " iterations." << std::endl;
     }
     
+    
     KSPotential finalPotential = ksi.getKSPot();
     fOut.open(outputPath + "refFinalPotential.txt");
     fOut << finalPotential;
+    fOut.close();
     
     std::cout << "Program executed successfully." << std::endl;
     return 0;

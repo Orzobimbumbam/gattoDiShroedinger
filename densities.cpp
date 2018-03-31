@@ -11,12 +11,13 @@
 
 void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen)
 {
+    m_thDensity.clear();
     std::vector<Eigenfunction>::const_iterator el = psi.begin();
     std::vector<unsigned int>::const_iterator d = degen.begin();
     for (; el != psi.end() && d != degen.end(); ++el, ++d)
         for (const auto& it : el -> get())
         {
-            const double thdensity = (1/(4*Parameters::PI*(it.first*it.first)))*(*d)*(it.second*it.second);
+            const double thdensity = 1./(4*Parameters::PI*(it.first*it.first))*(*d)*(it.second*it.second);
             m_thDensity[it.first] += thdensity;
         }
 	return;
@@ -29,7 +30,7 @@ void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const 
 bool NuclearDensity::hasConverged () const
 {
 	double maxDiff = std::abs(m_thDensity.begin() -> second - m_sogDensity.begin() -> second);
-	double xMax = 0;
+	double xMax = m_thDensity.begin() -> first;
     for (const auto& it : m_thDensity)
 	{
 		if(std::abs(it.second - m_sogDensity.at(it.first)) > maxDiff) //access only, throw exception if key is not found
@@ -39,7 +40,7 @@ bool NuclearDensity::hasConverged () const
 		}
 	}
 
-	const double epsilon = m_sogDensity.at(xMax)*0.1;
+	const double epsilon = m_sogDensity.at(xMax)*0.05;
     m_distanceToConvergenge = maxDiff - epsilon;
 	return maxDiff < epsilon; // convergence condition
 }
