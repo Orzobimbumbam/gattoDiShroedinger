@@ -46,6 +46,7 @@ double TrialEigenvalues::getEigenval2()
 GenericEigenvalues::GenericEigenvalues (const Schroddy& sh, unsigned int nState, unsigned int lState):
 m_sh(sh), m_nState(nState), m_lState(lState) {}
 
+// Shooting method implementation
 double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nState) const
 {
 
@@ -95,6 +96,7 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
     return midE;
 }
 
+// level energy
 double GenericEigenvalues::eigenvalue() const //this must return a double..
 {
     m_ELev.clear();

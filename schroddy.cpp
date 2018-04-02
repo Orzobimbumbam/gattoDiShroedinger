@@ -75,7 +75,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     return normalPsi;
 }
 
-
+// Calculate eigenfunctions and load a map defined in eigenfuntion.cpp
 const Eigenfunction Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const
 {
     Eigenfunction psi;

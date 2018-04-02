@@ -10,16 +10,19 @@ InitialPot::InitialPot(double m, unsigned int l): m_m(m), m_anglmomentum(l) {};
  * Woods-Saxon potential
  *=================================================================*/
 
-WSaxPot::WSaxPot(double V0, double Rn, double a0, double m): InitialPot(m, 0), m_V0(V0), m_Rn(Rn), m_a0(a0) {};
-WSaxPot::WSaxPot(double V0, double Rn, double a0, double m, unsigned int l): InitialPot(m, l), m_V0(V0), m_Rn(Rn), m_a0(a0) {};
+WSaxPot::WSaxPot(double Rn, double a0, double m): InitialPot(m, 0), m_Rn(Rn), m_a0(a0) {};
+WSaxPot::WSaxPot(double Rn, double a0, double m, unsigned int l): InitialPot(m, l), m_Rn(Rn), m_a0(a0) {};
 
 double WSaxPot::potential(double x) const
 {
     double angularPart = 0;
     if (x != 0)
         angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
-    
-    double wspot = -m_V0/(1+exp ((x-m_Rn)/m_a0)) + angularPart;
+
+    int sign = -1;
+    if (Parameters::NN == 0) sign *= -1;
+    double V0 = 51 + sign*33*(Parameters::NN - Parameters::NP)/Parameters::A;
+    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) + angularPart;
     return wspot;
 }
 

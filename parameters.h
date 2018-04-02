@@ -13,7 +13,7 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-const int NN = 2;									// Neutrons number
+const int NN = 20;									// Neutrons number
 const int NP = 0;									// Protons number
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
@@ -57,7 +57,7 @@ const double qe = 1.6021e-19;						// elementary charge [C]
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
-const double rms = 1.00;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
+const double rms = 1.45;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
 const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 //const double x_min=0;								// Integration

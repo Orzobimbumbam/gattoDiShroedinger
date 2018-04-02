@@ -24,14 +24,15 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "4He.txt");
+    in.open(inputPath + "48Ca.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
 
     Element nuclei(orbitals);
 
     //Test theoretical and sog density for initial harmonic potential
-    const HOPot pot(Parameters::mn); //default is ground state
+    //const HOPot pot(Parameters::mn); //default is ground state
+    const WSaxPot pot(Parameters::mn); //default is ground state
     const Schroddy sh(pot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
     NuclearDensity NDens;

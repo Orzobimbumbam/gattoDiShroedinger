@@ -31,8 +31,8 @@ class WSaxPot: public InitialPot //derived class
 {
 
 public:
-    WSaxPot(double V0, double Rn, double a0, double m);
-    WSaxPot(double V0, double Rn, double a0, double m, unsigned int l);
+    WSaxPot(double Rn, double a0, double m);
+    WSaxPot(double Rn, double a0, double m, unsigned int l);
     double potential(double x) const override;
     //void setL(unsigned int l) override;
     
@@ -40,7 +40,7 @@ public:
 
 private:
     WSaxPot(); //make defaul ctor private as we must initialize parameters
-    const double m_V0, m_Rn, m_a0;
+    const double m_Rn, m_a0;
 
 };
 

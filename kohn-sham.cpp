@@ -2,7 +2,7 @@
 # include "schroddy.h"
 # include "kohn-sham.h"
 # include "densities.h"
-#include "initpot.h"
+# include "initpot.h"
 # include <vector>
 # include <cmath>
 
