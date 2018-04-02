@@ -58,6 +58,39 @@ std::unique_ptr<InitialPot> HOPot::clone() const
     return std::make_unique<HOPot> (*this); //return a derived class object through a base class pointer
 }
 
+/*===================================================================
+ * Coulomb potential
+ *=================================================================*/
+
+CoPot::CoPot(int Z, double m): InitialPot(m, 0), m_Z(Z) {}
+CoPot::CoPot(int Z, double m, unsigned int l): InitialPot(m, l), m_Z(Z) {}
+
+double CoPot::potential(double x) const
+{
+    /*double angularPart = 0;
+    if (x != 0)
+        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
+*/
+    int s = 2.;
+    const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
+    		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
+
+    double copot;
+    if (x <= Ru)
+    	copot = 0.5*((m_Z*Parameters::qe*Parameters::qe)/Ru)*(3 - (x/Ru)*(x/Ru));
+    else
+    	copot = (m_Z*Parameters::qe*Parameters::qe)/x;
+
+    //copot += angularPart;
+
+    return copot;
+}
+
+std::unique_ptr<InitialPot> CoPot::clone() const
+{
+    return std::make_unique<CoPot> (*this); //return a derived class object through a base class pointer
+}
+
 //=====================================================================
 // Spin-orbit potential
 //=====================================================================
@@ -68,6 +101,27 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
 	double LS=((hbar*hbar)/2)(j(j+1)-l(l+1)-3/4)
 	double deriv
 	sopot=*/
+
+/*===================================================================
+ * Total potential
+ *=================================================================*/
+
+TotPot::TotPot(double m): InitialPot(m, 0) {}
+TotPot::TotPot(double m, unsigned int l): InitialPot(m, l) {}
+
+double TotPot::potential(double x) const
+{
+	const WSaxPot wspot(Parameters::Rn, Parameters::a0, Parameters::mn);
+	const CoPot copot(Parameters::NP, Parameters::mn);
+	double totpot = wspot + copot;
+
+    return totpot;
+}
+
+std::unique_ptr<InitialPot> TotPot::clone() const
+{
+    return std::make_unique<TotPot> (*this); //return a derived class object through a base class pointer
+}
 
 /*=====================================================================
  * Kohn-Sham potential

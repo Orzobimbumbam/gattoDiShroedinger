@@ -32,8 +32,8 @@ int main(int argc, const char * argv[])
 
     //Test theoretical and sog density for initial harmonic potential
     //const HOPot pot(Parameters::mn); //default is ground state
-    const WSaxPot pot(Parameters::mn); //default is ground state
-    const Schroddy sh(pot, H);
+    const TotPot potTot (Parameters::mn);
+    const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
     NuclearDensity NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
@@ -49,7 +49,7 @@ int main(int argc, const char * argv[])
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.close();
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    KohnShamInverse ksi(pot, H);
+    KohnShamInverse ksi(potTot, H);
     KohnShamInverse tempKsi = ksi;
     ksi.KSinverse(NDens, tempKsi);
     fOut << ksi.getKSPot();

@@ -64,6 +64,41 @@ private:
 };
 
 /*=====================================================================
+ * Coulomb potential class
+ *===================================================================*/
+
+class CoPot: public InitialPot //derived class
+{
+public:
+    CoPot(int Z, double m);
+    CoPot(int Z, double m, unsigned int l);
+    double potential(double x) const override;
+
+    std::unique_ptr<InitialPot> clone() const override;
+
+private:
+    CoPot(); //same as before
+    int m_Z;
+};
+
+/*=====================================================================
+ * Total potential class
+ *===================================================================*/
+
+class TotPot: public InitialPot //derived class
+{
+public:
+    TotPot(double m);
+    TotPot(double m, unsigned int l);
+    double potential(double x) const override;
+
+    std::unique_ptr<InitialPot> clone() const override;
+
+private:
+    TotPot(); //same as before
+};
+
+/*=====================================================================
  * Spin-Orbit potential class
  *===================================================================*/
 /*
