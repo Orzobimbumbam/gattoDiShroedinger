@@ -15,7 +15,7 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
     for (unsigned int i = 0; i < orbitalMatrix.size(); ++i) //loop through matrix rows
     {
         const unsigned int quantL = orbitalMatrix[i][1];
-        const unsigned int degen = 2*(quantL + 1);
+        const unsigned int degen = 2*(2*quantL + 1);
         nuclNum += degen;
         ++m_orbitalMatrixRows;
         if (nuclNum > Parameters::A)

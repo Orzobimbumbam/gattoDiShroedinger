@@ -13,8 +13,8 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-const int NN = 20;									// Neutrons number
-const int NP = 0;									// Protons number
+const int NN = 20.;									// Neutrons number
+const int NP = 20.;									// Protons number
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]
@@ -53,7 +53,8 @@ const double x_fin = 5*Rn;
 // Other parameters
 //const unsigned int energyLevel = 1;
 //const int angularMomentum = 2;
-const double qe = 1.6021e-19;						// elementary charge [C]
+//const double qe = 1.6021e-19;						// elementary charge [C]
+const double qe = 1.2;								// elementary charge [MeV fm^(1/2)]
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
