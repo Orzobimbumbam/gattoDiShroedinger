@@ -19,10 +19,20 @@ double WSaxPot::potential(double x) const
     if (x != 0)
         angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
 
+    int s = 2.;
+    const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
+    		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
+
+    double copot;
+    if (x <= Ru)
+    	copot = 0.5*((Parameters::NP*Parameters::qe*Parameters::qe)/Ru)*(3 - (x/Ru)*(x/Ru));
+    else
+    	copot = (Parameters::NP*Parameters::qe*Parameters::qe)/x;
+
     int sign = -1;
     if (Parameters::NN == 0) sign *= -1;
     double V0 = 51 + sign*33*(Parameters::NN - Parameters::NP)/Parameters::A;
-    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) + angularPart;
+    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) + angularPart + copot;
     return wspot;
 }
 
@@ -69,8 +79,8 @@ double CoPot::potential(double x) const
 {
     /*double angularPart = 0;
     if (x != 0)
-        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
-*/
+        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);*/
+
     int s = 2.;
     const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
     		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
@@ -106,6 +116,11 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
  * Total potential
  *=================================================================*/
 
+/*TotPot& operator+(const InitialPot&);
+{
+	return TotPot()
+}
+
 TotPot::TotPot(double m): InitialPot(m, 0) {}
 TotPot::TotPot(double m, unsigned int l): InitialPot(m, l) {}
 
@@ -121,7 +136,7 @@ double TotPot::potential(double x) const
 std::unique_ptr<InitialPot> TotPot::clone() const
 {
     return std::make_unique<TotPot> (*this); //return a derived class object through a base class pointer
-}
+}*/
 
 /*=====================================================================
  * Kohn-Sham potential
@@ -166,6 +181,29 @@ double PotOut::interpolatedPotential(double x) const
     return p -> second; //at this level p points to last map element, which implies x > lastMapVaulue; upper extrapolation
 }
 
+/*===================================================================
+ * Test potential
+ *=================================================================*/
+
+TestPot::TestPot(double m, unsigned int l): InitialPot(m, l) {}
+TestPot::TestPot(double m): InitialPot(m, 0) {}
+
+double TestPot::potential(double x) const
+{
+    double angularPart = 0;
+    if (x != 0)
+        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
+
+    const double c =(m_m*Parameters::hbar_omega*Parameters::hbar_omega)/(Parameters::hbarc*Parameters::hbarc);
+    double hopot = angularPart + 0.5*c*x*x;
+
+    return hopot;
+}
+
+std::unique_ptr<InitialPot> TestPot::clone() const
+{
+    return std::make_unique<TestPot> (*this); //return a derived class object through a base class pointer
+}
 
 
 

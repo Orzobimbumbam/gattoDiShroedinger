@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "eigenvalues.hpp"
+#include "IOUtils.hpp"
 
 class Eigenfunction;
 class Schroddy;
@@ -10,6 +11,7 @@ class Schroddy;
 typedef std::vector<std::vector<unsigned int>> OrderedOrbitalMatrix;
 typedef std::vector<Eigenfunction> ElementEigenfunctions;
 typedef std::vector<unsigned int> OrderedLevelDegeneration;
+typedef std::vector<std::vector<double>> ElementEigenValues;
 
 class Element
 {
@@ -18,9 +20,11 @@ public:
     
     ElementEigenfunctions orbitalEigenfunction(const Schroddy& sh, const OrderedOrbitalMatrix& orbitalMatrix) const;
     OrderedLevelDegeneration getLevelDegeneration() const;
+    ElementEigenValues getLevelEigenvalue() const;
     
 private:
     OrderedLevelDegeneration m_levelDegen;
+    mutable ElementEigenValues m_eigenValMatrix;
     unsigned int m_orbitalMatrixRows;
 };
 

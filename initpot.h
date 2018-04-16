@@ -85,7 +85,7 @@ private:
  * Total potential class
  *===================================================================*/
 
-class TotPot: public InitialPot //derived class
+/*class TotPot: public InitialPot //derived class
 {
 public:
     TotPot(double m);
@@ -97,6 +97,8 @@ public:
 private:
     TotPot(); //same as before
 };
+
+friend TotPot& operator+(const InitialPot& rhsPotential);*/
 
 /*=====================================================================
  * Spin-Orbit potential class
@@ -127,6 +129,9 @@ class PotOut: public InitialPot
 public:
 	PotOut(const KohnShamInverse& outpot, double m, unsigned int l);
 	double potential (double x) const override;
+    bool hasConverged () const;
+
+    double distanceToConvergence() const;
 
     std::unique_ptr<InitialPot> clone() const override;
 
@@ -136,7 +141,23 @@ protected:
     
 private:
     KohnShamInverse m_outpot;
+};
 
+/*======================================================================
+ * Test potential class
+ *====================================================================*/
+
+class TestPot: public InitialPot
+{
+public:
+	TestPot(double m); //l is assumed ground state
+	TestPot(double m, unsigned int l);
+    double potential(double x) const override;
+
+    std::unique_ptr<InitialPot> clone() const override;
+
+private:
+    TestPot(); //same as before
 };
 
 

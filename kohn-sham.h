@@ -18,7 +18,6 @@ public:
 
 protected:
     KSPotential m_KSOutPot;
-
 };
 
 
