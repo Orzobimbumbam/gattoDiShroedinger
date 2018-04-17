@@ -129,7 +129,6 @@ Density NuclearDensity::getSOGDensity() const
 
 void NuclearDensity::mcDensity(std::ifstream& inStream)
 {
-	inStream.open("Inputs/file.txt");
 	readMap(m_mcDensity, inStream, false);
 }
 

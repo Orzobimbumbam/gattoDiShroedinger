@@ -195,10 +195,11 @@ double TestPot::potential(double x) const
         angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
 
     const double c =(m_m*Parameters::hbar_omega*Parameters::hbar_omega)/(Parameters::hbarc*Parameters::hbarc);
-    double hopot = angularPart + 0.5*c*x*x;
+    double hopot = angularPart + 0.25*(c - 1)*x*x*x;
 
     return hopot;
 }
+
 
 std::unique_ptr<InitialPot> TestPot::clone() const
 {

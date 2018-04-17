@@ -31,7 +31,10 @@ int main(int argc, const char * argv[])
     Element nuclei(orbitals);
 
     //Test theoretical and sog density for initial harmonic potential
-    const HOPot potTot(Parameters::mn); //default is ground state
+    //const TotPot potTot (Parameters::mn);
+    //const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
+    //const HOPot potTot(Parameters::mn); //default is ground state
+    const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
     const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
@@ -46,19 +49,18 @@ int main(int argc, const char * argv[])
     	fOut << i.first << "\t" << i.second << std::endl;
     fOut.close();
 
-    //const TotPot potTot (Parameters::mn);
-    //const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
     const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
     NuclearDensity NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-    NDens.sogDensity(qrParam, H);
+    //NDens.sogDensity(qrParam, H);
+    in.open(inputPath + "HODensity-2NN.txt");
+    NDens.mcDensity(in);
 
     //std::ofstream fOut(outputPath + "refDensity.txt");
     fOut.open(outputPath + "refInitialDensity.txt");
     fOut << NDens.getTheoreticalDensity();
     fOut.close();
-
 
    /* for(int i = 0; i < elEigf.size(); ++i)
     {
