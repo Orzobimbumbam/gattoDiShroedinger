@@ -13,8 +13,8 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-const int NN = 48;									// Neutrons number
-const int NP = 0;									// Protons number
+const int NN = 20.;									// Neutrons number
+const int NP = 20.;									// Protons number
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]
@@ -45,7 +45,7 @@ double error=10e-8;*/
 // Runge-Kutta parameters
 //const double x_in = -10*Rn;
 const double x_in = 1e-12;
-const double x_fin = 10*Rn;
+const double x_fin = 5*Rn;
 //const double psi0= 0.001;
 //const double psiPrime0 = 1;
 //unsigned long N_step=10;
@@ -53,11 +53,16 @@ const double x_fin = 10*Rn;
 // Other parameters
 //const unsigned int energyLevel = 1;
 //const int angularMomentum = 2;
+
 const double qe = 1.439; //1.6021e-19;						// elementary charge [MeV*fm]
+
+//const double qe = 1.6021e-19;						// elementary charge [C]
+//const double qe = 1.2;								// elementary charge [MeV fm^(1/2)]
+
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
-    const double rms = 3.4737;					// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
+const double rms = 1.45;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
 const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 //const double x_min=0;								// Integration

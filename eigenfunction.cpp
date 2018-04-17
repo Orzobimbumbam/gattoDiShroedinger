@@ -1,11 +1,3 @@
-//
-//  eigenfunction.cpp
-//  Codice
-//
-//  Created by Alberto Campi on 23/03/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #include "eigenfunction.hpp"
 #include <utility>
 

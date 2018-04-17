@@ -1,18 +1,9 @@
-//
-//  schroddy.cpp
-//  Codice
-//
-//  Created by Alberto Campi on 02/03/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 # include "initpot.h"
 # include "parameters.h"
 # include "schroddy.h"
 # include <cmath>
 # include <vector>
 # include <fstream>
-# include "NLSolverClass.hpp"
 
 
 /*=========================================================================
@@ -84,7 +75,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     return normalPsi;
 }
 
-
+// Calculate eigenfunctions and load a map defined in eigenfuntion.cpp
 const Eigenfunction Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E) const
 {
     Eigenfunction psi;

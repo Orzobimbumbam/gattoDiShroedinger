@@ -1,11 +1,3 @@
-//
-//  element.cpp
-//  Codice
-//
-//  Created by Alberto Campi on 27/03/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #include "element.hpp"
 #include "eigenfunction.hpp"
 #include "schroddy.h"
@@ -14,7 +6,10 @@
 #include "eigenvalues.hpp"
 
 #include <memory>
+#include <map>
+#include <fstream>
 
+// Filling the orbitals
 Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
 {
     unsigned int nuclNum = 0;
@@ -27,7 +22,7 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         ++m_orbitalMatrixRows;
         if (nuclNum > Parameters::A)
         {
-            const unsigned int outerShellDegen = Parameters::A - (nuclNum - degen);
+            const unsigned int outerShellDegen = Parameters::A - (nuclNum - degen); // nucleons number in outer shell
             m_levelDegen.push_back(outerShellDegen);
             break;
         }
@@ -41,6 +36,7 @@ OrderedLevelDegeneration Element::getLevelDegeneration() const
     return m_levelDegen;
 }
 
+// Calculation of the eigenfunctions for each shell involved
 ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const OrderedOrbitalMatrix& orbitalMatrix) const
 {
     using namespace Parameters;
@@ -48,6 +44,7 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
     
     const std::unique_ptr<InitialPot> ptPot = sh.getInitialPotPtr() -> clone();
     const double h = sh.getH();
+    std::ofstream fOut("Outputs/refEigenvalues.txt");
     
     for (unsigned int i = 0; i < m_orbitalMatrixRows; ++i)
     {
@@ -56,15 +53,27 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
         ptPot -> setL(l);
         const Schroddy tempSh(*ptPot, h);
         const GenericEigenvalues genEig(tempSh, nr, l);
-        const double E  = genEig.eigenvalue();
+        const double E = genEig.eigenvalue();
         const Eigenfunction eigf = tempSh.solveSchroddyByRK(x_in, x_fin, psi0(l), psiPrime0(l), E);
         elEigf.push_back(eigf);
+
+    	/*m_eigenValMatrix[i][0] = nr;
+    	m_eigenValMatrix[i][1] = l;
+    	m_eigenValMatrix[i][2] = E;*/
+
+    	fOut << nr << "\t" << l << "\t" << E << std::endl;
+    	/*std::ofstream fOut2.open("Outputs/" + "level" + i + "refInitialEigenFunctions.txt");
+        for (std::map<const double, double>::iterator it = eigf.begin(); i != eigf.end(); ++i)
+            fOut2 << it.first << "\t" << it.second << std::endl;*/
     }
-    
+    fOut.close();
     return elEigf;
 }
 
-
+ElementEigenValues Element::getLevelEigenvalue() const
+{
+    return m_eigenValMatrix;
+}
 
 
 

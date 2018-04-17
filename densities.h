@@ -17,10 +17,12 @@ class NuclearDensity
 public:
     void theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen);
     void sogDensity (const std::vector<std::vector<double>>& QRparameters, double h);
+    void mcDensity (std::ifstream& inStream);
     bool hasConverged () const;
     
     Density getTheoreticalDensity() const;
     Density getSOGDensity() const;
+    Density getMCDensity() const;
     
     double distanceToConvergence() const;
 
@@ -30,6 +32,7 @@ private:
     
     Density m_thDensity;
     Density m_sogDensity;
+    Density m_mcDensity;
     mutable double m_distanceToConvergenge;
 };
 
