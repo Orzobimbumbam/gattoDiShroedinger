@@ -41,7 +41,7 @@ Schroddy& Schroddy::operator=(const Schroddy& rhsSchroddy) //copy assignment
 double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const
 {
     psiArray.clear();
-    const unsigned long NSteps = std::abs(x1 - x0)/m_h;
+    const unsigned long NSteps = static_cast<unsigned long>(std::abs(x1 - x0)/m_h);
     const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;
 

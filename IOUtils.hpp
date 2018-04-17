@@ -30,7 +30,7 @@ template <class T, class D> std::ostream& writeMap(const std::map<T, D>& inputMa
     return wStream;
 }
 
-template <class T, class D> std::ifstream& readMap(std::map<T, D>& outputMap, std::ifstream& rStream, bool header)
+template <class T, class D> std::istream& readMap(std::map<T, D>& outputMap, std::istream& rStream, bool header)
 {
     if (header)
     {

@@ -28,7 +28,7 @@ typedef std::vector<double> PsiArray;
 BOOST_AUTO_TEST_SUITE(Calc)
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
-    const double H = 0.001;
+    const double H = 0.1;
     //int mass_num=Parameters::A;
     
     const unsigned int k = 1;
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 
 BOOST_AUTO_TEST_CASE(shooting_HO11, *utf::tolerance(0.1))
 {
-    const double H = 0.001;
+    const double H = 0.01;
     //int mass_num=Parameters::A;
     
     const unsigned int k = 1;
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(shootingHO_2113, *utf::tolerance(0.1))
 
 BOOST_AUTO_TEST_CASE(shooting_HORandom, *utf::tolerance(0.1))
 {
-    const double H = 0.01;
+    const double H = 0.1;
     //int mass_num=Parameters::A;
     
     unsigned int N = 10;

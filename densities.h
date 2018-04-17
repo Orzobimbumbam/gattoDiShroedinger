@@ -10,6 +10,7 @@
 class Eigenfunction;
 class Element;
 typedef std::map<double, double> Density;
+typedef std::pair<std::string, NuclearDensity> NuclearDensityOutputQuery;
 
 class NuclearDensity
 {
@@ -23,7 +24,7 @@ public:
     
     double distanceToConvergence() const;
 
-    //friend std::ostream& operator<<(std::ostream& wStream, const NuclearDensity& thDensity);
+    friend std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery& ouputQuery);
     
 private:
     
@@ -33,4 +34,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& wStream, const Density& density);
+std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery& outputQuery);
+
+
 

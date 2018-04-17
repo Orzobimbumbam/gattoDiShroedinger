@@ -3,6 +3,7 @@
 # include "eigenfunction.hpp"
 # include <fstream>
 # include <vector>
+# include <algorithm>
 
 
 /*============================================
@@ -14,6 +15,7 @@ void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const 
     m_thDensity.clear();
     std::vector<Eigenfunction>::const_iterator el = psi.begin();
     std::vector<unsigned int>::const_iterator d = degen.begin();
+    
     for (; el != psi.end() && d != degen.end(); ++el, ++d)
         for (const auto& it : el -> get())
         {
@@ -55,11 +57,30 @@ Density NuclearDensity::getTheoreticalDensity() const
     return m_thDensity;
 }
 
+/*===========================================
+ * Class operators (friend, global)
+ *=========================================*/
+
 std::ostream& operator<<(std::ostream& wStream, const Density& density)
 {
     return writeMap(density, wStream, false);
 }
 
+std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery& outputQuery)
+{
+    std::string oqs = outputQuery.first;
+    std::transform(oqs.begin(), oqs.end(), oqs.begin(), ::tolower); //transform string to lower case
+    
+    if (oqs == "thdensity" || oqs == "theoreticaldensity" || oqs == "theoretical")
+        return writeMap(outputQuery.second.getTheoreticalDensity(), wStream, false);
+    
+    if (oqs == "sogdensity" || oqs == "sog")
+        return writeMap(outputQuery.second.getSOGDensity(), wStream, false);
+    
+    std::string usageMessage = "Possible candidates are: thdensity, sogdensity";
+    return std::cerr << "NuclearDensity::operator<< : No matching results for " << outputQuery.first << std::endl
+        << usageMessage << std::endl;
+}
 
 /*===========================================
  * SOG density

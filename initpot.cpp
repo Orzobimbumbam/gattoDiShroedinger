@@ -39,12 +39,16 @@ HOPot::HOPot(double m): InitialPot(m, 0) {}
 
 double HOPot::potential(double x) const
 {
-    double angularPart = 0;
+    using namespace Parameters;
+    double angularPart = 0, coulomb = 0;
     if (x != 0)
-        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
-    
-    const double c =(m_m*Parameters::hbar_omega*Parameters::hbar_omega)/(Parameters::hbarc*Parameters::hbarc);
-    double hopot = angularPart + 0.5*c*x*x;
+    {
+        angularPart = (hbarc*hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
+        //coulomb = -NN*qe*qe/x;
+    }
+
+    const double c =(m_m*hbar_omega*hbar_omega)/(hbarc*hbarc);
+    double hopot = angularPart + 0.5*c*x*x + coulomb;
 
     return hopot;
 }
@@ -70,7 +74,9 @@ double SOPot(double k0, doubler0, double x, double hbar, double Rn, double a)
  * Kohn-Sham potential
  *===================================================================*/
 
-PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l): InitialPot(m, l), m_outpot(outpot){}
+PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l): InitialPot(m, l), m_outpot(outpot) {}
+PotOut::PotOut(const KohnShamInverse& outpot, double m): InitialPot(m, 0), m_outpot(outpot) {}
+
 double PotOut::potential(double x) const
 {
     double angularPart = 0;
@@ -98,6 +104,7 @@ double PotOut::interpolatedPotential(double x) const
     KSPotential::iterator it = ksp.begin();
     KSPotential::iterator p = it;
     ++it;
+    
     for (; it != ksp.end(); ++it)
     {
         if ( x > p -> first && x < it -> first)

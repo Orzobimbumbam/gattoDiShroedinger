@@ -34,7 +34,6 @@ public:
     WSaxPot(double V0, double Rn, double a0, double m);
     WSaxPot(double V0, double Rn, double a0, double m, unsigned int l);
     double potential(double x) const override;
-    //void setL(unsigned int l) override;
     
     std::unique_ptr<InitialPot> clone() const override;
 
@@ -91,13 +90,14 @@ class PotOut: public InitialPot
 {
 public:
 	PotOut(const KohnShamInverse& outpot, double m, unsigned int l);
+    PotOut(const KohnShamInverse& outpot, double m); //l is assumed ground state
 	double potential (double x) const override;
 
     std::unique_ptr<InitialPot> clone() const override;
 
 protected:
     PotOut();
-	double interpolatedPotential(double x) const; //protected only for testing purposes
+	double interpolatedPotential(double x) const; //protected only for testing purposes, fixture classes to be derived
     
 private:
     KohnShamInverse m_outpot;

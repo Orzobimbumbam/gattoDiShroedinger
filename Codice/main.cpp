@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <pthread.h>
 
 #include "Includes.h"
 
@@ -60,7 +61,7 @@ int main(int argc, const char * argv[])
     unsigned long loops = 0;
     while (!NDens.hasConverged()) //simulation loop
     {
-        const PotOut po(ksi, Parameters::mn, 0);
+        const PotOut po(ksi, Parameters::mn);
         const Schroddy sh_(po, H);
         elEigf = ca48.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, ca48.getLevelDegeneration());
