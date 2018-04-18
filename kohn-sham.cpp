@@ -34,8 +34,8 @@ void KohnShamInverse::KSinverse(const NuclearDensity& density, const KohnShamInv
         const double alpha = 1.;//ratio1;
         if ( inKSPot.getKSPot().at(it.first) < 0)
         {
-        	ratio1 = 2 - it.second/density.getMCDensity().at(it.first);
-        	//ratio1 = 2 - it.second/density.getSOGDensity().at(it.first);
+        	//ratio1 = 2 - it.second/density.getMCDensity().at(it.first);
+        	ratio1 = 2 - it.second/density.getSOGDensity().at(it.first);
         	if (ratio1 < 1 - Parameters::pregamma)
                 ratio1 = 1 - Parameters::pregamma;
             // Prefactor
@@ -46,8 +46,8 @@ void KohnShamInverse::KSinverse(const NuclearDensity& density, const KohnShamInv
         }
         else
         {
-            ratio2 = it.second/density.getMCDensity().at(it.first);
-            //ratio2 = it.second/density.getSOGDensity().at(it.first);
+            //ratio2 = it.second/density.getMCDensity().at(it.first);
+            ratio2 = it.second/density.getSOGDensity().at(it.first);
 			if (ratio2 < 1 - Parameters::pregamma)
                 ratio2 = 1 - Parameters::pregamma;		// Prefactor
             
@@ -66,29 +66,6 @@ KSPotential KohnShamInverse::getKSPot() const
 {
 	return m_KSOutPot;
 }
-
-/*bool KohnShamInverse::hasConverged (const KohnShamInverse& inKSPot) const
-{
-	double maxDiff = std::abs(m_KSOutPot.begin() -> second - inKSPot.getKSPot().begin() -> second);
-	double xMax = m_KSOutPot.begin() -> first;
-    for (const auto& it : m_KSOutPot)
-	{
-		if(std::abs(it.second - inKSPot.getKSPot().at(it.first)) > maxDiff) //access only, throw exception if key is not found
-		{
-			maxDiff = std::abs(it.second - inKSPot.getKSPot().at(it.first));
-			xMax = it.first;
-		}
-	}
-
-	const double epsilon = inKSPot.getKSPot().at(xMax)*50;
-    m_distanceToConvergenge = maxDiff - epsilon;
-	return maxDiff < epsilon; // convergence condition
-}
-
-double KohnShamInverse::distanceToConvergence() const
-{
-    return m_distanceToConvergenge;
-}*/
 
 
 

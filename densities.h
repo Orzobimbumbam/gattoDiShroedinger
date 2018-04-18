@@ -25,6 +25,7 @@ public:
     Density getMCDensity() const;
     
     double distanceToConvergence() const;
+    double epsilon() const;
 
     friend std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery& ouputQuery);
     
@@ -34,6 +35,7 @@ private:
     Density m_sogDensity;
     Density m_mcDensity;
     mutable double m_distanceToConvergenge;
+    mutable double m_epsilon;
 };
 
 std::ostream& operator<<(std::ostream& wStream, const Density& density);

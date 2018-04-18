@@ -29,6 +29,8 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         else
             m_levelDegen.push_back(degen);
     }
+    ElementEigenValues temp(m_orbitalMatrixRows, std::vector<double>(3));
+    m_eigenValMatrix = temp;
 }
 
 OrderedLevelDegeneration Element::getLevelDegeneration() const
@@ -44,7 +46,6 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
     
     const std::unique_ptr<InitialPot> ptPot = sh.getInitialPotPtr() -> clone();
     const double h = sh.getH();
-    std::ofstream fOut("Outputs/refEigenvalues.txt");
     
     for (unsigned int i = 0; i < m_orbitalMatrixRows; ++i)
     {
@@ -57,16 +58,10 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
         const Eigenfunction eigf = tempSh.solveSchroddyByRK(x_in, x_fin, psi0(l), psiPrime0(l), E);
         elEigf.push_back(eigf);
 
-    	/*m_eigenValMatrix[i][0] = nr;
+    	m_eigenValMatrix[i][0] = nr;
     	m_eigenValMatrix[i][1] = l;
-    	m_eigenValMatrix[i][2] = E;*/
-
-    	fOut << nr << "\t" << l << "\t" << E << std::endl;
-    	/*std::ofstream fOut2.open("Outputs/" + "level" + i + "refInitialEigenFunctions.txt");
-        for (std::map<const double, double>::iterator it = eigf.begin(); i != eigf.end(); ++i)
-            fOut2 << it.first << "\t" << it.second << std::endl;*/
+    	m_eigenValMatrix[i][2] = E;
     }
-    fOut.close();
     return elEigf;
 }
 

@@ -45,14 +45,22 @@ bool NuclearDensity::hasConverged () const
 	}
 
 	//const double epsilon = m_sogDensity.at(xMax)*0.05;
-    const double epsilon = 0.1*0.04;
-    m_distanceToConvergenge = maxDiff - epsilon;
-	return maxDiff < epsilon; // convergence condition
+    //const double epsilon = 0.1*0.04;
+    //m_distanceToConvergenge = maxDiff - epsilon;
+    m_epsilon = m_sogDensity.at(xMax)*0.05;
+    m_distanceToConvergenge = maxDiff - m_epsilon;
+
+	return maxDiff < m_epsilon; // convergence condition
 }
 
 double NuclearDensity::distanceToConvergence() const
 {
     return m_distanceToConvergenge;
+}
+
+double NuclearDensity::epsilon() const
+{
+    return m_epsilon;
 }
 
 Density NuclearDensity::getTheoreticalDensity() const
@@ -119,8 +127,13 @@ void NuclearDensity::sogDensity(const std::vector<std::vector<double>>& QRparame
 	}
 
 	// Normalization by trapezes method integration
-	double scalar = 0;
 	Density::iterator it = m_sogDensity.begin();
+	//Density::iterator lastEval = m_sogDensity.end();
+	//--lastEval;
+
+	//integral end-point evaluations
+	double scalar = 0;//( it -> second*it -> first*it -> first + lastEval -> second * lastEval -> first * lastEval -> first)*h/2.;
+	//++it;
 	Density::iterator p = it;
 	++it;
     for (; it != m_sogDensity.end(); ++it)
