@@ -202,7 +202,8 @@ double TestPot::potential(double x) const
         angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
 
     const double c =(m_m*Parameters::hbar_omega*Parameters::hbar_omega)/(Parameters::hbarc*Parameters::hbarc);
-    double hopot = angularPart + 0.5*c*x*x + 10*x;
+    const double perturbativePart = 10*x;
+    double hopot = angularPart + 0.5*c*x*x + perturbativePart;
 
     return hopot;
 }
