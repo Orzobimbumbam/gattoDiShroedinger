@@ -6,6 +6,8 @@
 #include "eigenvalues.hpp"
 
 #include <memory>
+#include <map>
+#include <fstream>
 
 // Filling the orbitals
 Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
@@ -20,13 +22,15 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         ++m_orbitalMatrixRows;
         if (nuclNum > Parameters::A)
         {
-            const unsigned int outerShellDegen = nuclNum - Parameters::A; // nucleons number in outer shell
+            const unsigned int outerShellDegen = Parameters::A - (nuclNum - degen); // nucleons number in outer shell
             m_levelDegen.push_back(outerShellDegen);
             break;
         }
         else
             m_levelDegen.push_back(degen);
     }
+    ElementEigenValues temp(m_orbitalMatrixRows, std::vector<double>(3));
+    m_eigenValMatrix = temp;
 }
 
 OrderedLevelDegeneration Element::getLevelDegeneration() const
@@ -50,15 +54,21 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
         ptPot -> setL(l);
         const Schroddy tempSh(*ptPot, h);
         const GenericEigenvalues genEig(tempSh, nr, l);
-        const double E  = genEig.eigenvalue();
+        const double E = genEig.eigenvalue();
         const Eigenfunction eigf = tempSh.solveSchroddyByRK(x_in, x_fin, psi0(l), psiPrime0(l), E);
         elEigf.push_back(eigf);
+
+    	m_eigenValMatrix[i][0] = nr;
+    	m_eigenValMatrix[i][1] = l;
+    	m_eigenValMatrix[i][2] = E;
     }
-    
     return elEigf;
 }
 
-
+ElementEigenValues Element::getLevelEigenvalue() const
+{
+    return m_eigenValMatrix;
+}
 
 
 

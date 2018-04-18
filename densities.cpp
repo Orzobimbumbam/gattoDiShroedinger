@@ -3,6 +3,7 @@
 # include "eigenfunction.hpp"
 # include <fstream>
 # include <vector>
+# include <algorithm>
 
 
 /*============================================
@@ -14,12 +15,15 @@ void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const 
     m_thDensity.clear();
     std::vector<Eigenfunction>::const_iterator el = psi.begin();
     std::vector<unsigned int>::const_iterator d = degen.begin();
+    
     for (; el != psi.end() && d != degen.end(); ++el, ++d)
+    {
         for (const auto& it : el -> get())
         {
             const double thdensity = 1./(4*Parameters::PI*(it.first*it.first))*(*d)*(it.second*it.second);
             m_thDensity[it.first] += thdensity;
         }
+    }
 	return;
 }
 
@@ -40,9 +44,13 @@ bool NuclearDensity::hasConverged () const
 		}
 	}
 
-	const double epsilon = m_sogDensity.at(xMax)*0.05;
-    m_distanceToConvergenge = maxDiff - epsilon;
-	return maxDiff < epsilon; // convergence condition
+	//const double epsilon = m_sogDensity.at(xMax)*0.05;
+    //const double epsilon = 0.1*0.04;
+    //m_distanceToConvergenge = maxDiff - epsilon;
+    m_epsilon = m_sogDensity.at(xMax)*0.05;
+    m_distanceToConvergenge = maxDiff - m_epsilon;
+
+	return maxDiff < m_epsilon; // convergence condition
 }
 
 double NuclearDensity::distanceToConvergence() const
@@ -50,16 +58,40 @@ double NuclearDensity::distanceToConvergence() const
     return m_distanceToConvergenge;
 }
 
+double NuclearDensity::epsilon() const
+{
+    return m_epsilon;
+}
+
 Density NuclearDensity::getTheoreticalDensity() const
 {
     return m_thDensity;
 }
+
+/*===========================================
+ * Class operators (friend, global)
+ *=========================================*/
 
 std::ostream& operator<<(std::ostream& wStream, const Density& density)
 {
     return writeMap(density, wStream, false);
 }
 
+std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery& outputQuery)
+{
+    std::string oqs = outputQuery.first;
+    std::transform(oqs.begin(), oqs.end(), oqs.begin(), ::tolower); //transform string to lower case
+    
+    if (oqs == "thdensity" || oqs == "theoreticaldensity" || oqs == "theoretical")
+        return writeMap(outputQuery.second.getTheoreticalDensity(), wStream, false);
+    
+    if (oqs == "sogdensity" || oqs == "sog")
+        return writeMap(outputQuery.second.getSOGDensity(), wStream, false);
+    
+    std::string usageMessage = "Possible candidates are: thdensity, sogdensity";
+    return std::cerr << "NuclearDensity::operator<< : No matching results for " << outputQuery.first << std::endl
+        << usageMessage << std::endl;
+}
 
 /*===========================================
  * SOG density
@@ -93,6 +125,29 @@ void NuclearDensity::sogDensity(const std::vector<std::vector<double>>& QRparame
 		m_sogDensity[radiusx] = sogdens;
 		radiusx += h;
 	}
+
+	// Normalization by trapezes method integration
+	Density::iterator it = m_sogDensity.begin();
+	//Density::iterator lastEval = m_sogDensity.end();
+	//--lastEval;
+
+	//integral end-point evaluations
+	double scalar = 0;//( it -> second*it -> first*it -> first + lastEval -> second * lastEval -> first * lastEval -> first)*h/2.;
+	//++it;
+	Density::iterator p = it;
+	++it;
+    for (; it != m_sogDensity.end(); ++it)
+    {
+        scalar += ((p -> second*p -> first*p -> first) + (it -> second*it -> first*it -> first))*h/2;
+        ++p;
+    }
+
+	double norm = Parameters::NN/scalar/4/Parameters::PI;
+
+    for (auto& it : m_sogDensity)
+    {
+        it.second *= norm;
+    }
     
 	return;
 }
@@ -101,4 +156,19 @@ Density NuclearDensity::getSOGDensity() const
 {
     return m_sogDensity;
 }
+
+/*=========================================================================
+ * Monte - Carlo Density
+ *========================================================================*/
+
+void NuclearDensity::mcDensity(std::ifstream& inStream)
+{
+	readMap(m_mcDensity, inStream, false);
+}
+
+Density NuclearDensity::getMCDensity() const
+{
+    return m_mcDensity;
+}
+
 

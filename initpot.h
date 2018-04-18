@@ -34,7 +34,6 @@ public:
     WSaxPot(double Rn, double a0, double m);
     WSaxPot(double Rn, double a0, double m, unsigned int l);
     double potential(double x) const override;
-    //void setL(unsigned int l) override;
     
     std::unique_ptr<InitialPot> clone() const override;
 
@@ -85,7 +84,7 @@ private:
  * Total potential class
  *===================================================================*/
 
-class TotPot: public InitialPot //derived class
+/*class TotPot: public InitialPot //derived class
 {
 public:
     TotPot(double m);
@@ -97,6 +96,8 @@ public:
 private:
     TotPot(); //same as before
 };
+
+friend TotPot& operator+(const InitialPot& rhsPotential);*/
 
 /*=====================================================================
  * Spin-Orbit potential class
@@ -126,17 +127,37 @@ class PotOut: public InitialPot
 {
 public:
 	PotOut(const KohnShamInverse& outpot, double m, unsigned int l);
+    PotOut(const KohnShamInverse& outpot, double m); //l is assumed ground state
 	double potential (double x) const override;
+    bool hasConverged () const;
+
+    double distanceToConvergence() const;
 
     std::unique_ptr<InitialPot> clone() const override;
 
 protected:
     PotOut();
-	double interpolatedPotential(double x) const; //protected only for testing purposes
+	double interpolatedPotential(double x) const; //protected only for testing purposes, fixture classes to be derived
     
 private:
     KohnShamInverse m_outpot;
+};
 
+/*======================================================================
+ * Test potential class
+ *====================================================================*/
+
+class TestPot: public InitialPot
+{
+public:
+	TestPot(double m); //l is assumed ground state
+	TestPot(double m, unsigned int l);
+    double potential(double x) const override;
+
+    std::unique_ptr<InitialPot> clone() const override;
+
+private:
+    TestPot(); //same as before
 };
 
 

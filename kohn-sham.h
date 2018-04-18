@@ -14,11 +14,11 @@ public:
     KohnShamInverse(const InitialPot& iPot, double h);
     void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot);
 
+
     KSPotential getKSPot() const;
 
 protected:
     KSPotential m_KSOutPot;
-
 };
 
 
