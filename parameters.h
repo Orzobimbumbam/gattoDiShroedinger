@@ -13,8 +13,9 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-const int NN = 2.;									// Neutrons number
-const int NP = 0.;									// Protons number
+const int NN = 20;									// Neutrons number
+const int NP = 0;									// Protons number
+
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]

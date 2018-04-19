@@ -6,9 +6,9 @@
 # include <algorithm>
 
 
-/*============================================
+/*========================================================
  * Theoretical density
- *==========================================*/
+ *======================================================*/
 
 void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen)
 {
@@ -27,9 +27,9 @@ void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const 
 	return;
 }
 
-/*============================================
- * Convergence condition
- *==========================================*/
+/*==========================================================
+ * Convergence condition for SOG densities
+ *========================================================*/
 
 bool NuclearDensity::hasConverged () const
 {
@@ -68,9 +68,9 @@ Density NuclearDensity::getTheoreticalDensity() const
     return m_thDensity;
 }
 
-/*===========================================
+/*=============================================================
  * Class operators (friend, global)
- *=========================================*/
+ *===========================================================*/
 
 std::ostream& operator<<(std::ostream& wStream, const Density& density)
 {
@@ -93,9 +93,9 @@ std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery&
         << usageMessage << std::endl;
 }
 
-/*===========================================
+/*=================================================================
  * SOG density
- *=========================================*/
+ *===============================================================*/
 
 void NuclearDensity::sogDensity(const std::vector<std::vector<double>>& QRparameters, double h)
 {
@@ -159,7 +159,7 @@ Density NuclearDensity::getSOGDensity() const
 
 /*=========================================================================
  * Monte - Carlo Density
- *========================================================================*/
+ *=======================================================================*/
 
 void NuclearDensity::mcDensity(std::ifstream& inStream)
 {
@@ -171,4 +171,51 @@ Density NuclearDensity::getMCDensity() const
     return m_mcDensity;
 }
 
+/*==========================================================================
+ * Convergence condition for Monte-Carlo densities
+ *========================================================================*/
+
+bool NuclearDensity::hasConvergedMC () const
+{
+	// Load vectors from maps to avoid keys incompatibility
+	m_theoDensity.clear();
+	for (const auto& it : m_thDensity)
+	{
+		m_theoDensity.push_back(it.second);
+	}
+
+	m_MCDensity.clear();
+	for (const auto& it : m_mcDensity)
+	{
+		m_MCDensity.push_back(it.second);
+	}
+
+	// Convergence condition implementation
+	int i = 0;
+	double maxDiff = std::abs(m_theoDensity[i] - m_MCDensity[i]);
+	int iMax = i;
+    for ( int i = 1; i < m_theoDensity.size(); ++i)
+	{
+		if(std::abs(m_theoDensity[i] - m_MCDensity[i]) > maxDiff)
+		{
+			maxDiff = std::abs(m_theoDensity[i] - m_MCDensity[i]);
+			iMax = i;
+		}
+	}
+
+    m_epsilonMC = m_MCDensity[iMax]*0.05;
+    m_distanceToConvergengeMC = maxDiff - m_epsilonMC;
+
+	return maxDiff < m_epsilonMC; // convergence condition
+}
+
+double NuclearDensity::distanceToConvergenceMC() const
+{
+    return m_distanceToConvergengeMC;
+}
+
+double NuclearDensity::epsilonMC() const
+{
+    return m_epsilonMC;
+}
 

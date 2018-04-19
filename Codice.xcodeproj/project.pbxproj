@@ -21,6 +21,8 @@
 		D3C601F2200FF6AB00F1E661 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601F1200FF6AB00F1E661 /* main.cpp */; };
 		D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
 		D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
+		D3CE6A592087CFFA006A867D /* myMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A572087CFFA006A867D /* myMain.cpp */; };
+		D3CE6A5C2087D08F006A867D /* theirMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A5A2087D08F006A867D /* theirMain.cpp */; };
 		D3DBD28A2049CABD002BD241 /* parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD2892049CABD002BD241 /* parameters.cpp */; };
 		D3DBD292204B6B26002BD241 /* UTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD291204B6B26002BD241 /* UTests.cpp */; };
 		D3DBD298204B705B002BD241 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
@@ -68,6 +70,10 @@
 		D3C601FD200FF6CE00F1E661 /* parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parameters.h; sourceTree = "<group>"; };
 		D3C601FE200FF6CE00F1E661 /* schroddy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = schroddy.cpp; sourceTree = "<group>"; };
 		D3C601FF200FF6CE00F1E661 /* schroddy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = schroddy.h; sourceTree = "<group>"; };
+		D3CE6A572087CFFA006A867D /* myMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = myMain.cpp; sourceTree = "<group>"; };
+		D3CE6A582087CFFA006A867D /* myMain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = myMain.hpp; sourceTree = "<group>"; };
+		D3CE6A5A2087D08F006A867D /* theirMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = theirMain.cpp; sourceTree = "<group>"; };
+		D3CE6A5B2087D08F006A867D /* theirMain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = theirMain.hpp; sourceTree = "<group>"; };
 		D3DBD2892049CABD002BD241 /* parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameters.cpp; sourceTree = "<group>"; };
 		D3DBD28F204B6B26002BD241 /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3DBD291204B6B26002BD241 /* UTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UTests.cpp; sourceTree = "<group>"; };
@@ -191,6 +197,10 @@
 			children = (
 				D3DBD297204B6F1B002BD241 /* Includes.h */,
 				D3C601F1200FF6AB00F1E661 /* main.cpp */,
+				D3CE6A572087CFFA006A867D /* myMain.cpp */,
+				D3CE6A582087CFFA006A867D /* myMain.hpp */,
+				D3CE6A5A2087D08F006A867D /* theirMain.cpp */,
+				D3CE6A5B2087D08F006A867D /* theirMain.hpp */,
 			);
 			path = Codice;
 			sourceTree = "<group>";
@@ -283,7 +293,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3C601F2200FF6AB00F1E661 /* main.cpp in Sources */,
+				D3CE6A592087CFFA006A867D /* myMain.cpp in Sources */,
 				D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */,
+				D3CE6A5C2087D08F006A867D /* theirMain.cpp in Sources */,
 				D3DBD28A2049CABD002BD241 /* parameters.cpp in Sources */,
 				D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */,
 				D3A5871D206AD0AA00E61067 /* element.cpp in Sources */,
