@@ -63,6 +63,12 @@ void KohnShamInverse::KSinverse(const NuclearDensity& density, const KohnShamInv
 	return;
 }
 
+KSPotential KohnShamInverse::getKSPot() const
+{
+    return m_KSOutPot;
+}
+
+
 /*===============================================================================
  * Kohm-Sham inverse equations method for Monte-Carlo Densities
  *=============================================================================*/
@@ -127,10 +133,6 @@ void KohnShamInverse::KSinverseMC(const NuclearDensity& density, const KohnShamI
 	return;
 }
 */
-KSPotential KohnShamInverse::getKSPot() const
-{
-	return m_KSOutPot;
-}
 
 
 

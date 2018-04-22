@@ -23,9 +23,9 @@ public:
 
 protected:
     KSPotential m_KSOutPot;
-    KSMatrix m_theoDensity;
-    KSMatrix m_mcDensity;
-    KSMatrix m_inKSPot;
+    //KSMatrix m_theoDensity;
+    //KSMatrix m_mcDensity;
+    //KSMatrix m_inKSPot;
 };
 
 

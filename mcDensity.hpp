@@ -11,11 +11,18 @@
 
 #include "idensity.h"
 
+typedef std::vector<double> KeysArray;
+
 class NuclearDensityWithMC : public NuclearDensity
 {
 public:
-    void benchmarkDensity (const std::vector<std::vector<double>>& mcDensity, double h = 0) override;
+    NuclearDensityWithMC() : NuclearDensity() {}
+    
+    void benchmarkDensity (const std::vector<std::vector<double>>& mcDensity, double h = 0) override; //data are read and stored into a matrix in the client code (i.e. in main), then passed in here
     Density getBenchmarkDensity() const override;
+    
+private:
+    KeysArray getMatchingKeys() const;
 };
 
 #endif /* mcDensity_hpp */

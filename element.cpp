@@ -28,8 +28,7 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         else
             m_levelDegen.push_back(degen);
     }
-    //ElementEigenValues temp(m_orbitalMatrixRows, std::vector<double>(3));
-    //m_eigenValMatrix = temp;
+
     m_eigenValMatrix.resize(m_orbitalMatrixRows, std::vector<double>(3));
 }
 
