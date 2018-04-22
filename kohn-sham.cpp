@@ -1,7 +1,6 @@
 # include "parameters.h"
-# include "schroddy.h"
 # include "kohn-sham.h"
-# include "densities.h"
+//# include "densities.h"
 # include "initpot.h"
 # include <vector>
 # include <cmath>
@@ -34,14 +33,11 @@ void KohnShamInverse::KSinverse(const NuclearDensity& density, const KohnShamInv
 	//I'm assuming here that the two maps have the same keys, so I can use one iterator only
     double ratio1, ratio2, newPot;
     for (const auto& it : density.getTheoreticalDensity())
-    /*for (auto it = density.getTheoreticalDensity().begin(), jt = density.getMCDensity().begin();
-    		it != density.getTheoreticalDensity().end() && jt != density.getMCDensity().end(); ++it, ++jt)*/
     {
         const double alpha = 1.;//ratio1;
         if ( inKSPot.getKSPot().at(it.first) < 0)
         {
-        	//ratio1 = 2 - it.second/density.getMCDensity().at(it.first);
-        	ratio1 = 2 - it.second/density.getSOGDensity().at(it.first);
+        	ratio1 = 2 - it.second/density.getBenchmarkDensity().at(it.first);
         	if (ratio1 < 1 - Parameters::pregamma)
                 ratio1 = 1 - Parameters::pregamma;
             // Prefactor
@@ -52,8 +48,7 @@ void KohnShamInverse::KSinverse(const NuclearDensity& density, const KohnShamInv
         }
         else
         {
-            //ratio2 = it.second/density.getMCDensity().at(it.first);
-            ratio2 = it.second/density.getSOGDensity().at(it.first);
+            ratio2 = it.second/density.getBenchmarkDensity().at(it.first);
 			if (ratio2 < 1 - Parameters::pregamma)
                 ratio2 = 1 - Parameters::pregamma;		// Prefactor
             
@@ -71,7 +66,7 @@ void KohnShamInverse::KSinverse(const NuclearDensity& density, const KohnShamInv
 /*===============================================================================
  * Kohm-Sham inverse equations method for Monte-Carlo Densities
  *=============================================================================*/
-
+/*
 void KohnShamInverse::KSinverseMC(const NuclearDensity& density, const KohnShamInverse& inKSPot)
 {
 	// Load matrices from maps to avoid keys incompatibility
@@ -131,7 +126,7 @@ void KohnShamInverse::KSinverseMC(const NuclearDensity& density, const KohnShamI
     }
 	return;
 }
-
+*/
 KSPotential KohnShamInverse::getKSPot() const
 {
 	return m_KSOutPot;

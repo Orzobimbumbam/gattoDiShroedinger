@@ -89,5 +89,4 @@ template <class T> std::istream& readMatrix(std::vector<std::vector<T>>& outputM
 
 
 
-
 #endif /* IOUtils_hpp */

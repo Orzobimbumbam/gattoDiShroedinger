@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "idensity.h"
+#include "densities.h"
 
 class NuclearDensity;
 class InitialPot;
@@ -14,7 +16,7 @@ public:
 	KohnShamInverse();
     KohnShamInverse(const InitialPot& iPot, double h);
     void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot);
-    void KSinverseMC(const NuclearDensity& density, const KohnShamInverse& inKSPot);
+    //void KSinverseMC(const NuclearDensity& density, const KohnShamInverse& inKSPot);
 
 
     KSPotential getKSPot() const;

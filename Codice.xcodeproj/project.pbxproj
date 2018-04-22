@@ -23,6 +23,10 @@
 		D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
 		D3CE6A592087CFFA006A867D /* myMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A572087CFFA006A867D /* myMain.cpp */; };
 		D3CE6A5C2087D08F006A867D /* theirMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A5A2087D08F006A867D /* theirMain.cpp */; };
+		D3CE6A61208AB330006A867D /* mcDensity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A5F208AB330006A867D /* mcDensity.cpp */; };
+		D3CE6A62208AB330006A867D /* mcDensity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A5F208AB330006A867D /* mcDensity.cpp */; };
+		D3CE6A64208BDEF7006A867D /* idensity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A63208BDEF7006A867D /* idensity.cpp */; };
+		D3CE6A65208BDEF7006A867D /* idensity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CE6A63208BDEF7006A867D /* idensity.cpp */; };
 		D3DBD28A2049CABD002BD241 /* parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD2892049CABD002BD241 /* parameters.cpp */; };
 		D3DBD292204B6B26002BD241 /* UTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD291204B6B26002BD241 /* UTests.cpp */; };
 		D3DBD298204B705B002BD241 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
@@ -74,6 +78,10 @@
 		D3CE6A582087CFFA006A867D /* myMain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = myMain.hpp; sourceTree = "<group>"; };
 		D3CE6A5A2087D08F006A867D /* theirMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = theirMain.cpp; sourceTree = "<group>"; };
 		D3CE6A5B2087D08F006A867D /* theirMain.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = theirMain.hpp; sourceTree = "<group>"; };
+		D3CE6A5D208AAFC9006A867D /* idensity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = idensity.h; sourceTree = "<group>"; };
+		D3CE6A5F208AB330006A867D /* mcDensity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mcDensity.cpp; sourceTree = "<group>"; };
+		D3CE6A60208AB330006A867D /* mcDensity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mcDensity.hpp; sourceTree = "<group>"; };
+		D3CE6A63208BDEF7006A867D /* idensity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idensity.cpp; sourceTree = "<group>"; };
 		D3DBD2892049CABD002BD241 /* parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parameters.cpp; sourceTree = "<group>"; };
 		D3DBD28F204B6B26002BD241 /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3DBD291204B6B26002BD241 /* UTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UTests.cpp; sourceTree = "<group>"; };
@@ -150,8 +158,12 @@
 		D3A5871920672A0000E61067 /* DensityKS */ = {
 			isa = PBXGroup;
 			children = (
-				D3A58704205B2AB000E61067 /* densities.cpp */,
+				D3CE6A5D208AAFC9006A867D /* idensity.h */,
+				D3CE6A63208BDEF7006A867D /* idensity.cpp */,
 				D3A58705205B2AB000E61067 /* densities.h */,
+				D3A58704205B2AB000E61067 /* densities.cpp */,
+				D3CE6A60208AB330006A867D /* mcDensity.hpp */,
+				D3CE6A5F208AB330006A867D /* mcDensity.cpp */,
 				D3E9F77C20210BB400DAAAB7 /* kohn-sham.h */,
 				D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */,
 			);
@@ -296,6 +308,7 @@
 				D3CE6A592087CFFA006A867D /* myMain.cpp in Sources */,
 				D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */,
 				D3CE6A5C2087D08F006A867D /* theirMain.cpp in Sources */,
+				D3CE6A64208BDEF7006A867D /* idensity.cpp in Sources */,
 				D3DBD28A2049CABD002BD241 /* parameters.cpp in Sources */,
 				D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */,
 				D3A5871D206AD0AA00E61067 /* element.cpp in Sources */,
@@ -303,6 +316,7 @@
 				D3C60201200FF6CE00F1E661 /* initpot.cpp in Sources */,
 				D3A58706205B2AB000E61067 /* densities.cpp in Sources */,
 				D3A5870E2065782600E61067 /* eigenfunction.cpp in Sources */,
+				D3CE6A61208AB330006A867D /* mcDensity.cpp in Sources */,
 				D3672BB52053F3B30032E3CA /* eigenvalues.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3A5871420667DA700E61067 /* IOUtils.cpp in Sources */,
+				D3CE6A62208AB330006A867D /* mcDensity.cpp in Sources */,
 				D3A5870F2065782600E61067 /* eigenfunction.cpp in Sources */,
 				D3A5871E206AD0AA00E61067 /* element.cpp in Sources */,
 				D3A587082064624A00E61067 /* kohn-sham.cpp in Sources */,
@@ -320,6 +335,7 @@
 				D3DBD29B204B705B002BD241 /* parameters.cpp in Sources */,
 				D3DBD29C204B705B002BD241 /* schroddy.cpp in Sources */,
 				D3DBD292204B6B26002BD241 /* UTests.cpp in Sources */,
+				D3CE6A65208BDEF7006A867D /* idensity.cpp in Sources */,
 				D3672BB62053F3B30032E3CA /* eigenvalues.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

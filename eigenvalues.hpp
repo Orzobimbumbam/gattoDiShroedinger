@@ -4,9 +4,8 @@
 /*==================================================================
  * Pure virtual class for eigenvalues
  *================================================================*/
+
 #include "schroddy.h"
-#include <memory>
-#include <map>
 
 class Eigenvalues
 {

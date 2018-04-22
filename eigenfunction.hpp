@@ -12,6 +12,7 @@ class Eigenfunction
     
 public:
     double& operator()(double key);
+    //const double& operator()(const double key);
     Eigenfunction& operator=(const Eigenfunction& rhsEigenfunction);
     PsiArrayKVP keyValues() const;
     Psi get() const;

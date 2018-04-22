@@ -49,9 +49,13 @@ void theirMain()
     
     const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
-    NuclearDensity NDens;
+    NuclearDensityWithSOG NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-    NDens.sogDensity(qrParam, H);
+    NDens.benchmarkDensity(qrParam, H);
+    
+    fOut.open(outputPath + "refInitialEigenfunctions.txt");
+    writeElementEigenfunctions(elEigf, fOut);
+    fOut.close();
     
     /*in.open(inputPath + "HODensity-2NN.txt");
      NDens.mcDensity(in);*/
@@ -60,20 +64,13 @@ void theirMain()
     fOut << NDens.getTheoreticalDensity();
     fOut.close();
     fOut.open(outputPath + "refSogDensity.txt");
-    fOut << NDens.getSOGDensity();
+    fOut << NDens.getBenchmarkDensity();
     fOut.close();
     ElementEigenValues initialEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refInitialEigenvalues.txt");
     writeMatrix(initialEigenvalues, fOut, false);
     fOut.close();
     
-    /*for(auto& it:)
-     for(int i = 0; i < elEigf.size(); ++i)
-     {
-    	fOut.open(outputPath + "level" + i + "refInitialEigenFunction.txt");
-     for (const auto& it : elEigf[i])
-     fOut << it.first << "\t" << it.second << std::endl;
-     }*/
     
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");

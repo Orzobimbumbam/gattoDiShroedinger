@@ -15,6 +15,7 @@
 #include "parameters.h"
 #include "initpot.h"
 #include "eigenvalues.hpp"
+#include "idensity.h"
 #include "densities.h"
 #include "kohn-sham.h"
 #include "eigenfunction.hpp"

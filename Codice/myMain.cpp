@@ -32,16 +32,16 @@ void myMain()
     const HOPot pot(Parameters::mn); //default is ground state
     const Schroddy sh(pot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
-    NuclearDensity NDens;
+    NuclearDensityWithSOG NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-    NDens.sogDensity(qrParam, H);
+    NDens.benchmarkDensity(qrParam, H);
     
     std::ofstream fOut(outputPath + "refDensity.txt");
     fOut << NDens.getTheoreticalDensity();
     
     fOut.close();
     fOut.open(outputPath + "refSogDensity.txt");
-    fOut << NDens.getSOGDensity();
+    fOut << NDens.getBenchmarkDensity();
     
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.close();

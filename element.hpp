@@ -2,7 +2,6 @@
 #define element_hpp
 
 #include <vector>
-#include "eigenvalues.hpp"
 #include "IOUtils.hpp"
 
 class Eigenfunction;
@@ -27,5 +26,7 @@ private:
     mutable ElementEigenValues m_eigenValMatrix;
     unsigned int m_orbitalMatrixRows;
 };
+
+void writeElementEigenfunctions(const ElementEigenfunctions& elEigf, std::ostream& outStream);
 
 #endif /* element_hpp */

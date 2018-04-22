@@ -1,5 +1,4 @@
 #include "element.hpp"
-#include "eigenfunction.hpp"
 #include "schroddy.h"
 #include "parameters.h"
 #include "initpot.h"
@@ -29,8 +28,9 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         else
             m_levelDegen.push_back(degen);
     }
-    ElementEigenValues temp(m_orbitalMatrixRows, std::vector<double>(3));
-    m_eigenValMatrix = temp;
+    //ElementEigenValues temp(m_orbitalMatrixRows, std::vector<double>(3));
+    //m_eigenValMatrix = temp;
+    m_eigenValMatrix.resize(m_orbitalMatrixRows, std::vector<double>(3));
 }
 
 OrderedLevelDegeneration Element::getLevelDegeneration() const
@@ -70,7 +70,20 @@ ElementEigenValues Element::getLevelEigenvalue() const
     return m_eigenValMatrix;
 }
 
-
+void writeElementEigenfunctions(const ElementEigenfunctions& elEigf, std::ostream& outStream)
+{
+    PsiArrayKVP kvp = elEigf[0].keyValues();
+    for (int i = 0; i < elEigf[0].get().size(); ++i)
+    {
+        const double key = kvp[i].first;
+        std::string rowEigf = std::to_string(key);
+        for (const auto& it : elEigf)
+        {
+            rowEigf += "\t" + std::to_string(it.get()[key]);
+        }
+        outStream << rowEigf << std::endl;
+    }
+}
 
 
 
