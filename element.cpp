@@ -20,7 +20,7 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         ++m_orbitalMatrixRows;
         if (nuclNum >= Parameters::A)
         {
-            const unsigned int outerShellDegen = Parameters::A - (nuclNum - degen); // nucleons number in outer shell
+            const unsigned int outerShellDegen = Parameters::A - (nuclNum - degen); // number of nucleons in outer shell
             m_levelDegen.push_back(outerShellDegen);
             break;
         }
@@ -36,7 +36,7 @@ OrderedLevelDegeneration Element::getLevelDegeneration() const
     return m_levelDegen;
 }
 
-// Calculation of the eigenfunctions for each shell involved
+// Compute eigenfunctions for each shell
 ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const OrderedOrbitalMatrix& orbitalMatrix) const
 {
     using namespace Parameters;
