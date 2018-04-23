@@ -1,11 +1,3 @@
-//
-//  schroddy.h
-//  Codice
-//
-//  Created by Alberto Campi on 02/03/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #pragma once
 #include <vector>
 #include <memory>
@@ -27,7 +19,7 @@ public:
     
     double getH() const {return m_h;}
     void setH(double H) {m_h = H;}
-    std::unique_ptr<InitialPot>& getInitialPotPtr() {return m_pot;};
+    const std::unique_ptr<InitialPot>& getInitialPotPtr() const {return m_pot;};
 
     double solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const; //psiPrime0 is boundary condition on first derivative of eigenfunction
     

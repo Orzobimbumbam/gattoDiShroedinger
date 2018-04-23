@@ -2,21 +2,30 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "idensity.h"
+#include "densities.h"
 
-typedef std::pair<double, double> KVP;
+class NuclearDensity;
+class InitialPot;
+typedef std::map<double, double> KSPotential;
+typedef std::vector<std::vector<double>> KSMatrix;
 
 class KohnShamInverse
 {
 public:
 	KohnShamInverse();
-    void KSinverse(const std::vector<double>& inTheoDensity, const std::vector<double>& empiDensity,
-    	const std::vector<double>& inPot);
+    KohnShamInverse(const InitialPot& iPot, double h);
+    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot);
+    //void KSinverseMC(const NuclearDensity& density, const KohnShamInverse& inKSPot);
 
-    void getOutPot (std::map<double, double>& outPot) const;
 
-private:
-    std::map<double, double> m_outPot;
+    KSPotential getKSPot() const;
 
+protected:
+    KSPotential m_KSOutPot;
+    //KSMatrix m_theoDensity;
+    //KSMatrix m_mcDensity;
+    //KSMatrix m_inKSPot;
 };
 
 

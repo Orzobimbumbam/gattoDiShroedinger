@@ -1,101 +1,216 @@
 # include "parameters.h"
 # include "densities.h"
+# include "eigenfunction.hpp"
 # include <fstream>
-# include <vector>
+# include <algorithm>
 
 
-/*============================================
+/*========================================================
  * Theoretical density
- *==========================================*/
-//Theoreticaldensity::~Theoreticaldensity() {}
-
-Theoreticaldensity::Theoreticaldensity() {}
-
-void Theoreticaldensity::density(const std::vector<double>& psi, std::vector<double>& thDensArray, unsigned int degen, double step) const
+ *======================================================*/
+/*
+void NuclearDensityWithSOG::theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen)
 {
-	double radiusx = Parameters::x_in;
-	for ( int i = 0; i < psi.size(); ++i)
-	{
-		double thdensity = (1/(4*Parameters::PI*(radiusx*radiusx)))*degen*(psi[i]*psi[i]);
-		thDensArray[i] += thdensity;
-		//thDensArray.push_back(thdensity);
-		radiusx += step;
-	}
-	return;
-}
-
-/*============================================
- * Convergence condition
- *==========================================*/
-
-bool Theoreticaldensity::convergence (const std::vector<double>& empidensity, const std::vector<double>& thdensity) const
-{
-	double maxDiff = std::abs(thdensity[0]-empidensity[0]);
-	unsigned int maxIndex = 0;
-	for (int i = 0; i < empidensity.size(); ++i)
-	{
-		if(std::abs(thdensity[i]-empidensity[i]) > maxDiff)
-		{
-			maxDiff = std::abs(thdensity[i]-empidensity[i]);
-			maxIndex = i;
-		}
-	}
-
-	const double epsilon = empidensity[maxIndex]*0.01;
-	return maxDiff < epsilon ? true : false; // convergence condition
-}
-
-
-/*===========================================
- * SOG density
- *=========================================*/
-
-SOGdensity::SOGdensity() {}
-
-void SOGdensity::sogDensity (const std::vector<std::vector<double>>& QRparameters, std::vector<double>& sogdensity, double h) const
-{
-    sogdensity.clear();
-    std::vector<double> notNormal;
-    notNormal.clear();
-    double scalar = 0;
-	const double alpha = sqrt(2./3.)*Parameters::rp;
-	const double gamma = sqrt(2./3.)*Parameters::rms;
-	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
-
-	const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/h;
-	double radiusx = Parameters::x_in;
-	for (unsigned int r = 0 ; r < NSteps + 1; ++r)
-	{
-		const double c1 = 1./(2*pow(Parameters::PI, (3./2.))*radiusx);
-
-		double c3 = 0;
-		for (unsigned int i = 0; i < 11; ++i)
-		{
-			const double Ai = (Parameters::NN*Parameters::qe*QRparameters[i][1])/(1 + 2*(QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
-			const double exp1 = exp((-1)*((radiusx - QRparameters[i][0])/beta)*((radiusx - QRparameters[i][0])/beta));
-			const double exp2 = exp((-1)*((radiusx + QRparameters[i][0])/beta)*((radiusx + QRparameters[i][0])/beta));
-			const double c2 = exp1*(((radiusx + QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma))) +
-					exp2*(((radiusx - QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma)));
-
-			c3 += Ai*c2;
-		}
-		const double sogdens = c1*c3;
-		notNormal.push_back(sogdens);
-		//scalar += sogdens*sogdens;
-		scalar += ((notNormal[r]*radiusx*radiusx)+(notNormal[r - 1]*(radiusx - h)*(radiusx - h)))*h/2.; // integral by trapezes method for normalization
-		//sogdensity.push_back(sogdens);
-
-		radiusx += h;
-	}
-
-	// Normalization
-	double norm = Parameters::NN/scalar/4/Parameters::PI;
-	//double squared = sqrt(scalar*h);
-    for (auto& it : notNormal)
+    m_thDensity.clear();
+    std::vector<Eigenfunction>::const_iterator el = psi.begin();
+    std::vector<unsigned int>::const_iterator d = degen.begin();
+    
+    for (; el != psi.end() && d != degen.end(); ++el, ++d)
     {
-        it = it*norm;
-        sogdensity.push_back(it);
+        for (const auto& it : el -> get())
+        {
+            const double thdensity = 1./(4*Parameters::PI*(it.first*it.first))*(*d)*(it.second*it.second);
+            m_thDensity[it.first] += thdensity;
+        }
     }
 	return;
 }
+*/
+/*==========================================================
+ * Convergence condition for SOG densities
+ *========================================================*/
+/*
+bool NuclearDensityWithSOG::hasConverged () const
+{
+	double maxDiff = std::abs(m_thDensity.begin() -> second - m_sogDensity.begin() -> second);
+	double xMax = m_thDensity.begin() -> first;
+    for (const auto& it : m_thDensity)
+	{
+		if(std::abs(it.second - m_sogDensity.at(it.first)) > maxDiff) //access only, throw exception if key is not found
+		{
+			maxDiff = std::abs(it.second - m_sogDensity.at(it.first));
+			xMax = it.first;
+		}
+	}
+
+	//const double epsilon = m_sogDensity.at(xMax)*0.05;
+    //const double epsilon = 0.1*0.04;
+    //m_distanceToConvergenge = maxDiff - epsilon;
+    m_epsilon = m_sogDensity.at(xMax)*0.05;
+    m_distanceToConvergenge = maxDiff - m_epsilon;
+
+	return maxDiff < m_epsilon; // convergence condition
+}
+
+double NuclearDensityWithSOG::distanceToConvergence() const
+{
+    return m_distanceToConvergenge;
+}
+
+double NuclearDensityWithSOG::epsilon() const
+{
+    return m_epsilon;
+}
+
+Density NuclearDensityWithSOG::getTheoreticalDensity() const
+{
+    return m_thDensity;
+}*/
+
+/*=============================================================
+ * Class operators (friend, global)
+ *===========================================================*/
+
+std::ostream& operator<<(std::ostream& wStream, const Density& density)
+{
+    return writeMap(density, wStream, false);
+}
+
+std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery& outputQuery)
+{
+    std::string oqs = outputQuery.first;
+    std::transform(oqs.begin(), oqs.end(), oqs.begin(), ::tolower); //transform string to lower case
+    
+    if (oqs == "thdensity" || oqs == "theoreticaldensity" || oqs == "theoretical")
+        return writeMap(outputQuery.second -> getTheoreticalDensity(), wStream, false);
+    
+    if (oqs == "sogdensity" || oqs == "sog")
+        return writeMap(outputQuery.second -> getBenchmarkDensity(), wStream, false);
+    
+    std::string usageMessage = "Possible candidates are: thdensity, sogdensity";
+    return std::cerr << "NuclearDensity::operator<< : No matching results for " << outputQuery.first << std::endl
+        << usageMessage << std::endl;
+}
+
+/*=================================================================
+ * SOG density
+ *===============================================================*/
+
+void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<double>>& QRparameters, double h)
+{
+    const double alpha = sqrt(2./3.)*Parameters::rp;
+	const double gamma = sqrt(2./3.)*Parameters::rms;
+	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
+
+	const unsigned long NSteps = static_cast<unsigned long>(std::abs(Parameters::x_fin - Parameters::x_in)/h);
+	double radiusx = Parameters::x_in;
+	for (unsigned int r = 0 ; r < NSteps + 1; ++r)
+	{
+        const double c1 = 1./(2*pow(Parameters::PI, 3./2.)*radiusx);
+
+		double c3 = 0;
+		for (unsigned int i = 0; i < QRparameters.size(); ++i)
+		{
+            const double Ai = (Parameters::NN*QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
+            const double exp1 = exp((-1)*((radiusx - QRparameters[i][0])/beta)*((radiusx - QRparameters[i][0])/beta));
+            const double exp2 = exp((-1)*((radiusx + QRparameters[i][0])/beta)*((radiusx + QRparameters[i][0])/beta));
+            const double c2p1 = ((radiusx + QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma));
+            const double c2p2 = ((radiusx - QRparameters[i][0])/(beta*beta*beta)) + (QRparameters[i][0]/(beta*gamma*gamma));
+            const double c2 = exp1*c2p1 + exp2*c2p2;
+            
+            c3 += Ai*c2;
+		}
+		const double sogdens = c1*c3;
+		m_benchmarkDensity[radiusx] = sogdens;
+		radiusx += h;
+	}
+
+	// Normalization by trapezoid method integration
+	Density::iterator it = m_benchmarkDensity.begin();
+	
+	double scalar = 0;
+	Density::iterator p = it;
+	++it;
+    for (; it != m_benchmarkDensity.end(); ++it)
+    {
+        scalar += ((p -> second*p -> first*p -> first) + (it -> second*it -> first*it -> first))*h/2;
+        ++p;
+    }
+
+	double norm = Parameters::NN/scalar/4/Parameters::PI;
+
+    for (auto& it : m_benchmarkDensity)
+    {
+        it.second *= norm;
+    }
+    
+	return;
+}
+
+Density NuclearDensityWithSOG::getBenchmarkDensity() const
+{
+    return m_benchmarkDensity;
+}
+
+/*=========================================================================
+ * Monte - Carlo Density
+ *=======================================================================*/
+/*
+void NuclearDensity::mcDensity(std::ifstream& inStream)
+{
+	readMap(m_mcDensity, inStream, false);
+}
+
+Density NuclearDensity::getMCDensity() const
+{
+    return m_mcDensity;
+}
+*/
+/*==========================================================================
+ * Convergence condition for Monte-Carlo densities
+ *========================================================================*/
+/*
+bool NuclearDensity::hasConvergedMC () const
+{
+	// Load vectors from maps to avoid keys incompatibility
+	m_theoDensity.clear();
+	for (const auto& it : m_thDensity)
+	{
+		m_theoDensity.push_back(it.second);
+	}
+
+	m_MCDensity.clear();
+	for (const auto& it : m_mcDensity)
+	{
+		m_MCDensity.push_back(it.second);
+	}
+
+	// Convergence condition implementation
+	int i = 0;
+	double maxDiff = std::abs(m_theoDensity[i] - m_MCDensity[i]);
+	int iMax = i;
+    for ( int i = 1; i < m_theoDensity.size(); ++i)
+	{
+		if(std::abs(m_theoDensity[i] - m_MCDensity[i]) > maxDiff)
+		{
+			maxDiff = std::abs(m_theoDensity[i] - m_MCDensity[i]);
+			iMax = i;
+		}
+	}
+
+    m_epsilonMC = m_MCDensity[iMax]*0.05;
+    m_distanceToConvergengeMC = maxDiff - m_epsilonMC;
+
+	return maxDiff < m_epsilonMC; // convergence condition
+}
+
+double NuclearDensity::distanceToConvergenceMC() const
+{
+    return m_distanceToConvergengeMC;
+}
+
+double NuclearDensity::epsilonMC() const
+{
+    return m_epsilonMC;
+}*/
 

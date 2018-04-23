@@ -1,11 +1,3 @@
-//
-//  parameters.cpp
-//  Codice
-//
-//  Created by Alberto Campi on 02/03/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #include "parameters.h"
 
 double psi0(unsigned int l)

@@ -15,8 +15,13 @@
 #include "parameters.h"
 #include "initpot.h"
 #include "eigenvalues.hpp"
+#include "idensity.h"
 #include "densities.h"
+#include "mcDensity.hpp"
 #include "kohn-sham.h"
+#include "eigenfunction.hpp"
+#include "IOUtils.hpp"
+#include "element.hpp"
 
 
 #endif /* Includes_h */
