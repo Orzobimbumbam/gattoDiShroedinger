@@ -1,12 +1,11 @@
 #include "element.hpp"
 #include "schroddy.h"
 #include "parameters.h"
-#include "initpot.h"
 #include "eigenvalues.hpp"
 
-#include <memory>
 #include <map>
-#include <fstream>
+#include <iomanip>
+#include <sstream>
 
 // Filling the orbitals
 Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
@@ -74,11 +73,14 @@ void writeElementEigenfunctions(const ElementEigenfunctions& elEigf, std::ostrea
     PsiArrayKVP kvp = elEigf[0].keyValues();
     for (int i = 0; i < elEigf[0].get().size(); ++i)
     {
+        const short conversionPrecision = 10;
         const double key = kvp[i].first;
         std::string rowEigf = std::to_string(key);
         for (const auto& it : elEigf)
         {
-            rowEigf += "\t" + std::to_string(it.get()[key]);
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(conversionPrecision) << it.get()[key];
+            rowEigf += "\t" + ss.str(); //std::to_string(it.get()[key]);
         }
         outStream << rowEigf << std::endl;
     }

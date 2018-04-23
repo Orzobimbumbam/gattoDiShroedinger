@@ -17,6 +17,7 @@
 #include "eigenvalues.hpp"
 #include "idensity.h"
 #include "densities.h"
+#include "mcDensity.hpp"
 #include "kohn-sham.h"
 #include "eigenfunction.hpp"
 #include "IOUtils.hpp"

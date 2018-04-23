@@ -1,7 +1,6 @@
 //Parameters
 #pragma once
-//#ifndef parameters_h
-//#define parameters_h
+
 #include<cmath>
 #include<string>
 
@@ -38,22 +37,12 @@ const double hbar_omega=10;							// [MeV]
 //const double k = 1e-24;
 
 
-// Eigenvalues generator parameters
-/*double eigenvalue1=0.93250 ;
-double eigenvalue2=1.36256 ;
-double error=10e-8;*/
-
 // Runge-Kutta parameters
 //const double x_in = -10*Rn;
 const double x_in = 1e-12;
 const double x_fin = 5*Rn;
-//const double psi0= 0.001;
-//const double psiPrime0 = 1;
-//unsigned long N_step=10;
 
 // Other parameters
-//const unsigned int energyLevel = 1;
-//const int angularMomentum = 2;
 
 const double qe = 1.439; //1.6021e-19;						// elementary charge [MeV*fm]
 
@@ -66,12 +55,7 @@ const double hbarc = 197.3269788;					// [MeV*fm]
 const double rms = 1.45;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
 const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
-//const double x_min=0;								// Integration
-//const double x_max=3*Rn;							// Interval
-//const std::string& orbitalsfile = "orbitals.txt";			// file name for orbitals input
-//const std::string& qrfile = "Ca48.txt";					// file name for SOG parameters input
 
 }
 
-//#endif
 
