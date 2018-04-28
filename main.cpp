@@ -11,7 +11,6 @@
 
 int main(int argc, const char * argv[])
 {
-
     const double H = 0.1;
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
     std::string inputPath = "Inputs/";
@@ -24,7 +23,7 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "4He.txt");
+    in.open(inputPath + "40Ca.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
@@ -51,59 +50,48 @@ int main(int argc, const char * argv[])
 
     const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
-    NuclearDensity NDens;
+    NuclearDensityWithSOG NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-    //NDens.sogDensity(qrParam, H);
-
-    in.open(inputPath + "HODensity-2NN.txt");
-    NDens.mcDensity(in);
+    NDens.benchmarkDensity(qrParam, H);
 
     fOut.open(outputPath + "refInitialDensity.txt");
     fOut << NDens.getTheoreticalDensity();
     fOut.close();
-    /*fOut.open(outputPath + "refSogDensity.txt");
-    fOut << NDens.getSOGDensity();
-    fOut.close();*/
+    fOut.open(outputPath + "refSogDensity.txt");
+    fOut << NDens.getBenchmarkDensity();
+    fOut.close();
     ElementEigenValues initialEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refInitialEigenvalues.txt");
     writeMatrix(initialEigenvalues, fOut, false);
     fOut.close();
-
-    /*for(auto& it:)
-    for(int i = 0; i < elEigf.size(); ++i)
-    {
-    	fOut.open(outputPath + "level" + i + "refInitialEigenFunction.txt");
-        for (const auto& it : elEigf[i])
-            fOut << it.first << "\t" << it.second << std::endl;
-    }*/
+    fOut.open(outputPath + "refInitialEigenfunctions.txt");
+    writeElementEigenfunctions(elEigf, fOut);
+    fOut.close();
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
     KohnShamInverse ksi(potTot, H);
     KohnShamInverse tempKsi = ksi;
-    //ksi.KSinverse(NDens, tempKsi);
-    ksi.KSinverseMC(NDens, tempKsi);
+    ksi.KSinverseWithLB(NDens, tempKsi);
+    //ksi.KSinverseWithJW(NDens, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
 
     unsigned long loops = 0;
-    //while (!NDens.hasConverged()) //simulation loop
-    while (!NDens.hasConvergedMC()) //simulation loop
+    while (!NDens.hasConverged()) //simulation loop
     {
         const PotOut po(ksi, Parameters::mn, 0);
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
         KohnShamInverse tempKsi_ = ksi;
-        //ksi.KSinverse(NDens, tempKsi_);
-        ksi.KSinverseMC(NDens, tempKsi);
+        ksi.KSinverseWithLB(NDens, tempKsi_);
+        //ksi.KSinverseWithJW(NDens, tempKsi);
 
         ++loops;
         //if (loops%10 == 0)
-            /*std::cerr << "Convergence distance: " << NDens.distanceToConvergence() << " with epsilon "
-            << NDens.epsilon() << " after " << loops << " iterations. " << std::endl;*/
-            std::cerr << "Convergence distance: " << NDens.distanceToConvergenceMC() << " with epsilon "
-                        << NDens.epsilonMC() << " after " << loops << " iterations. " << std::endl;
+            std::cerr << "Convergence distance: " << NDens.distanceToConvergence() << " with epsilon "
+            << NDens.epsilon() << " after " << loops << " iterations. " << std::endl;
     }
 
     fOut.open(outputPath + "refFinalDensity.txt");
@@ -112,6 +100,9 @@ int main(int argc, const char * argv[])
     ElementEigenValues finalEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refFinalEigenvalues.txt");
     writeMatrix(finalEigenvalues, fOut, false);
+    fOut.close();
+    fOut.open(outputPath + "refFinalEigenfunctions.txt");
+    writeElementEigenfunctions(elEigf, fOut);
     fOut.close();
     KSPotential finalPotential = ksi.getKSPot();
     fOut.open(outputPath + "refFinalPotential.txt");

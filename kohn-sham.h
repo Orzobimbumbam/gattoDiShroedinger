@@ -15,7 +15,8 @@ class KohnShamInverse
 public:
 	KohnShamInverse();
     KohnShamInverse(const InitialPot& iPot, double h);
-    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot);
+    void KSinverseWithLB(const NuclearDensity& density, const KohnShamInverse& inKSPot);
+    void KSinverseWithJW(const NuclearDensity& density, const KohnShamInverse& inKSPot);
     //void KSinverseMC(const NuclearDensity& density, const KohnShamInverse& inKSPot);
 
 

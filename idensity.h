@@ -1,11 +1,3 @@
-//
-//  IDensity.h
-//  Codice
-//
-//  Created by Alberto Campi on 21/04/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #ifndef IDensity_h
 #define IDensity_h
 

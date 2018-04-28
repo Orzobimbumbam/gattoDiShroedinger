@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-
-
-=======
->>>>>>> a91763ba5d53b1f3a727eeb70eef21c7a3691e33
 #ifndef Includes_h
 #define Includes_h
 
@@ -13,14 +8,12 @@
 #include "initpot.h"
 #include "eigenvalues.hpp"
 #include "densities.h"
+#include "idensity.h"
+#include "mcDensity.hpp"
 #include "kohn-sham.h"
-<<<<<<< HEAD
-#include "filling.h"
-
-=======
 #include "eigenfunction.hpp"
 #include "IOUtils.hpp"
 #include "element.hpp"
->>>>>>> a91763ba5d53b1f3a727eeb70eef21c7a3691e33
+
 
 #endif /* Includes_h */

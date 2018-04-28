@@ -1,11 +1,3 @@
-//
-//  mcDensity.hpp
-//  Codice
-//
-//  Created by Alberto Campi on 21/04/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #ifndef mcDensity_hpp
 #define mcDensity_hpp
 

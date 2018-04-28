@@ -13,7 +13,7 @@
 //NB the following functions are tested to work on happy-path cases. Corner case behaviour must be specified or handled somewhere else.
 template <class T, class D> std::ostream& writeMap(const std::map<T, D>& inputMap, std::ostream& wStream, bool header)
 {
-    if (header)
+    if (header) // header is the first row of the file used for titles columns. If present set boolean true, else false.
         wStream << "Key" << "\t" << "Value" << std::endl;
     
     for (const auto& it : inputMap)
@@ -24,7 +24,7 @@ template <class T, class D> std::ostream& writeMap(const std::map<T, D>& inputMa
 
 template <class T, class D> std::istream& readMap(std::map<T, D>& outputMap, std::istream& rStream, bool header)
 {
-    if (header)
+    if (header) // header is the first row of the file used for titles columns. If present set boolean true, else false.
     {
         std::string headerLine;
         std::getline(rStream, headerLine);
@@ -54,7 +54,7 @@ template <class T> std::ostream& writeRowVector(const std::vector<T>& inputVecto
 
 template <class T> std::ostream& writeMatrix(const std::vector<std::vector<T>>& inputMatrix, std::ostream& wStream, bool header, const std::vector<std::string> headerLabels = std::vector<std::string>())
 {
-    if (header && !headerLabels.empty())
+    if (header && !headerLabels.empty()) // header is the first row of the file used for titles columns. If present set boolean true, else false.
         writeRowVector(headerLabels, wStream);
     
     for (const auto& rows : inputMatrix)
@@ -65,7 +65,7 @@ template <class T> std::ostream& writeMatrix(const std::vector<std::vector<T>>& 
 
 template <class T> std::istream& readMatrix(std::vector<std::vector<T>>& outputMatrix, std::istream& rStream, bool header)
 {
-    if (header)
+    if (header) // header is the first row of the file used for titles columns. If present set boolean true, else false.
     {
         std::string headerLine;
         std::getline(rStream, headerLine);
