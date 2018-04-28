@@ -15,10 +15,6 @@ WSaxPot::WSaxPot(double Rn, double a0, double m, unsigned int l): InitialPot(m, 
 
 double WSaxPot::potential(double x) const
 {
-    double angularPart = 0;
-    if (x != 0)
-        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
-
     int s = 2.;
     const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
     		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
@@ -32,7 +28,7 @@ double WSaxPot::potential(double x) const
     int sign = -1;
     if (Parameters::NN == 0) sign *= -1;
     double V0 = 51 + sign*33*(Parameters::NN - Parameters::NP)/Parameters::A;
-    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) + angularPart + copot;
+    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) + copot;
     return wspot;
 }
 
@@ -53,15 +49,16 @@ HOPot::HOPot(double m): InitialPot(m, 0) {}
 double HOPot::potential(double x) const
 {
     using namespace Parameters;
-    double angularPart = 0, coulomb = 0;
+    double coulomb = 0;
+    /*
     if (x != 0)
     {
         angularPart = (hbarc*hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
         //coulomb = -NN*qe*qe/x;
-    }
+    }*/
 
     const double c =(m_m*hbar_omega*hbar_omega)/(hbarc*hbarc);
-    double hopot = angularPart + 0.5*c*x*x + coulomb;
+    double hopot = 0.5*c*x*x + coulomb;
 
     return hopot;
 }
@@ -81,10 +78,6 @@ CoPot::CoPot(int Z, double m, unsigned int l): InitialPot(m, l), m_Z(Z) {}
 
 double CoPot::potential(double x) const
 {
-    /*double angularPart = 0;
-    if (x != 0)
-        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);*/
-
     int s = 2.;
     const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
     		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
@@ -94,8 +87,6 @@ double CoPot::potential(double x) const
     	copot = 0.5*((m_Z*Parameters::qe*Parameters::qe)/Ru)*(3 - (x/Ru)*(x/Ru));
     else
     	copot = (m_Z*Parameters::qe*Parameters::qe)/x;
-
-    //copot += angularPart;
 
     return copot;
 }
@@ -151,15 +142,11 @@ PotOut::PotOut(const KohnShamInverse& outpot, double m): InitialPot(m, 0), m_out
 
 double PotOut::potential(double x) const
 {
-    double angularPart = 0;
-    if (x != 0)
-        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
-    
     KSPotential ksp = m_outpot.getKSPot();
     if (ksp.find(x) == ksp.end())
         return interpolatedPotential(x);
     
-    return m_outpot.getKSPot().at(x) + angularPart;
+    return m_outpot.getKSPot().at(x);
 }
 
 std::unique_ptr<InitialPot> PotOut::clone() const
@@ -179,7 +166,7 @@ double PotOut::interpolatedPotential(double x) const
     
     for (; it != ksp.end(); ++it)
     {
-        if ( x > p -> first && x < it -> first)
+        if ( x >= p -> first && x < it -> first)
             return p -> second +
             (it -> second - p -> second)/(it -> first - p -> first)*(x - p -> first); //interpolation
         ++p;

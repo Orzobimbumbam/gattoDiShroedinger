@@ -12,6 +12,7 @@ class InitialPot
 public:
     virtual double potential(double x) const = 0;
     virtual void setL(unsigned int l) {m_anglmomentum = l;};
+    virtual double getL() const {return m_anglmomentum;};
     virtual ~InitialPot();
     
     virtual std::unique_ptr<InitialPot> clone() const = 0;
@@ -129,10 +130,7 @@ public:
 	PotOut(const KohnShamInverse& outpot, double m, unsigned int l);
     PotOut(const KohnShamInverse& outpot, double m); //l is assumed ground state
 	double potential (double x) const override;
-    bool hasConverged () const;
-
-    double distanceToConvergence() const;
-
+    
     std::unique_ptr<InitialPot> clone() const override;
 
 protected:

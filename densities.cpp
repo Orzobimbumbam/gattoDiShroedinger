@@ -127,10 +127,10 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
 
 	// Normalization by trapezoid method integration
 	Density::iterator it = m_benchmarkDensity.begin();
-	
 	double scalar = 0;
 	Density::iterator p = it;
 	++it;
+    
     for (; it != m_benchmarkDensity.end(); ++it)
     {
         scalar += ((p -> second*p -> first*p -> first) + (it -> second*it -> first*it -> first))*h/2;

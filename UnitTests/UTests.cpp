@@ -24,7 +24,7 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 typedef std::vector<double> PsiArray;
 
-
+//NB. set Rn = 5*Rn in parameters.h before running the test cases
 BOOST_AUTO_TEST_SUITE(Calc)
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_WSaxPot_Values)
     const unsigned int l_mom = rand()%10;
     const double E = rand()/static_cast<double>(RAND_MAX)*100;
     
-    WSaxPot pot(V0, Rn, a0, Parameters::mn, l_mom);
+    WSaxPot pot(Rn, a0, Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     PsiArray psi;
     
@@ -293,6 +293,26 @@ BOOST_AUTO_TEST_CASE(PotOutInterpolate_straightLine)
     BOOST_CHECK(poF.interpolate(7.) == 10.);
     BOOST_CHECK(poF.interpolate(3.5) == 7.);
 }
+
+BOOST_AUTO_TEST_CASE(PotOutInterpolate_cubic)
+{
+    std::pair<double, double> a = std::make_pair(-1, -1); //y = x^3
+    std::pair<double, double> b = std::make_pair(-2, -8);
+    std::pair<double, double> c = std::make_pair(0, 0);
+    std::pair<double, double> d = std::make_pair(1, 1);
+    std::pair<double, double> e = std::make_pair(2, 8);
+    KSPotential f = {a, b, c, d, e}; //fill in map with some function
+    
+    KSInverseFixture ksif(f);
+    PotOutFixture poF(ksif);
+    
+    const double expectedInterpolate = -9./2.;
+    
+    BOOST_CHECK(poF.interpolate(-1.5) == expectedInterpolate);
+    BOOST_CHECK(poF.interpolate(0) == 0.);
+    BOOST_CHECK(poF.interpolate(3) == 8.);
+}
+
 
 
 //more calcs test cases here...

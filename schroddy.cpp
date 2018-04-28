@@ -41,16 +41,23 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
 
     for (unsigned long i = 0; i < NSteps ; ++i)
     {
-
+        //lambda expression for decoupled angular term
+        auto angularPart = [this](double x) -> const double {
+            if (x == 0)
+                return 0;
+            return (Parameters::hbarc*Parameters::hbarc)*m_pot -> getL()*(m_pot -> getL() + 1)/(2*Parameters::mn*x*x);};
+        
         //compute decoupled RK factors
         const double k1 = m_h*runningPsiPrime;
-        const double l1 = m_h*factor*(m_pot -> potential(runningX) - eigenvalue)*runningPsi;
+        const double l1 = m_h*factor*(m_pot -> potential(runningX) + angularPart(runningX) - eigenvalue)*runningPsi;
         const double k2 = m_h*(runningPsiPrime + 1./2.*l1);
-        const double l2 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) - eigenvalue)*(runningPsi + 1./2.*k1);
+        const double l2 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) + angularPart(runningX + m_h/2.)
+                                      - eigenvalue)*(runningPsi + 1./2.*k1);
         const double k3 = m_h*(runningPsiPrime + 1/2.*l2);
-        const double l3 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) - eigenvalue)*(runningPsi + 1./2.*k2);
+        const double l3 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) + angularPart(runningX + m_h/2.)
+                                      - eigenvalue)*(runningPsi + 1./2.*k2);
         const double k4 = m_h*(runningPsiPrime + 1*l3);
-        const double l4 = m_h*factor*(m_pot -> potential(runningX + m_h) - eigenvalue)*(runningPsi + 1*k3);
+        const double l4 = m_h*factor*(m_pot -> potential(runningX + m_h) + angularPart(runningX + m_h) - eigenvalue)*(runningPsi + 1*k3);
 
         //advance running variables and store intermediate results
         runningPsi += 1./6.*(k1 + 2*k2 + 2*k3 + k4);
