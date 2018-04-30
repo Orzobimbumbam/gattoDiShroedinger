@@ -11,10 +11,10 @@ densities.o: densities.cpp
 	g++ -c densities.cpp $(ROOTFLAGS) $(LIBROOT)
 	
 idensity.o: densities.cpp
-g++ -c idensity.cpp $(ROOTFLAGS) $(LIBROOT)
+	g++ -c idensity.cpp $(ROOTFLAGS) $(LIBROOT)
 
 mcDensity.o: densities.cpp
-g++ -c mcDensity.cpp $(ROOTFLAGS) $(LIBROOT)
+	g++ -c mcDensity.cpp $(ROOTFLAGS) $(LIBROOT)
 
 eigenfunction.o: eigenfunction.cpp
 	g++ -c eigenfunction.cpp $(ROOTFLAGS) $(LIBROOT)

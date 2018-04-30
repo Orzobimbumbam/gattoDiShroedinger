@@ -32,7 +32,7 @@ const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
-const double hbar_omega=10;							// [MeV]
+const double hbar_omega = 41./pow(A,(1./3.));		// [MeV]
 //const double k = 1e-24;
 
 
