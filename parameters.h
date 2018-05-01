@@ -23,9 +23,8 @@ const int A = NN + NP; 								// Mass number
 const double R0= 1.27; 								// [fm]
 
 // Wood-Saxon potential parameters
-const double Rn = R0*pow(A,(1./3)); 					// Nuclear radius [fm]
+const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
 const double a0 = 0.67;								// Nuclear surface thickness [fm]
-const double V0 = 50.0;
 
 // Spin-Orbit potential parameters
 //const double k0=  ;
@@ -33,28 +32,29 @@ const double V0 = 50.0;
 
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
-const double hbar_omega=10;							// [MeV]
+const double hbar_omega = 41./pow(A,(1./3.));		// [MeV]
 //const double k = 1e-24;
 
 
 // Runge-Kutta parameters
 //const double x_in = -10*Rn;
+
 const double x_in = 0.1;
-const double x_fin = 5*Rn;
+const double x_fin = 10*Rn;
+
+//const double x_in = 1e-12;							// Initial radius value [fm]
+//const double x_fin = 1.97*Rn;						// Final radius value [fm]
+
 
 // Other parameters
-
-const double qe = 1.439; //1.6021e-19;						// elementary charge [MeV*fm]
-
+const double qe = 1.439; //1.6021e-19;				// elementary charge [MeV*fm]
 //const double qe = 1.6021e-19;						// elementary charge [C]
-//const double qe = 1.2;								// elementary charge [MeV fm^(1/2)]
-
+//const double qe = 1.2;							// elementary charge [MeV fm^(1/2)]
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
-    const double rms = 1.45;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
-const double rp = 0.8751;
-                                                    // proton rms charge radius (<rp^2>)^1/2 [fm]
+const double rms = 1.45;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
+const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 
 }

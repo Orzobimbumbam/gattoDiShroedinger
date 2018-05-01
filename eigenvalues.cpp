@@ -26,7 +26,7 @@ std::unique_ptr<Eigenvalues> HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(0), m_eigenval2(100) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-50), m_eigenval2(50) {}
 
 double TrialEigenvalues::getEigenval1()
 {
@@ -70,9 +70,9 @@ double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nSt
         }
 
         if (nodes > nState)
-            E2 *= 0.6;
+            E2 -= 0.6;
         else if (nodes < nState)
-            E2 *= 1.4;
+            E2 += 1.4;
         else break;
     }
 

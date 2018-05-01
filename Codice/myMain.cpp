@@ -12,7 +12,7 @@ void myMain()
 {
     const double H = 0.1;
     //mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
-    std::string inputPath = "Inputs/";
+    std::string inputPath = "../Inputs/";
     std::string outputPath = "Outputs/";
     clock_t start = clock(); // Start time
     
@@ -48,7 +48,7 @@ void myMain()
     fOut.open(outputPath + "refFirstKSPotential.txt");
     KohnShamInverse ksi(pot, H);
     KohnShamInverse tempKsi = ksi;
-    ksi.KSinverse(NDens, tempKsi);
+    ksi.KSinverseWithLB(NDens, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
     
@@ -60,7 +60,7 @@ void myMain()
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
         KohnShamInverse tempKsi_ = ksi;
-        ksi.KSinverse(NDens, tempKsi_);
+        ksi.KSinverseWithLB(NDens, tempKsi_);
         
         ++loops;
         //if (loops%10 == 0)

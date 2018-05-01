@@ -9,6 +9,12 @@ IOUtils.o: IOUtils.cpp
 
 densities.o: densities.cpp
 	g++ -c densities.cpp $(ROOTFLAGS) $(LIBROOT)
+	
+idensity.o: densities.cpp
+	g++ -c idensity.cpp $(ROOTFLAGS) $(LIBROOT)
+
+mcDensity.o: densities.cpp
+	g++ -c mcDensity.cpp $(ROOTFLAGS) $(LIBROOT)
 
 eigenfunction.o: eigenfunction.cpp
 	g++ -c eigenfunction.cpp $(ROOTFLAGS) $(LIBROOT)
@@ -31,8 +37,8 @@ schroddy.o: schroddy.cpp
 main.o: main.cpp
 	g++ -c main.cpp $(ROOTFLAGS) $(LIBROOT)
 
-Build: parameters.o IOUtils.o densities.o eigenfunction.o eigenvalues.o element.o initpot.o kohn-sham.o schroddy.o main.o
-	g++ parameters.o IOUtils.o densities.o eigenfunction.o eigenvalues.o element.o initpot.o kohn-sham.o schroddy.o main.o -o exec.x $(ROOTFLAGS) $(LIBROOT)
+Build: parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o element.o initpot.o kohn-sham.o schroddy.o main.o
+	g++ parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o element.o initpot.o kohn-sham.o schroddy.o main.o -o exec.x $(ROOTFLAGS) $(LIBROOT)
 
 Execute: Execute exec.x
 	./exec.x

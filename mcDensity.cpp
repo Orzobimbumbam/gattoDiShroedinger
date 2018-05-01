@@ -1,11 +1,3 @@
-//
-//  mcDensity.cpp
-//  Codice
-//
-//  Created by Alberto Campi on 21/04/2018.
-//  Copyright © 2018 Alberto Campi. All rights reserved.
-//
-
 #include "mcDensity.hpp"
 
 void NuclearDensityWithMC::benchmarkDensity(const std::vector<std::vector<double>>& mcDensity, double h)//h is optional here
@@ -27,6 +19,7 @@ Density NuclearDensityWithMC::getBenchmarkDensity() const
     return m_benchmarkDensity;
 }
 
+// Load keys vector (radius values) from theoretical density map
 KeysArray NuclearDensityWithMC::getMatchingKeys() const
 {
     Density thDens = getTheoreticalDensity();

@@ -3,9 +3,6 @@
 #include <vector>
 #include <string>
 
-//#include <pthread.h>
-
-//#include "includes.h"
 #include "myMain.hpp"
 #include "theirMain.hpp"
 

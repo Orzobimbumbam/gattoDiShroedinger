@@ -15,6 +15,7 @@ WSaxPot::WSaxPot(double Rn, double a0, double m, unsigned int l): InitialPot(m, 
 
 double WSaxPot::potential(double x) const
 {
+    /*
     int s = 2.;
     const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
     		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
@@ -25,12 +26,12 @@ double WSaxPot::potential(double x) const
     else
     	copot = (Parameters::NP*Parameters::qe*Parameters::qe)/x;
 
-    int sign = -1;
+    */int sign = -1;
     if (Parameters::NN == 0)
         sign *= -1;
     
-    double V0 = 51 + sign*33*(Parameters::NN - Parameters::NP)/Parameters::A;
-    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) + copot;
+    double V0 = 51 + sign*33.0*(Parameters::NN - Parameters::NP)/Parameters::A;
+    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0));// + copot;
     return wspot;
 }
 
@@ -156,19 +157,21 @@ std::unique_ptr<InitialPot> PotOut::clone() const
 	 return std::make_unique<PotOut> (*this); //return a derived class object through a base class pointer
 }
 
+/* Linear interpolator/extrapolator for solve R-K method with a map (discrete values) as input
+ * rather than a continues function.*/
 double PotOut::interpolatedPotential(double x) const
 {
-    KSPotential ksp = m_outpot.getKSPot();
-    if (x < ksp.begin() -> first)
+    KSPotential ksp = m_outpot.getKSPot(); 	// if x < first element in map,
+    if (x < ksp.begin() -> first)			// set potential point value at x equal to the first element
         return ksp.begin() -> second; //lower extrapolation
     
     KSPotential::iterator it = ksp.begin();
     KSPotential::iterator p = it;
     ++it;
     
-    for (; it != ksp.end(); ++it)
-    {
-        if ( x >= p -> first && x < it -> first)
+    for (; it != ksp.end(); ++it)					// if x is between two consecutive elements of
+    {												// the map, add a x value between this range
+        if ( x >= p -> first && x < it -> first)	// using straight line equation
             return p -> second +
             (it -> second - p -> second)/(it -> first - p -> first)*(x - p -> first); //interpolation
         ++p;
