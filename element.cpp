@@ -18,9 +18,9 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         const unsigned int degen = 2*(2*quantL + 1);
         nuclNum += degen;
         ++m_orbitalMatrixRows;
-        if (nuclNum >= Parameters::A)
+        if (nuclNum >= Parameters::NN)
         {
-            const unsigned int outerShellDegen = Parameters::A - (nuclNum - degen); // number of nucleons in outer shell
+            const unsigned int outerShellDegen = Parameters::NN - (nuclNum - degen); // number of nucleons in outer shell
             m_levelDegen.push_back(outerShellDegen);
             break;
         }

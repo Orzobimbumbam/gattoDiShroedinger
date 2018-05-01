@@ -10,7 +10,7 @@
 #include "parameters.h"
 #include "eigenfunction.hpp"
 
-NuclearDensity::NuclearDensity(): m_thDensity(), m_benchmarkDensity(), m_epsilon(0), m_distanceToConvergenge(0) {}
+NuclearDensity::NuclearDensity(): m_thDensity(), m_benchmarkDensity(), m_epsilon(0), m_distanceToConvergenge(0), m_isFirstLoop(true) {}
 
 void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen)
 {
@@ -23,6 +23,7 @@ void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const 
         for (const auto& it : el -> get())
         {
             const double thdensity = 1./(4*Parameters::PI*(it.first*it.first))*(*d)*(it.second*it.second);
+            //if (thdensity > 1e-4)
             m_thDensity[it.first] += thdensity;
         }
     }
@@ -41,11 +42,14 @@ bool NuclearDensity::hasConverged () const
             xMax = it.first;
         }
     }
-    
-    //const double epsilon = m_sogDensity.at(xMax)*0.05;
-    //const double epsilon = 0.1*0.04;
-    //m_distanceToConvergenge = maxDiff - epsilon;
-    m_epsilon = m_benchmarkDensity.at(xMax)*0.05;
+    std::cerr << xMax << std::endl;
+    if (m_isFirstLoop)
+    {
+        m_epsilon = maxDiff*0.1;
+        //m_epsilon = m_benchmarkDensity.at(xMax)*0.05;
+        m_isFirstLoop = false;
+
+    }
     m_distanceToConvergenge = maxDiff - m_epsilon;
     
     return maxDiff < m_epsilon; // convergence condition

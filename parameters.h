@@ -13,7 +13,7 @@ namespace Parameters
 {
 
 const int NN = 20;									// Neutrons number
-const int NP = 0;									// Protons number
+const int NP = 20;									// Protons number
 
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
@@ -39,8 +39,8 @@ const double hbar_omega=10;							// [MeV]
 
 // Runge-Kutta parameters
 //const double x_in = -10*Rn;
-const double x_in = 1e-12;
-const double x_fin = 2*Rn;
+const double x_in = 0.1;
+const double x_fin = 5*Rn;
 
 // Other parameters
 

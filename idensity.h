@@ -41,6 +41,7 @@ private:
     Density m_thDensity;
     mutable double m_distanceToConvergenge;
     mutable double m_epsilon;
+    mutable bool m_isFirstLoop;
     
 protected:
     Density m_benchmarkDensity;

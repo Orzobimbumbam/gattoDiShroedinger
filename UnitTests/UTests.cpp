@@ -26,6 +26,24 @@ typedef std::vector<double> PsiArray;
 
 //NB. set Rn = 5*Rn in parameters.h before running the test cases
 BOOST_AUTO_TEST_SUITE(Calc)
+/*
+BOOST_AUTO_TEST_CASE(shootingWS10, *utf::tolerance(0.1))
+{
+    const double H = 0.1;
+    //int mass_num=Parameters::A;
+    
+    const unsigned int k = 2;
+    const unsigned int l_mom=3;
+    //const unsigned int n = 2*(k-1) + l_mom;
+    
+    WSaxPot pot (Parameters::Rn, Parameters::a0, Parameters::mn, l_mom);
+    Schroddy Sfunc (pot, H);
+    GenericEigenvalues GenEig(Sfunc, k, l_mom);
+    
+    BOOST_TEST(GenEig.eigenvalue() == 4.93);
+    
+}*/
+
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
     const double H = 0.1;
