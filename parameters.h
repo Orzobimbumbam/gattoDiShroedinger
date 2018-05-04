@@ -40,7 +40,7 @@ const double hbar_omega = 41./pow(A,(1./3.));		// [MeV]
 //const double x_in = -10*Rn;
 
 const double x_in = 0.1;
-const double x_fin = 10*Rn;
+const double x_fin = 2*Rn;
 
 //const double x_in = 1e-12;							// Initial radius value [fm]
 //const double x_fin = 1.97*Rn;						// Final radius value [fm]

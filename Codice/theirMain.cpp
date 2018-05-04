@@ -58,13 +58,20 @@ void theirMain()
     fOut.open(outputPath + "refInitialEigenfunctions.txt");
     writeElementEigenfunctions(elEigf, fOut);
     fOut.close();
-
+    /*
+    NuclearDensityWithMC NDens_;
+    NDens_.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
+    std::vector<std::vector<double>> mcMatrix(NDens_.getTheoreticalDensity().size());
+    std::ifstream fIn(outputPath + "refInitialDensity.txt");
+    readMatrix(mcMatrix, fIn, false);
+    NDens_.benchmarkDensity(mcMatrix);
+     */
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
     KohnShamInverse ksi(potTot, H);
     KohnShamInverse tempKsi = ksi;
-    ksi.KSinverseWithLB(NDens, tempKsi);
-    //ksi.KSinverseWithJW(NDens, tempKsi);
+    //ksi.KSinverseWithLB(NDens, tempKsi);
+    ksi.KSinverseWithJW(NDens, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
 
@@ -76,8 +83,8 @@ void theirMain()
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
         KohnShamInverse tempKsi_ = ksi;
-        ksi.KSinverseWithLB(NDens, tempKsi_);
-        //ksi.KSinverseWithJW(NDens, tempKsi);
+        //ksi.KSinverseWithLB(NDens, tempKsi_);
+        ksi.KSinverseWithJW(NDens, tempKsi);
 
         ++loops;
         //if (loops%10 == 0)

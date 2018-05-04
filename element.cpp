@@ -68,7 +68,7 @@ ElementEigenValues Element::getLevelEigenvalue() const
     return m_eigenValMatrix;
 }
 
-// Write all eigenfunctions in unique file
+// Write all eigenfunctions to a single file
 void writeElementEigenfunctions(const ElementEigenfunctions& elEigf, std::ostream& outStream)
 {
     PsiArrayKVP kvp = elEigf[0].keyValues();

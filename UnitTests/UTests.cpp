@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
     HOPot pot (Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     GenericEigenvalues GenEig(Sfunc, k, l_mom);
-    
+    //std::cerr << GenEig.eigenvalue() << std::endl;
     BOOST_TEST(GenEig.eigenvalue() == 3./2.*Parameters::hbar_omega);
     
 }
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(shooting_HO11, *utf::tolerance(0.1))
     HOPot pot (Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     GenericEigenvalues GenEig(Sfunc, k, l_mom);
-    
+    //std::cerr << GenEig.eigenvalue() << std::endl;
     BOOST_TEST(GenEig.eigenvalue() == 5./2.*Parameters::hbar_omega);
     
 }

@@ -24,7 +24,7 @@ KohnShamInverse::KohnShamInverse (const InitialPot& iPot, double h)
 }
 
 /*===========================================================================================
- * Kohm-Sham inverse equations method for SOG Densities van Leeuwen-Baerends method
+ * Kohm-Sham inverse equations van Leeuwen-Baerends method
  *=========================================================================================*/
 
 void KohnShamInverse::KSinverseWithLB(const NuclearDensity& density, const KohnShamInverse& inKSPot)
@@ -77,8 +77,8 @@ void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnS
     double ratio1, ratio2, newPot;
     for (const auto& it : density.getTheoreticalDensity())
     {
-        const double alpha = 0.1;
-        if ( inKSPot.getKSPot().at(it.first) < 0)
+        const double alpha = 8;
+        if (inKSPot.getKSPot().at(it.first) < 0)
         {
         	ratio1 = (density.getBenchmarkDensity().at(it.first) - it.second)/density.getBenchmarkDensity().at(it.first);
             newPot = inKSPot.getKSPot().at(it.first) + alpha*ratio1;
@@ -93,6 +93,14 @@ void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnS
     }
 	return;
 }
+
+
+
+
+
+
+
+
 
 
 
