@@ -62,11 +62,6 @@ void KohnShamInverse::KSinverseWithLB(const NuclearDensity& density, const KohnS
 	return;
 }
 
-KSPotential KohnShamInverse::getKSPot() const
-{
-    return m_KSOutPot;
-}
-
 /*==============================================================================================
  * Kohm-Sham inverse equations Jensen-Wasserman method
  *============================================================================================*/
@@ -77,7 +72,7 @@ void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnS
     double ratio1, ratio2, newPot;
     for (const auto& it : density.getTheoreticalDensity())
     {
-        const double alpha = 0.1;
+        const double alpha = 20;
         if ( inKSPot.getKSPot().at(it.first) < 0)
         {
         	ratio1 = (density.getBenchmarkDensity().at(it.first) - it.second)/density.getBenchmarkDensity().at(it.first);
@@ -92,6 +87,11 @@ void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnS
         m_KSOutPot[it.first] = newPot;
     }
 	return;
+}
+
+KSPotential KohnShamInverse::getKSPot() const
+{
+    return m_KSOutPot;
 }
 
 
