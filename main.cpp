@@ -23,7 +23,7 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "208Pb.txt");
+    in.open(inputPath + "40Ca.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
@@ -32,8 +32,8 @@ int main(int argc, const char * argv[])
 
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
-    const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
-    //const HOPot potTot(Parameters::mn); //default is ground state
+    //const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
+    const HOPot potTot(Parameters::mn); //default is ground state
     //const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
@@ -78,10 +78,12 @@ int main(int argc, const char * argv[])
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    KohnShamInverse ksi(potTot, H);
+    /*KohnShamInverse ksi(potTot, H);
     KohnShamInverse tempKsi = ksi;
-    ksi.KSinverseWithLB(NDens, tempKsi);
-    //ksi.KSinverseWithJW(NDens, tempKsi);
+    ksi.KSinverseWithLB(NDens, tempKsi);*/
+    KohnShamInverseWithJW ksi(potTot, H);
+    KohnShamInverseWithJW tempKsi = ksi;
+    ksi.KSinverseWithJW(NDens, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
 
@@ -92,9 +94,10 @@ int main(int argc, const char * argv[])
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-        KohnShamInverse tempKsi_ = ksi;
-        ksi.KSinverseWithLB(NDens, tempKsi_);
-        //ksi.KSinverseWithJW(NDens, tempKsi);
+        /*KohnShamInverse tempKsi_ = ksi;
+        ksi.KSinverseWithLB(NDens, tempKsi_);*/
+        KohnShamInverseWithJW tempKsi_ = ksi;
+        ksi.KSinverseWithJW(NDens, tempKsi);
 
         ++loops;
         //if (loops%10 == 0)
@@ -112,7 +115,8 @@ int main(int argc, const char * argv[])
     fOut.open(outputPath + "refFinalEigenfunctions.txt");
     writeElementEigenfunctions(elEigf, fOut);
     fOut.close();
-    KSPotential finalPotential = ksi.getKSPot();
+    //KSPotential finalPotential = ksi.getKSPot();
+    JWKSPotential finalPotential = ksi.getKSPot();
     fOut.open(outputPath + "refFinalPotential.txt");
     fOut << finalPotential;
     fOut.close();

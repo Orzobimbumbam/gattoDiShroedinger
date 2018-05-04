@@ -16,7 +16,7 @@ public:
 	KohnShamInverse();
     KohnShamInverse(const InitialPot& iPot, double h);
     void KSinverseWithLB(const NuclearDensity& density, const KohnShamInverse& inKSPot);
-    void KSinverseWithJW(const NuclearDensity& density, const KohnShamInverse& inKSPot);
+    //void KSinverseWithJW(const NuclearDensity& density, const KohnShamInverse& inKSPot);
 
 
     KSPotential getKSPot() const;

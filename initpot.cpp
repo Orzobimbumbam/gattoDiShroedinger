@@ -180,6 +180,50 @@ double PotOut::interpolatedPotential(double x) const
     return p -> second; //at this level p points to last map element, which implies x > lastMapVaulue; upper extrapolation
 }
 
+/*=====================================================================
+ * Kohn-Sham potential from J-W method
+ *===================================================================*/
+
+PotOutJW::PotOutJW(const KohnShamInverseWithJW& outpot, double m, unsigned int l): InitialPot(m, l), m_outpot(outpot) {}
+PotOutJW::PotOutJW(const KohnShamInverseWithJW& outpot, double m): InitialPot(m, 0), m_outpot(outpot) {}
+
+double PotOutJW::potential(double x) const
+{
+    JWKSPotential ksp = m_outpot.getJWKSPot();
+    if (ksp.find(x) == ksp.end())
+        return interpolatedPotential(x);
+
+    return m_outpot.getJWKSPot().at(x);
+}
+
+std::unique_ptr<InitialPot> PotOutJW::clone() const
+{
+	 return std::make_unique<PotOutJW> (*this); //return a derived class object through a base class pointer
+}
+
+/* Linear interpolator/extrapolator for solve R-K method with a map (discrete values) as input
+ * rather than a continues function.*/
+double PotOutJW::interpolatedPotential(double x) const
+{
+    JWKSPotential ksp = m_outpot.getJWKSPot(); 	// if x < first element in map,
+    if (x < ksp.begin() -> first)			// set potential point value at x equal to the first element
+        return ksp.begin() -> second; //lower extrapolation
+
+    JWKSPotential::iterator it = ksp.begin();
+    JWKSPotential::iterator p = it;
+    ++it;
+
+    for (; it != ksp.end(); ++it)					// if x is between two consecutive elements of
+    {												// the map, add a x value between this range
+        if ( x >= p -> first && x < it -> first)	// using straight line equation
+            return p -> second +
+            (it -> second - p -> second)/(it -> first - p -> first)*(x - p -> first); //interpolation
+        ++p;
+    }
+
+    return p -> second; //at this level p points to last map element, which implies x > lastMapVaulue; upper extrapolation
+}
+
 /*===================================================================
  * Test potential
  *=================================================================*/
