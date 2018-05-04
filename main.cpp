@@ -23,7 +23,7 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "40Ca.txt");
+    in.open(inputPath + "208Pb.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
@@ -32,8 +32,8 @@ int main(int argc, const char * argv[])
 
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
-    //const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
-    const HOPot potTot(Parameters::mn); //default is ground state
+    const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
+    //const HOPot potTot(Parameters::mn); //default is ground state
     //const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
@@ -48,11 +48,19 @@ int main(int argc, const char * argv[])
     writeMap(inPotential, fOut, false);
     fOut.close();
 
+
     const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
     NuclearDensityWithSOG NDens;
+    //NuclearDensityWithMC NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
     NDens.benchmarkDensity(qrParam, H);
+
+    /*in.open(inputPath + "HODensity-2NN-1.97Rn.txt");
+    std::vector<std::vector<double>> mcDensity(NDens.getTheoreticalDensity().size());
+    readMatrix(mcDensity, in, false);
+    in.close();
+    NDens.benchmarkDensity(mcDensity);*/
 
     fOut.open(outputPath + "refInitialDensity.txt");
     fOut << NDens.getTheoreticalDensity();

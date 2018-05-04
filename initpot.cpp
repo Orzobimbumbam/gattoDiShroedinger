@@ -189,13 +189,12 @@ TestPot::TestPot(double m): InitialPot(m, 0) {}
 
 double TestPot::potential(double x) const
 {
-    double angularPart = 0;
-    if (x != 0)
-        angularPart = (Parameters::hbarc*Parameters::hbarc)*m_anglmomentum*(m_anglmomentum+1)/(2*m_m*x*x);
 
-    const double c =(m_m*Parameters::hbar_omega*Parameters::hbar_omega)/(Parameters::hbarc*Parameters::hbarc);
+	using namespace Parameters;
+	const double c =(m_m*hbar_omega*hbar_omega)/(hbarc*hbarc);
     const double perturbativePart = 10*x;
-    double hopot = angularPart + 0.5*c*x*x + perturbativePart;
+    const int verTraslation = -50;
+    double hopot = 0.5*c*x*x + perturbativePart /*+ verTraslation*/;
 
 
     return hopot;
