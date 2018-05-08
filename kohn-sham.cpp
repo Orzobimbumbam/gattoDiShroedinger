@@ -74,8 +74,8 @@ void KohnShamInverseWithLB::KSinverse(const NuclearDensity& density, const KohnS
 /*==============================================================================================
  * Kohm-Sham inverse equations Jensen-Wasserman method
  *============================================================================================*/
-/*
-void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnShamInverse& inKSPot)
+
+void KohnShamInverseWithJW::KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot)
 {
 	//I'm assuming here that the two maps have the same keys, so I can use one iterator only
     double ratio1, ratio2, newPot;
@@ -97,7 +97,32 @@ void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnS
     }
 	return;
 }
-*/
+
+
+/*==============================================================================================
+ * Kohm-Sham inverse equations Wang-Parr method
+ *============================================================================================*/
+
+void KohnShamInverseWithWP::KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot, const ElementEigenfunctions& inKSPsi)
+{
+	//I'm assuming here that the two maps have the same keys, so I can use one iterator only
+    double sumPsi, newPot;
+    std::vector<Eigenfunction>::const_iterator el = inKSPsi.begin();
+    for (; el != inKSPsi.end(); ++el)
+    {
+    	sumPsi =
+    }
+
+    for (const auto& it : density.getTheoreticalDensity())
+    {
+    	newPot = ((density.getBenchmarkDensity().at(it.first) - it.second)/sumPsi) + inKSPot.getKSPot().at(it.first);
+
+        m_KSOutPot[it.first] = newPot;
+    }
+	return;
+}
+
+
 
 
 

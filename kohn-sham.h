@@ -21,14 +21,30 @@ protected:
     KSPotential m_KSOutPot;
 };
 
-
-
 class KohnShamInverseWithLB : public KohnShamInverse
 {
 public:
 	KohnShamInverseWithLB();
     KohnShamInverseWithLB(const InitialPot& iPot, double h);
     void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot) override;
+
+};
+
+class KohnShamInverseWithJW : public KohnShamInverse
+{
+public:
+	KohnShamInverseWithJW();
+    KohnShamInverseWithJW(const InitialPot& iPot, double h);
+    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot) override;
+
+};
+
+class KohnShamInverseWithWP : public KohnShamInverse
+{
+public:
+	KohnShamInverseWithWP();
+    KohnShamInverseWithWP(const InitialPot& iPot, double h);
+    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot, const ElementEigenfunctions& inKSPsi) override;
 
 };
 
