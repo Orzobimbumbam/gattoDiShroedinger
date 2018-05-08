@@ -4,25 +4,16 @@
 #include <vector>
 #include <map>
 #include "idensity.h"
-#include "densities.h"
+#include "kohn-sham.h"
 
-class NuclearDensity;
-class InitialPot;
-typedef std::map<double, double> JWKSPotential;
-typedef std::vector<std::vector<double>> KSMatrix;
-
-class KohnShamInverseWithJW
+class KohnShamInverseWithJW : public KohnShamInverse
 {
 public:
 	KohnShamInverseWithJW();
 	KohnShamInverseWithJW(const InitialPot& iPot, double h);
-    void KSinverseWithJW(const NuclearDensity& density, const KohnShamInverseWithJW& inKSPot);
+    
+    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot) override;
 
-
-    JWKSPotential getJWKSPot() const;
-
-protected:
-    JWKSPotential m_KSOutPot;
 };
 
 

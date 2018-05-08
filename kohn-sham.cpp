@@ -23,11 +23,19 @@ KohnShamInverse::KohnShamInverse (const InitialPot& iPot, double h)
     }
 }
 
+const KSPotential KohnShamInverse::getKSPot() const
+{
+    return m_KSOutPot;
+}
+
+KohnShamInverseWithLB::KohnShamInverseWithLB() : KohnShamInverse() {}
+KohnShamInverseWithLB::KohnShamInverseWithLB(const InitialPot& iPot, double h) : KohnShamInverse(iPot, h) {}
+
 /*===========================================================================================
  * Kohm-Sham inverse equations van Leeuwen-Baerends method
  *=========================================================================================*/
 
-void KohnShamInverse::KSinverseWithLB(const NuclearDensity& density, const KohnShamInverse& inKSPot)
+void KohnShamInverseWithLB::KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot)
 {
 	//I'm assuming here that the two maps have the same keys, so I can use one iterator only
     double ratio1, ratio2, newPot;
@@ -62,15 +70,11 @@ void KohnShamInverse::KSinverseWithLB(const NuclearDensity& density, const KohnS
 	return;
 }
 
-KSPotential KohnShamInverse::getKSPot() const
-{
-    return m_KSOutPot;
-}
 
 /*==============================================================================================
  * Kohm-Sham inverse equations Jensen-Wasserman method
  *============================================================================================*/
-
+/*
 void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnShamInverse& inKSPot)
 {
 	//I'm assuming here that the two maps have the same keys, so I can use one iterator only
@@ -93,7 +97,7 @@ void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnS
     }
 	return;
 }
-
+*/
 
 
 

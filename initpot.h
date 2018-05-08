@@ -139,28 +139,8 @@ protected:
 	double interpolatedPotential(double x) const; //protected only for testing purposes, fixture classes to be derived
     
 private:
-    KohnShamInverse m_outpot;
-};
-
-/*======================================================================
- * Kohn-Sham potential class from JW
- *====================================================================*/
-
-class PotOutJW: public InitialPot
-{
-public:
-	PotOutJW(const KohnShamInverseWithJW& outpot, double m, unsigned int l);
-    PotOutJW(const KohnShamInverseWithJW& outpot, double m); //l is assumed ground state
-	double potential (double x) const override;
-
-    std::unique_ptr<InitialPot> clone() const override;
-
-protected:
-    PotOutJW();
-	double interpolatedPotential(double x) const; //protected only for testing purposes, fixture classes to be derived
-
-private:
-    KohnShamInverseWithJW m_outpot;
+    //KohnShamInverse m_outpot;
+    KSPotential m_outpot;
 };
 
 /*======================================================================
