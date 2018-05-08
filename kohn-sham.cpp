@@ -77,7 +77,7 @@ void KohnShamInverse::KSinverseWithJW(const NuclearDensity& density, const KohnS
     double ratio1, ratio2, newPot;
     for (const auto& it : density.getTheoreticalDensity())
     {
-        const double alpha = 8;
+        const double alpha = 10;
         if (inKSPot.getKSPot().at(it.first) < 0)
         {
         	ratio1 = (density.getBenchmarkDensity().at(it.first) - it.second)/density.getBenchmarkDensity().at(it.first);

@@ -51,8 +51,8 @@ bool NuclearDensity::hasConverged () const
         m_isFirstLoop = false;
 
     }
-*/
-    /*
+
+/*
     //std::ofstream fOut("Outputs/distance.txt");
     double maxDiff = std::abs(1 - (m_thDensity.begin() -> second/m_benchmarkDensity.begin() -> second));
     double xMax = m_thDensity.begin() -> first;
@@ -63,7 +63,7 @@ bool NuclearDensity::hasConverged () const
 		{
 			maxDiff = std::abs(1 - (it.second/m_benchmarkDensity.at(it.first)));
 			xMax = it.first;
-			m_epsilon = (m_benchmarkDensity.at(it.first))*0.05;
+			//m_epsilon = (m_benchmarkDensity.at(it.first))*0.05;
 
 		}
 
@@ -72,9 +72,9 @@ bool NuclearDensity::hasConverged () const
 		//		m_epsilon << "\t\t" << m_distanceToConvergenge << std::endl;
 	}
     //fOut.close();*/
-
+    
     //const double epsilon = m_sogDensity.at(xMax)*0.05;
-    //const double epsilon = 0.1*0.04;
+    //m_epsilon = 0.1;
     //m_distanceToConvergenge = maxDiff - epsilon;
     m_epsilon = m_benchmarkDensity.at(xMax)*0.05;
     m_distanceToConvergenge = maxDiff - m_epsilon;

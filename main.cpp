@@ -48,11 +48,19 @@ int main(int argc, const char * argv[])
     writeMap(inPotential, fOut, false);
     fOut.close();
 
+
     const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
     NuclearDensityWithSOG NDens;
+    //NuclearDensityWithMC NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
     NDens.benchmarkDensity(qrParam, H);
+
+    /*in.open(inputPath + "HODensity-2NN-1.97Rn.txt");
+    std::vector<std::vector<double>> mcDensity(NDens.getTheoreticalDensity().size());
+    readMatrix(mcDensity, in, false);
+    in.close();
+    NDens.benchmarkDensity(mcDensity);*/
 
     fOut.open(outputPath + "refInitialDensity.txt");
     fOut << NDens.getTheoreticalDensity();
@@ -70,10 +78,12 @@ int main(int argc, const char * argv[])
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    KohnShamInverse ksi(potTot, H);
+    /*KohnShamInverse ksi(potTot, H);
     KohnShamInverse tempKsi = ksi;
-    ksi.KSinverseWithLB(NDens, tempKsi);
-    //ksi.KSinverseWithJW(NDens, tempKsi);
+    ksi.KSinverseWithLB(NDens, tempKsi);*/
+    KohnShamInverseWithJW ksi(potTot, H);
+    KohnShamInverseWithJW tempKsi = ksi;
+    ksi.KSinverseWithJW(NDens, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
 
@@ -84,9 +94,10 @@ int main(int argc, const char * argv[])
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-        KohnShamInverse tempKsi_ = ksi;
-        ksi.KSinverseWithLB(NDens, tempKsi_);
-        //ksi.KSinverseWithJW(NDens, tempKsi);
+        /*KohnShamInverse tempKsi_ = ksi;
+        ksi.KSinverseWithLB(NDens, tempKsi_);*/
+        KohnShamInverseWithJW tempKsi_ = ksi;
+        ksi.KSinverseWithJW(NDens, tempKsi);
 
         ++loops;
         //if (loops%10 == 0)
@@ -104,7 +115,8 @@ int main(int argc, const char * argv[])
     fOut.open(outputPath + "refFinalEigenfunctions.txt");
     writeElementEigenfunctions(elEigf, fOut);
     fOut.close();
-    KSPotential finalPotential = ksi.getKSPot();
+    //KSPotential finalPotential = ksi.getKSPot();
+    JWKSPotential finalPotential = ksi.getKSPot();
     fOut.open(outputPath + "refFinalPotential.txt");
     fOut << finalPotential;
     fOut.close();
