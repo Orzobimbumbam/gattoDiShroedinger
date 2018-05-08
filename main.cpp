@@ -23,18 +23,18 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "40Ca.txt");
+    /*in.open(inputPath + "40Ca.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
-    in.close();
+    in.close();*/
 
     Element nuclei(orbitals);
 
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
     //const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
-    const HOPot potTot(Parameters::mn); //default is ground state
-    //const TestPot potTot(Parameters::mn);
+    //const HOPot potTot(Parameters::mn); //default is ground state
+    const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
     const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
@@ -51,23 +51,23 @@ int main(int argc, const char * argv[])
 
     const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
-    NuclearDensityWithSOG NDens;
-    //NuclearDensityWithMC NDens;
+    //NuclearDensityWithSOG NDens;
+    NuclearDensityWithMC NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-    NDens.benchmarkDensity(qrParam, H);
+    //NDens.benchmarkDensity(qrParam, H);
 
-    /*in.open(inputPath + "HODensity-2NN-1.97Rn.txt");
+    in.open(inputPath + "WSDensity-20NN-3Rn.txt");
     std::vector<std::vector<double>> mcDensity(NDens.getTheoreticalDensity().size());
     readMatrix(mcDensity, in, false);
     in.close();
-    NDens.benchmarkDensity(mcDensity);*/
+    NDens.benchmarkDensity(mcDensity);
 
     fOut.open(outputPath + "refInitialDensity.txt");
     fOut << NDens.getTheoreticalDensity();
     fOut.close();
-    fOut.open(outputPath + "refSogDensity.txt");
+    /*fOut.open(outputPath + "refSogDensity.txt");
     fOut << NDens.getBenchmarkDensity();
-    fOut.close();
+    fOut.close();*/
     ElementEigenValues initialEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refInitialEigenvalues.txt");
     writeMatrix(initialEigenvalues, fOut, false);
@@ -78,26 +78,27 @@ int main(int argc, const char * argv[])
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    /*KohnShamInverse ksi(potTot, H);
+    KohnShamInverse ksi(potTot, H);
     KohnShamInverse tempKsi = ksi;
-    ksi.KSinverseWithLB(NDens, tempKsi);*/
-    KohnShamInverseWithJW ksi(potTot, H);
+    ksi.KSinverseWithLB(NDens, tempKsi);
+    /*KohnShamInverseWithJW ksi(potTot, H);
     KohnShamInverseWithJW tempKsi = ksi;
     ksi.KSinverseWithJW(NDens, tempKsi);
-    fOut << ksi.getKSPot();
+    fOut << ksi.getJWKSPot();*/
     fOut.close();
 
     unsigned long loops = 0;
     while (!NDens.hasConverged()) //simulation loop
     {
         const PotOut po(ksi, Parameters::mn, 0);
+        //const PotOutJW po(ksi, Parameters::mn, 0);
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-        /*KohnShamInverse tempKsi_ = ksi;
-        ksi.KSinverseWithLB(NDens, tempKsi_);*/
-        KohnShamInverseWithJW tempKsi_ = ksi;
-        ksi.KSinverseWithJW(NDens, tempKsi);
+        KohnShamInverse tempKsi_ = ksi;
+        ksi.KSinverseWithLB(NDens, tempKsi_);
+        /*KohnShamInverseWithJW tempKsi_ = ksi;
+        ksi.KSinverseWithJW(NDens, tempKsi);*/
 
         ++loops;
         //if (loops%10 == 0)
@@ -115,8 +116,8 @@ int main(int argc, const char * argv[])
     fOut.open(outputPath + "refFinalEigenfunctions.txt");
     writeElementEigenfunctions(elEigf, fOut);
     fOut.close();
-    //KSPotential finalPotential = ksi.getKSPot();
-    JWKSPotential finalPotential = ksi.getKSPot();
+    KSPotential finalPotential = ksi.getKSPot();
+    //JWKSPotential finalPotential = ksi.getJWKSPot();
     fOut.open(outputPath + "refFinalPotential.txt");
     fOut << finalPotential;
     fOut.close();

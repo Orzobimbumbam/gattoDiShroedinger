@@ -1,5 +1,6 @@
 //Class for initial potentials
 #include <cmath>
+#include <cstdlib>
 #include "parameters.h"
 #include "initpot.h"
 
@@ -236,9 +237,11 @@ double TestPot::potential(double x) const
 
 	using namespace Parameters;
 	const double c =(m_m*hbar_omega*hbar_omega)/(hbarc*hbarc);
+	const int verTraslation = -50;
     const double perturbativePart = 10*x;
-    const int verTraslation = -50;
-    double hopot = 0.5*c*x*x + perturbativePart /*+ verTraslation*/;
+    const double perturbativePart2 = (rand()/(static_cast<double>(RAND_MAX))) - 0.05;
+    //double hopot = 0.05*x*x + perturbativePart2 /*+ verTraslation*/;
+    double hopot = 0.05*c*x*x + perturbativePart2 + verTraslation;
 
 
     return hopot;
