@@ -1,7 +1,7 @@
 # include "parameters.h"
 # include "kohn-sham.h"
 # include "initpot.h"
-#include "eigenfunction.hpp"
+# include "eigenfunction.hpp"
 # include <vector>
 # include <cmath>
 
@@ -126,8 +126,15 @@ void KohnShamInverseWithWP::KSinverse(const NuclearDensity& density, const KohnS
 	return;
 }
 
+void KohnShamInverseWithWP::setElementEigenfunctions(const ElementEigenfunctions &elEigf)
+{
+    m_inKSPsi = elEigf;
+}
 
-
+void KohnShamInverseWithWP::setElementEigenvalues(const ElementEigenValues &elEigV)
+{
+    m_eVal = elEigV;
+}
 
 
 
