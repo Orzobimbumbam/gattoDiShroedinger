@@ -1,6 +1,7 @@
 # include "parameters.h"
 # include "kohn-sham.h"
 # include "initpot.h"
+#include "eigenfunction.hpp"
 # include <vector>
 # include <cmath>
 
@@ -34,7 +35,7 @@ KohnShamInverseWithJW::KohnShamInverseWithJW() : KohnShamInverse() {}
 KohnShamInverseWithJW::KohnShamInverseWithJW(const InitialPot& iPot, double h) : KohnShamInverse(iPot, h) {}
 KohnShamInverseWithWP::KohnShamInverseWithWP() : KohnShamInverse() {}
 KohnShamInverseWithWP::KohnShamInverseWithWP(const InitialPot& iPot, double h, const ElementEigenValues& eVal, const ElementEigenfunctions& inKSPsi) :
-		KohnShamInverseWithWP(iPot, h, eVal, inKSPsi) {}
+		KohnShamInverse(iPot, h), m_eVal(eVal), m_inKSPsi(inKSPsi) {}
 
 /*===========================================================================================
  * Kohm-Sham inverse equations van Leeuwen-Baerends method
@@ -111,22 +112,15 @@ void KohnShamInverseWithJW::KSinverse(const NuclearDensity& density, const KohnS
 void KohnShamInverseWithWP::KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot)
 {
 	//I'm assuming here that the two maps have the same keys, so I can use one iterator only
-    double sumPsi, newPot;
-    int level = 0;
-    std::vector<Eigenfunction>::const_iterator el = inKSPsi.begin();
-
     for (const auto& it : density.getTheoreticalDensity())
     {
-    	sumPsi = 0;
-        for (; el != inKSPsi.end(); ++el)
+    	double sumPsi = 0;
+        for (unsigned int i = 0; i < m_inKSPsi.size(); ++i)
         {
-        	sumPsi += (el.second*el.second)/eVal[level][2];
+            sumPsi += m_inKSPsi[i](it.first)*m_inKSPsi[i](it.first)/m_eVal[i][2];
         }
 
-        ++level;
-
-    	newPot = ((density.getBenchmarkDensity().at(it.first) - it.second)/sumPsi) + inKSPot.getKSPot().at(it.first);
-
+    	const double newPot = ((density.getBenchmarkDensity().at(it.first) - it.second)/sumPsi) + inKSPot.getKSPot().at(it.first);
         m_KSOutPot[it.first] = newPot;
     }
 	return;
