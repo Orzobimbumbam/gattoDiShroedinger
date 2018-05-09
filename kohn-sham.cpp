@@ -30,6 +30,11 @@ const KSPotential KohnShamInverse::getKSPot() const
 
 KohnShamInverseWithLB::KohnShamInverseWithLB() : KohnShamInverse() {}
 KohnShamInverseWithLB::KohnShamInverseWithLB(const InitialPot& iPot, double h) : KohnShamInverse(iPot, h) {}
+KohnShamInverseWithJW::KohnShamInverseWithJW() : KohnShamInverse() {}
+KohnShamInverseWithJW::KohnShamInverseWithJW(const InitialPot& iPot, double h) : KohnShamInverse(iPot, h) {}
+KohnShamInverseWithWP::KohnShamInverseWithWP() : KohnShamInverse() {}
+KohnShamInverseWithWP::KohnShamInverseWithWP(const InitialPot& iPot, double h, const ElementEigenValues& eVal, const ElementEigenfunctions& inKSPsi) :
+		KohnShamInverseWithWP(iPot, h, eVal, inKSPsi) {}
 
 /*===========================================================================================
  * Kohm-Sham inverse equations van Leeuwen-Baerends method
@@ -81,7 +86,7 @@ void KohnShamInverseWithJW::KSinverse(const NuclearDensity& density, const KohnS
     double ratio1, ratio2, newPot;
     for (const auto& it : density.getTheoreticalDensity())
     {
-        const double alpha = 10;
+        const double alpha = 1;
         if (inKSPot.getKSPot().at(it.first) < 0)
         {
         	ratio1 = (density.getBenchmarkDensity().at(it.first) - it.second)/density.getBenchmarkDensity().at(it.first);
@@ -103,18 +108,23 @@ void KohnShamInverseWithJW::KSinverse(const NuclearDensity& density, const KohnS
  * Kohm-Sham inverse equations Wang-Parr method
  *============================================================================================*/
 
-void KohnShamInverseWithWP::KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot, const ElementEigenfunctions& inKSPsi)
+void KohnShamInverseWithWP::KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot)
 {
 	//I'm assuming here that the two maps have the same keys, so I can use one iterator only
     double sumPsi, newPot;
+    int level = 0;
     std::vector<Eigenfunction>::const_iterator el = inKSPsi.begin();
-    for (; el != inKSPsi.end(); ++el)
-    {
-    	sumPsi =
-    }
 
     for (const auto& it : density.getTheoreticalDensity())
     {
+    	sumPsi = 0;
+        for (; el != inKSPsi.end(); ++el)
+        {
+        	sumPsi += (el.second*el.second)/eVal[level][2];
+        }
+
+        ++level;
+
     	newPot = ((density.getBenchmarkDensity().at(it.first) - it.second)/sumPsi) + inKSPot.getKSPot().at(it.first);
 
         m_KSOutPot[it.first] = newPot;

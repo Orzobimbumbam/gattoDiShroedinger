@@ -23,7 +23,7 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "40Ca.txt");
+    in.open(inputPath + "4He.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
@@ -78,10 +78,12 @@ int main(int argc, const char * argv[])
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    KohnShamInverseWithLB ksi(potTot, H);
-    KohnShamInverseWithLB tempKsi = ksi;
+    /*KohnShamInverseWithLB ksi(potTot, H);
+    KohnShamInverseWithLB tempKsi = ksi;*/
     /*KohnShamInverseWithJW ksi(potTot, H);
     KohnShamInverseWithJW tempKsi = ksi;*/
+    KohnShamInverseWithWP ksi(potTot, H, nuclei.getLevelEigenvalue(), elEigf);
+    KohnShamInverseWithWP tempKsi = ksi;
     ksi.KSinverse(NDens, tempKsi);
     fOut.close();
 
@@ -92,8 +94,9 @@ int main(int argc, const char * argv[])
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-        KohnShamInverseWithLB tempKsi_ = ksi;
+        //KohnShamInverseWithLB tempKsi_ = ksi;
         //KohnShamInverseWithJW tempKsi_ = ksi;
+        KohnShamInverseWithWP tempKsi_ = ksi;
         ksi.KSinverse(NDens, tempKsi_);
 
         ++loops;

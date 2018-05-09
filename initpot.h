@@ -2,7 +2,6 @@
 #pragma once
 #include <memory>
 #include "kohn-sham.h"
-#include "kohn-shamJW.hpp"
 
 /*====================================================================
  * Pure virtual base class for in/out potentials

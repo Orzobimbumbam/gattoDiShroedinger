@@ -76,7 +76,7 @@ bool NuclearDensity::hasConverged () const
     //const double epsilon = m_sogDensity.at(xMax)*0.05;
     //m_epsilon = 0.1;
     //m_distanceToConvergenge = maxDiff - epsilon;
-    m_epsilon = m_benchmarkDensity.at(xMax)*0.05;
+    m_epsilon = m_benchmarkDensity.at(xMax)*0.01;
     m_distanceToConvergenge = maxDiff - m_epsilon;
     
     return maxDiff < m_epsilon; // convergence condition

@@ -11,7 +11,6 @@
 #include "idensity.h"
 #include "mcDensity.hpp"
 #include "kohn-sham.h"
-#include "kohn-shamJW.hpp"
 #include "eigenfunction.hpp"
 #include "IOUtils.hpp"
 #include "element.hpp"

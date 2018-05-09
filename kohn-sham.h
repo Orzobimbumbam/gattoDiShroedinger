@@ -13,7 +13,7 @@ public:
     KohnShamInverse();
     KohnShamInverse(const InitialPot& iPot, double h);
     virtual void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot) = 0;
-    
+
     virtual ~KohnShamInverse() = default;
     virtual const KSPotential getKSPot() const;
     
@@ -43,8 +43,8 @@ class KohnShamInverseWithWP : public KohnShamInverse
 {
 public:
 	KohnShamInverseWithWP();
-    KohnShamInverseWithWP(const InitialPot& iPot, double h);
-    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot, const ElementEigenfunctions& inKSPsi) override;
+    KohnShamInverseWithWP(const InitialPot& iPot, double h, const ElementEigenValues& eVal, const ElementEigenfunctions& inKSPsi);
+    void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot) override;
 
 };
 
