@@ -8,7 +8,7 @@ void NuclearDensityWithMC::benchmarkDensity(const std::vector<std::vector<double
     {
         m_benchmarkDensity.clear();
         for (unsigned long i = 0; i < NRows; ++i)
-            m_benchmarkDensity.insert(std::make_pair(arrayOfKeys[i], mcDensity[i][1])); //align mcDensity into a map structure
+            m_benchmarkDensity.insert(std::make_pair(arrayOfKeys[i], mcDensity[i][1])); //align mcDensity to a map structure
     }
     else
         throw std::out_of_range("NuclearDensityWithMC::benchmarkDensity : mismatching key-value size."); //this behaviour can be changed once more info is available about mc data (should we interpolate?)
