@@ -23,7 +23,7 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "4He.txt");
+    in.open(inputPath + "40Ca.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
@@ -32,8 +32,8 @@ int main(int argc, const char * argv[])
 
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
-    //const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
-    const HOPot potTot(Parameters::mn); //default is ground state
+    const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
+    //const HOPot potTot(Parameters::mn); //default is ground state
     //const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
@@ -56,7 +56,7 @@ int main(int argc, const char * argv[])
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
     NDens.benchmarkDensity(qrParam, H);
 
-    /*in.open(inputPath + "WSDensity-20NN-3Rn.txt");
+    /*in.open(inputPath + "HODensity-20NN-3Rn.txt");
     std::vector<std::vector<double>> mcDensity(NDens.getTheoreticalDensity().size());
     readMatrix(mcDensity, in, false);
     in.close();
@@ -85,6 +85,7 @@ int main(int argc, const char * argv[])
     KohnShamInverseWithWP ksi(potTot, H, nuclei.getLevelEigenvalue(), elEigf);
     KohnShamInverseWithWP tempKsi = ksi;
     ksi.KSinverse(NDens, tempKsi);
+    fOut << ksi.getKSPot();
     fOut.close();
 
     unsigned long loops = 0;
@@ -96,6 +97,8 @@ int main(int argc, const char * argv[])
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
         //KohnShamInverseWithLB tempKsi_ = ksi;
         //KohnShamInverseWithJW tempKsi_ = ksi;
+        ksi.setElementEigenvalues(nuclei.getLevelEigenvalue());
+        ksi.setElementEigenfunctions(elEigf);
         KohnShamInverseWithWP tempKsi_ = ksi;
         ksi.KSinverse(NDens, tempKsi_);
 
