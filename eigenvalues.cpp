@@ -26,7 +26,7 @@ std::unique_ptr<Eigenvalues> HarmonicEigenvalues::clone() const
 
 
 TrialEigenvalues* TrialEigenvalues::m_trialEigenvalusObj = nullptr;
-TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-50), m_eigenval2(50) {}
+TrialEigenvalues::TrialEigenvalues(): m_eigenval1(-50), m_eigenval2(100) {}
 
 double TrialEigenvalues::getEigenval1()
 {

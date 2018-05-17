@@ -68,8 +68,8 @@ void theirMain()
      */
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    KohnShamInverseWithLB ksi(potTot, H);
-    KohnShamInverseWithLB tempKsi = ksi;
+    KohnShamInverseWithWP ksi(potTot, H, nuclei.getLevelEigenvalue(), elEigf);
+    KohnShamInverseWithWP tempKsi = ksi;
     //ksi.KSinverseWithLB(NDens, tempKsi);
     ksi.KSinverse(NDens, tempKsi);
     fOut << ksi.getKSPot();
@@ -82,8 +82,9 @@ void theirMain()
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-        KohnShamInverseWithLB tempKsi_ = ksi;
-        //ksi.KSinverseWithLB(NDens, tempKsi_);
+        ksi.setElementEigenvalues(nuclei.getLevelEigenvalue());
+        ksi.setElementEigenfunctions(elEigf);
+        KohnShamInverseWithWP tempKsi_ = ksi;
         ksi.KSinverse(NDens, tempKsi_);
 
         ++loops;
