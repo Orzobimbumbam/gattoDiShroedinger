@@ -4,15 +4,20 @@
 #include "kohn-sham.h"
 
 /*====================================================================
- * Pure virtual base class for in/out potentials
+ * Abstract base class for in/out potentials
  *===================================================================*/
 
 class InitialPot
 {
 public:
     virtual double potential(double x) const = 0;
+    
     virtual void setL(unsigned int l) {m_anglmomentum = l;};
-    virtual double getL() const {return m_anglmomentum;};
+    virtual unsigned int getL() const {return m_anglmomentum;};
+    
+    virtual void setJ(int j) {m_spin = j;};
+    virtual int getJ() const {return m_spin;};
+    
     virtual ~InitialPot();
     
     virtual std::unique_ptr<InitialPot> clone() const = 0;
@@ -20,7 +25,8 @@ public:
 protected:
     const double m_m;
     unsigned int m_anglmomentum;
-    InitialPot(double m, unsigned int l);
+    int m_spin;
+    InitialPot(double m, unsigned int l, int j);
 
 };
 
@@ -34,6 +40,7 @@ class WSaxPot: public InitialPot //derived class
 public:
     WSaxPot(double Rn, double a0, double m);
     WSaxPot(double Rn, double a0, double m, unsigned int l);
+    WSaxPot(double Rn, double a0, double m, unsigned int l, int j);
     double potential(double x) const override;
     
     std::unique_ptr<InitialPot> clone() const override;
@@ -54,6 +61,7 @@ class HOPot: public InitialPot //derived class
 public:
     HOPot(double m); //l is assumed ground state
     HOPot(double m, unsigned int l);
+    HOPot(double m, unsigned int l, int j);
     double potential(double x) const override;
 
     std::unique_ptr<InitialPot> clone() const override;
@@ -72,6 +80,7 @@ class CoPot: public InitialPot //derived class
 public:
     CoPot(int Z, double m);
     CoPot(int Z, double m, unsigned int l);
+    CoPot(int Z, double m, unsigned int l, int j);
     double potential(double x) const override;
 
     std::unique_ptr<InitialPot> clone() const override;
@@ -79,6 +88,24 @@ public:
 private:
     CoPot(); //same as before
     int m_Z;
+};
+
+/*=====================================================================
+ * Spin-Orbit potential class
+ *===================================================================*/
+
+class SOPot: public InitialPot //derived class
+{
+public:
+    SOPot(unsigned int j);
+    SOPot(unsigned int j, unsigned int l);
+    double potential(double x) const override;
+
+    std::unique_ptr<InitialPot> clone() const override;
+
+private:
+    SOPot(); //same as before
+    unsigned int m_j;
 };
 
 /*=====================================================================
@@ -100,26 +127,6 @@ private:
 
 friend TotPot& operator+(const InitialPot& rhsPotential);*/
 
-/*=====================================================================
- * Spin-Orbit potential class
- *===================================================================*/
-/*
-class SOPot: public InitialPot //derived class
-{
-public:
-
-    SOPot(double m, double omega);
-    double potential(double x) const override;
-
-    //double getOmega() const;
-    InitialPot* clone() const override;
-
-private:
-    SOPot(); //same as before
-    const double m_m, m_omega;
-};
-*/
-
 /*======================================================================
  * Kohn-Sham potential class
  *====================================================================*/
@@ -127,8 +134,9 @@ private:
 class PotOut: public InitialPot
 {
 public:
+    PotOut(const KohnShamInverse& outpot, double m, unsigned int l, int j);
 	PotOut(const KohnShamInverse& outpot, double m, unsigned int l);
-    PotOut(const KohnShamInverse& outpot, double m); //l is assumed ground state
+    PotOut(const KohnShamInverse& outpot, double m); //l is assumed ground state; j is zero
 	double potential (double x) const override;
     
     std::unique_ptr<InitialPot> clone() const override;
@@ -151,6 +159,7 @@ class TestPot: public InitialPot
 public:
 	TestPot(double m); //l is assumed ground state
 	TestPot(double m, unsigned int l);
+    TestPot(double m, unsigned int l, int j);
     double potential(double x) const override;
 
     std::unique_ptr<InitialPot> clone() const override;

@@ -26,10 +26,6 @@ const double R0= 1.27; 								// [fm]
 const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
 const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
-// Spin-Orbit potential parameters
-//const double k0=  ;
-//const double r0=  ;
-
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
 const double hbar_omega = 41./pow(A,(1./3.));		// [MeV]
@@ -52,7 +48,7 @@ const double qe = 1.439; //1.6021e-19;				// elementary charge [MeV*fm]
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
-const double rms = 1.00;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
+const double rms = 1.45;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
 const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 

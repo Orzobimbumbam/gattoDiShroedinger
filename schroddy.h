@@ -30,6 +30,8 @@ private:
     void swap(Schroddy& sourceSh);
     std::unique_ptr<InitialPot> m_pot;
     mutable double m_h;
+    
+    double spinOrbitInteraction(double x) const;
 };
 
 

@@ -49,15 +49,20 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         
         //compute decoupled RK factors
         const double k1 = m_h*runningPsiPrime;
-        const double l1 = m_h*factor*(m_pot -> potential(runningX) + angularPart(runningX) - eigenvalue)*runningPsi;
+        
+        const double l1 = m_h*factor*(m_pot -> potential(runningX) + angularPart(runningX) + spinOrbitInteraction(runningX) - eigenvalue)*runningPsi;
+        
         const double k2 = m_h*(runningPsiPrime + 1./2.*l1);
-        const double l2 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) + angularPart(runningX + m_h/2.)
-                                      - eigenvalue)*(runningPsi + 1./2.*k1);
+        
+        const double l2 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) + angularPart(runningX + m_h/2.) + spinOrbitInteraction(runningX + m_h/2.) - eigenvalue)*(runningPsi + 1./2.*k1);
+        
         const double k3 = m_h*(runningPsiPrime + 1/2.*l2);
-        const double l3 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) + angularPart(runningX + m_h/2.)
-                                      - eigenvalue)*(runningPsi + 1./2.*k2);
+        
+        const double l3 = m_h*factor*(m_pot -> potential(runningX + m_h/2.) + angularPart(runningX + m_h/2.) + spinOrbitInteraction(runningX + m_h/2.) - eigenvalue)*(runningPsi + 1./2.*k2);
+        
         const double k4 = m_h*(runningPsiPrime + 1*l3);
-        const double l4 = m_h*factor*(m_pot -> potential(runningX + m_h) + angularPart(runningX + m_h) - eigenvalue)*(runningPsi + 1*k3);
+        
+        const double l4 = m_h*factor*(m_pot -> potential(runningX + m_h) + angularPart(runningX + m_h) + spinOrbitInteraction(runningX + m_h) - eigenvalue)*(runningPsi + 1*k3);
 
         //advance running variables and store intermediate results
         runningPsi += 1./6.*(k1 + 2*k2 + 2*k3 + k4);
@@ -66,7 +71,7 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
         psiArray.push_back(runningPsi);
     }
     
-    //work out normalizatiion constant
+    //work out normalization constant
     double psiSquared = 0;
     for (const auto& it : psiArray)
         psiSquared += (it)*(it);
@@ -99,6 +104,32 @@ const Eigenfunction Schroddy::solveSchroddyByRK(double x0, double x1, double psi
     return psi; //return an object with implemented move semantic
 }
 
+double Schroddy::spinOrbitInteraction(double x) const
+{
+    if (m_pot -> getJ() != 0)
+    {
+        if (x == 0)
+            return 0;
+    
+        const unsigned int l = m_pot -> getL();
+        const int j = m_pot -> getJ();
+        const double s =m_pot -> getJ() - m_pot -> getL();
+    
+        int sign = -1;
+        if (Parameters::NN == 0)
+            sign *= -1;
+        
+        const double V0 = 51 + sign*33.0*(Parameters::NN - Parameters::NP)/Parameters::A;
+        const double VLS = 0.44*V0;
+        const double factor1 = (VLS*Parameters::R0*Parameters::R0)/(2*x);
+        const double exponential = exp((x-Parameters::Rn)/Parameters::a0);
+        const double factor2 = exponential/(Parameters::a0*(exponential + 1)*(exponential + 1));
+    
+        return -factor1*factor2*(j*(j + 1) - s*(s + 1) - l*(l + 1));
+    }
+    else
+        return 0;
+}
 
 
 
