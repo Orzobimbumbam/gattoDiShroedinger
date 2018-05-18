@@ -2,7 +2,6 @@
 #include "schroddy.h"
 #include "parameters.h"
 #include "eigenvalues.hpp"
-
 #include <map>
 #include <iomanip>
 #include <sstream>
@@ -14,8 +13,10 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
     m_orbitalMatrixRows = 0;
     for (unsigned int i = 0; i < orbitalMatrix.size(); ++i) //loop through matrix rows
     {
-        const unsigned int quantL = orbitalMatrix[i][1];
-        const unsigned int degen = 2*(2*quantL + 1);
+        /*const unsigned int quantL = orbitalMatrix[i][1];
+        const unsigned int degen = 2*(2*quantL + 1);*/
+    	const unsigned int quantJ = orbitalMatrix[i][2];
+    	const unsigned int degen = 2*quantJ + 1;
         nuclNum += degen;
         ++m_orbitalMatrixRows;
         if (nuclNum >= Parameters::NN)
@@ -28,7 +29,7 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
             m_levelDegen.push_back(degen);
     }
 
-    m_eigenValMatrix.resize(m_orbitalMatrixRows, std::vector<double>(3)); //[Orzobimbumbam] hard-coded values should be avoided. If spin get added, column number will increase to 4 ?
+    m_eigenValMatrix.resize(m_orbitalMatrixRows, std::vector<double>(4));
 }
 
 OrderedLevelDegeneration Element::getLevelDegeneration() const
@@ -47,11 +48,11 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
     
     for (unsigned int i = 0; i < m_orbitalMatrixRows; ++i)
     {
-        //[Orzobimbumbam] add logic for spin quantum number; remember that j = 0 means no spin-orbit interaction
+    	const unsigned int j = orbitalMatrix[i][2];
         const unsigned int l = orbitalMatrix[i][1];
         const unsigned int nr = orbitalMatrix[i][0];
         ptPot -> setL(l);
-        //[Orzobimbumbam] example: ptPot -> setJ(j);
+        ptPot -> setJ(j);
         const Schroddy tempSh(*ptPot, h);
         const GenericEigenvalues genEig(tempSh, nr, l);
         const double E = genEig.eigenvalue();
@@ -60,7 +61,8 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
 
     	m_eigenValMatrix[i][0] = nr;
     	m_eigenValMatrix[i][1] = l;
-    	m_eigenValMatrix[i][2] = E;
+    	m_eigenValMatrix[i][2] = j;
+    	m_eigenValMatrix[i][3] = E;
     }
     return elEigf;
 }
