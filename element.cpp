@@ -28,7 +28,7 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
             m_levelDegen.push_back(degen);
     }
 
-    m_eigenValMatrix.resize(m_orbitalMatrixRows, std::vector<double>(3));
+    m_eigenValMatrix.resize(m_orbitalMatrixRows, std::vector<double>(3)); //[Orzobimbumbam] hard-coded values should be avoided. If spin get added, column number will increase to 4 ?
 }
 
 OrderedLevelDegeneration Element::getLevelDegeneration() const
@@ -47,9 +47,11 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
     
     for (unsigned int i = 0; i < m_orbitalMatrixRows; ++i)
     {
+        //[Orzobimbumbam] add logic for spin quantum number; remember that j = 0 means no spin-orbit interaction
         const unsigned int l = orbitalMatrix[i][1];
         const unsigned int nr = orbitalMatrix[i][0];
         ptPot -> setL(l);
+        //[Orzobimbumbam] example: ptPot -> setJ(j);
         const Schroddy tempSh(*ptPot, h);
         const GenericEigenvalues genEig(tempSh, nr, l);
         const double E = genEig.eigenvalue();

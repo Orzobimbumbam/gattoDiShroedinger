@@ -93,7 +93,7 @@ private:
 /*=====================================================================
  * Spin-Orbit potential class
  *===================================================================*/
-
+/*
 class SOPot: public InitialPot //derived class
 {
 public:

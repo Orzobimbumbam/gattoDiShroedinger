@@ -106,7 +106,7 @@ const Eigenfunction Schroddy::solveSchroddyByRK(double x0, double x1, double psi
 
 double Schroddy::spinOrbitInteraction(double x) const
 {
-    if (m_pot -> getJ() != 0)
+    if (m_pot -> getJ() != 0) //[Orzobimbumbam] I'm using zero as no-spin-orbit-interaction flag
     {
         if (x == 0)
             return 0;

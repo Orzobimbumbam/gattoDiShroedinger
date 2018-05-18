@@ -1,15 +1,13 @@
-//Parameters
 #pragma once
 
 #include<cmath>
-#include<string>
 
 
 double psi0(unsigned int l);
 double psiPrime0(unsigned int l);
 
 
-namespace Parameters
+namespace Parameters //[Orzobimbumbam] this namespace with global variables is a bad idea and should be removed
 {
 
 const int NN = 20;									// Neutrons number
