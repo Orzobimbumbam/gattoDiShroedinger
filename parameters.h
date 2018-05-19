@@ -10,7 +10,7 @@ double psiPrime0(unsigned int l);
 namespace Parameters //[Orzobimbumbam] this namespace with global variables is a bad idea and should be removed
 {
 
-const int NN = 20;									// Neutrons number
+const int NN = 40;									// Neutrons number
 const int NP = 0;									// Protons number
 
 //const double mp= 1.6726219e-27;					// Proton mass [kg]

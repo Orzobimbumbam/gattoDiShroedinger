@@ -12,7 +12,7 @@ void NuclearDensity::theoreticalDensity(const ElementEigenfunctions& psi, const 
 {
     m_thDensity.clear();
     std::vector<Eigenfunction>::const_iterator el = psi.begin();
-    std::vector<unsigned int>::const_iterator d = degen.begin();
+    std::vector<unsigned long>::const_iterator d = degen.begin();
     
     for (; el != psi.end() && d != degen.end(); ++el, ++d)
     {

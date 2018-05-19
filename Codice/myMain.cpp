@@ -17,7 +17,7 @@ void myMain()
     clock_t start = clock(); // Start time
     
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
-    std::vector <std::vector <unsigned int>> orbitals (36);
+    std::vector <std::vector <double>> orbitals (36);
     std::fstream in (inputPath + "orbitals.txt", std::ios::in);
     readMatrix(orbitals, in, false);
     in.close();

@@ -9,8 +9,8 @@ void theirMain()
     clock_t start = clock(); // Start time
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
-    std::vector <std::vector <unsigned int>> orbitals (36);
-    std::ifstream in (inputPath + "orbitals.txt");
+    std::vector <std::vector <double>> orbitals (36);
+    std::ifstream in (inputPath + "orbitals-so.txt");
     readMatrix(orbitals, in, false);
     in.close();
 
@@ -68,8 +68,8 @@ void theirMain()
      */
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    KohnShamInverseWithWP ksi(potTot, H, nuclei.getLevelEigenvalue(), elEigf);
-    KohnShamInverseWithWP tempKsi = ksi;
+    KohnShamInverseWithLB ksi(potTot, H);
+    KohnShamInverseWithLB tempKsi = ksi;
     //ksi.KSinverseWithLB(NDens, tempKsi);
     ksi.KSinverse(NDens, tempKsi);
     fOut << ksi.getKSPot();
@@ -82,9 +82,9 @@ void theirMain()
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-        ksi.setElementEigenvalues(nuclei.getLevelEigenvalue());
-        ksi.setElementEigenfunctions(elEigf);
-        KohnShamInverseWithWP tempKsi_ = ksi;
+        //ksi.setElementEigenvalues(nuclei.getLevelEigenvalue());
+        //ksi.setElementEigenfunctions(elEigf);
+        KohnShamInverseWithLB tempKsi_ = ksi;
         ksi.KSinverse(NDens, tempKsi_);
 
         ++loops;

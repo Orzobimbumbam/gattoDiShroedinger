@@ -5,7 +5,7 @@
 #include "initpot.h"
 
 InitialPot::~InitialPot() {}
-InitialPot::InitialPot(double m, unsigned int l, int j): m_m(m), m_anglmomentum(l), m_spin(j) {};
+InitialPot::InitialPot(double m, unsigned int l, double j): m_m(m), m_anglmomentum(l), m_spin(j) {};
 
 /*===================================================================
  * Woods-Saxon potential
@@ -13,7 +13,7 @@ InitialPot::InitialPot(double m, unsigned int l, int j): m_m(m), m_anglmomentum(
 
 WSaxPot::WSaxPot(double Rn, double a0, double m): InitialPot(m, 0, 0), m_Rn(Rn), m_a0(a0) {};
 WSaxPot::WSaxPot(double Rn, double a0, double m, unsigned int l): InitialPot(m, l, 0), m_Rn(Rn), m_a0(a0) {};
-WSaxPot::WSaxPot(double Rn, double a0, double m, unsigned int l, int j): InitialPot(m, l, j), m_Rn(Rn), m_a0(a0) {};
+WSaxPot::WSaxPot(double Rn, double a0, double m, unsigned int l, double j): InitialPot(m, l, j), m_Rn(Rn), m_a0(a0) {};
 
 double WSaxPot::potential(double x) const
 {
@@ -48,7 +48,7 @@ std::unique_ptr<InitialPot> WSaxPot::clone() const
  * HO potential
  *=================================================================*/
 
-HOPot::HOPot(double m, unsigned int l, int j): InitialPot(m, l, j) {}
+HOPot::HOPot(double m, unsigned int l, double j): InitialPot(m, l, j) {}
 HOPot::HOPot(double m, unsigned int l): InitialPot(m, l, 0) {}
 HOPot::HOPot(double m): InitialPot(m, 0, 0) {}
 
@@ -81,7 +81,7 @@ std::unique_ptr<InitialPot> HOPot::clone() const
 
 CoPot::CoPot(int Z, double m): InitialPot(m, 0, 0), m_Z(Z) {}
 CoPot::CoPot(int Z, double m, unsigned int l): InitialPot(m, l, 0), m_Z(Z) {}
-CoPot::CoPot(int Z, double m, unsigned int l, int j): InitialPot(m, l, j), m_Z(Z) {}
+CoPot::CoPot(int Z, double m, unsigned int l, double j): InitialPot(m, l, j), m_Z(Z) {}
 
 double CoPot::potential(double x) const
 {
@@ -163,7 +163,7 @@ std::unique_ptr<InitialPot> TotPot::clone() const
  * Kohn-Sham potential
  *===================================================================*/
 
-PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l, int j): InitialPot(m, l, j), m_outpot(outpot.getKSPot()) {}
+PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l, double j): InitialPot(m, l, j), m_outpot(outpot.getKSPot()) {}
 PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l): InitialPot(m, l, 0), m_outpot(outpot.getKSPot()) {}
 PotOut::PotOut(const KohnShamInverse& outpot, double m): InitialPot(m, 0, 0), m_outpot(outpot.getKSPot()) {}
 
@@ -208,7 +208,7 @@ double PotOut::interpolatedPotential(double x) const
  * Test potential
  *=================================================================*/
 
-TestPot::TestPot(double m, unsigned int l, int j): InitialPot(m, l, j) {}
+TestPot::TestPot(double m, unsigned int l, double j): InitialPot(m, l, j) {}
 TestPot::TestPot(double m, unsigned int l): InitialPot(m, l, 0) {}
 TestPot::TestPot(double m): InitialPot(m, 0, 0) {}
 

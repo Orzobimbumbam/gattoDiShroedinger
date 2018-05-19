@@ -9,7 +9,6 @@
  * Kohm-Sham inverse equations
  *========================================================================================*/
 
-KohnShamInverse::KohnShamInverse (): m_KSOutPot() {}
 KohnShamInverse::KohnShamInverse (const InitialPot& iPot, double h)
 {
     using namespace Parameters;
@@ -117,7 +116,8 @@ void KohnShamInverseWithWP::KSinverse(const NuclearDensity& density, const KohnS
     	double sumPsi = 0;
         for (unsigned int i = 0; i < m_inKSPsi.size(); ++i)
         {
-            sumPsi += m_inKSPsi[i].get().at(it.first)*m_inKSPsi[i].get().at(it.first)/m_eVal[i][3];
+            const unsigned long energyIndex = m_eVal[i].size() - 1; //retrieve last column element index per each row
+            sumPsi += m_inKSPsi[i].get().at(it.first)*m_inKSPsi[i].get().at(it.first)/m_eVal[i][energyIndex];
         }
 
     	const double newPot = ((density.getBenchmarkDensity().at(it.first) - it.second)/sumPsi) + inKSPot.getKSPot().at(it.first);

@@ -7,9 +7,9 @@
 class Eigenfunction;
 class Schroddy;
 
-typedef std::vector<std::vector<unsigned int>> OrderedOrbitalMatrix;
+typedef std::vector<std::vector<double>> OrderedOrbitalMatrix; //[Orzobimbumbam] : should be a double to allow half-integer j-values
 typedef std::vector<Eigenfunction> ElementEigenfunctions;
-typedef std::vector<unsigned int> OrderedLevelDegeneration;
+typedef std::vector<unsigned long> OrderedLevelDegeneration;
 typedef std::vector<std::vector<double>> ElementEigenValues;
 
 class Element
@@ -24,7 +24,11 @@ public:
 private:
     OrderedLevelDegeneration m_levelDegen;
     mutable ElementEigenValues m_eigenValMatrix;
-    unsigned int m_orbitalMatrixRows;
+    unsigned long m_orbitalMatrixRows;
+    
+    unsigned long _getLevelDegeneration(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex, unsigned long quantumAlphaSetSize) const;
+    
+    unsigned long _getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbitalMatrix) const;
 };
 
 void writeElementEigenfunctions(const ElementEigenfunctions& elEigf, std::ostream& outStream);
