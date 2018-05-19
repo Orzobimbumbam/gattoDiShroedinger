@@ -46,15 +46,15 @@ private:
 class KohnShamInverseWithWP : public KohnShamInverse
 {
 public:
-    KohnShamInverseWithWP(const InitialPot& iPot, double h, const ElementEigenValues& eVal, const ElementEigenfunctions& inKSPsi);
+    KohnShamInverseWithWP(const InitialPot& iPot, double h, const ElementEigenvalues& eVal, const ElementEigenfunctions& inKSPsi);
     void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot) override;
     
-    void setElementEigenvalues(const ElementEigenValues& eVal);
+    void setElementEigenvalues(const ElementEigenvalues& eVal);
     void setElementEigenfunctions(const ElementEigenfunctions& inKSPsi);
 
 private:
     KohnShamInverseWithWP();
-    ElementEigenValues m_eVal;
+    ElementEigenvalues m_eVal;
     ElementEigenfunctions m_inKSPsi;
     
     //[Orzobimbumbam] :

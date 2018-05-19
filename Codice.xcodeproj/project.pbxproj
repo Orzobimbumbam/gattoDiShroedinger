@@ -32,6 +32,7 @@
 		D3DBD298204B705B002BD241 /* initpot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FA200FF6CE00F1E661 /* initpot.cpp */; };
 		D3DBD29B204B705B002BD241 /* parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD2892049CABD002BD241 /* parameters.cpp */; };
 		D3DBD29C204B705B002BD241 /* schroddy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C601FE200FF6CE00F1E661 /* schroddy.cpp */; };
+		D3DCAD3620B0C83800CCC69E /* energytot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3DCAD3420B0C83800CCC69E /* energytot.cpp */; };
 		D3E9F77E20210BB400DAAAB7 /* kohn-sham.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +87,8 @@
 		D3DBD28F204B6B26002BD241 /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3DBD291204B6B26002BD241 /* UTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UTests.cpp; sourceTree = "<group>"; };
 		D3DBD297204B6F1B002BD241 /* Includes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Includes.h; sourceTree = "<group>"; };
+		D3DCAD3420B0C83800CCC69E /* energytot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = energytot.cpp; sourceTree = "<group>"; };
+		D3DCAD3520B0C83800CCC69E /* energytot.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = energytot.hpp; sourceTree = "<group>"; };
 		D3E9F77B20210BB400DAAAB7 /* kohn-sham.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kohn-sham.cpp"; sourceTree = "<group>"; };
 		D3E9F77C20210BB400DAAAB7 /* kohn-sham.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kohn-sham.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,6 +192,7 @@
 				D3A5871A206AD05500E61067 /* Elements */,
 				D3672BBB2053FACA0032E3CA /* Eigenvalues */,
 				D3A5871920672A0000E61067 /* DensityKS */,
+				D3DCAD3320B0C7FB00CCC69E /* TotalEnergy */,
 				D3C601F0200FF6AB00F1E661 /* Codice */,
 				D3DBD290204B6B26002BD241 /* UnitTests */,
 				D3C601EF200FF6AB00F1E661 /* Products */,
@@ -223,6 +227,15 @@
 				D3DBD291204B6B26002BD241 /* UTests.cpp */,
 			);
 			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		D3DCAD3320B0C7FB00CCC69E /* TotalEnergy */ = {
+			isa = PBXGroup;
+			children = (
+				D3DCAD3420B0C83800CCC69E /* energytot.cpp */,
+				D3DCAD3520B0C83800CCC69E /* energytot.hpp */,
+			);
+			name = TotalEnergy;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,6 +323,7 @@
 				D3CE6A5C2087D08F006A867D /* theirMain.cpp in Sources */,
 				D3CE6A64208BDEF7006A867D /* idensity.cpp in Sources */,
 				D3DBD28A2049CABD002BD241 /* parameters.cpp in Sources */,
+				D3DCAD3620B0C83800CCC69E /* energytot.cpp in Sources */,
 				D3C60203200FF6CE00F1E661 /* schroddy.cpp in Sources */,
 				D3A5871D206AD0AA00E61067 /* element.cpp in Sources */,
 				D3A5871320667DA700E61067 /* IOUtils.cpp in Sources */,

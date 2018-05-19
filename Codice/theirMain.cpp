@@ -10,7 +10,7 @@ void theirMain()
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
     std::vector <std::vector <double>> orbitals (36);
-    std::ifstream in (inputPath + "orbitals-so.txt");
+    std::ifstream in (inputPath + "orbitals.txt");
     readMatrix(orbitals, in, false);
     in.close();
 
@@ -51,7 +51,7 @@ void theirMain()
     fOut.open(outputPath + "refSogDensity.txt");
     fOut << NDens.getBenchmarkDensity();
     fOut.close();
-    ElementEigenValues initialEigenvalues = nuclei.getLevelEigenvalue();
+    ElementEigenvalues initialEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refInitialEigenvalues.txt");
     writeMatrix(initialEigenvalues, fOut, false);
     fOut.close();
@@ -96,7 +96,7 @@ void theirMain()
     fOut.open(outputPath + "refFinalDensity.txt");
     fOut << NDens.getTheoreticalDensity();;
     fOut.close();
-    ElementEigenValues finalEigenvalues = nuclei.getLevelEigenvalue();
+    ElementEigenvalues finalEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refFinalEigenvalues.txt");
     writeMatrix(finalEigenvalues, fOut, false);
     fOut.close();

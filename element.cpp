@@ -2,9 +2,12 @@
 #include "schroddy.h"
 #include "parameters.h"
 #include "eigenvalues.hpp"
+
 #include <map>
 #include <iomanip>
 #include <sstream>
+
+const unsigned long Element::maximumAlphaSetSize = 3; //[Orzobimbumbam] : nr, l, j
 
 // Filling the orbitals
 Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
@@ -31,7 +34,7 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
             m_levelDegen.push_back(degen);
     }
 
-    m_eigenValMatrix.resize(m_orbitalMatrixRows, std::vector<double>(quantumAlphaSetSize + 1));
+    m_eigenvalMatrix.resize(m_orbitalMatrixRows, std::vector<double>(quantumAlphaSetSize + 1));
 }
 
 unsigned long Element::_getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbitalMatrix) const
@@ -44,10 +47,9 @@ unsigned long Element::_getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbit
 
 unsigned long Element::_getLevelDegeneration(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex, unsigned long quantumAlphaSetSize) const
 {
-    const unsigned long maximumAlphaSetSize = 3; //[Orzobimbumbam] : nr, l, j
     unsigned long degeneration = 0;
     
-    if (quantumAlphaSetSize == 0 || quantumAlphaSetSize > maximumAlphaSetSize)
+    if (quantumAlphaSetSize == 0 || quantumAlphaSetSize > Element::maximumAlphaSetSize)
         throw std::runtime_error ("Element::_getLevelDegeneration : invalid quantum number set size.");
     
     else if (quantumAlphaSetSize == 2)
@@ -57,7 +59,7 @@ unsigned long Element::_getLevelDegeneration(const OrderedOrbitalMatrix& orbital
         degeneration = 2*orbitalMatrix[levelIndex][2] + 1;
     
     else
-        degeneration = 2*orbitalMatrix[levelIndex][1]*orbitalMatrix[levelIndex][1]; //[Orzobimbumbam] : double-check this
+        degeneration = 2*orbitalMatrix[levelIndex][1]*orbitalMatrix[levelIndex][1]; //[Orzobimbumbam] : can be excluded, however it may result in undefined behaviour
     
     return degeneration;
 }
@@ -78,7 +80,7 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
     
     for (unsigned int i = 0; i < m_orbitalMatrixRows; ++i)
     {
-    	const double j = orbitalMatrix[i][2];
+        const double j = _checkAndGetJ(orbitalMatrix, i);
         const unsigned int l = orbitalMatrix[i][1];
         const unsigned int nr = orbitalMatrix[i][0];
         
@@ -90,18 +92,44 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
         const double E = genEig.eigenvalue();
         const Eigenfunction eigf = tempSh.solveSchroddyByRK(x_in, x_fin, psi0(l), psiPrime0(l), E);
         elEigf.push_back(eigf);
-
-    	m_eigenValMatrix[i][0] = nr;
-    	m_eigenValMatrix[i][1] = l;
-    	m_eigenValMatrix[i][2] = j;
-    	m_eigenValMatrix[i][3] = E;
+        
+        const LevelTuple eigenvalMatrixRow = std::make_tuple(nr, l, j, E); // {nr, l, j, E};
+        /*
+    	m_eigenvalMatrix[i][0] = nr;
+    	m_eigenvalMatrix[i][1] = l;
+    	m_eigenvalMatrix[i][2] = j;
+    	m_eigenvalMatrix[i][3] = E;*/
+        _addTuple(eigenvalMatrixRow, i);
     }
     return elEigf;
 }
 
-ElementEigenValues Element::getLevelEigenvalue() const
+ElementEigenvalues Element::getLevelEigenvalue() const
 {
-    return m_eigenValMatrix;
+    return m_eigenvalMatrix;
+}
+
+double Element::_checkAndGetJ(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const
+{
+    if (orbitalMatrix[levelIndex].size() == Element::maximumAlphaSetSize) //check if j is in the matrix
+        return orbitalMatrix[levelIndex][2];
+    
+    else
+        return 0.0;
+}
+
+void Element::_addTuple(const LevelTuple& row, unsigned long levelIndex) const
+{
+    const unsigned long nColumns = m_eigenvalMatrix[levelIndex].size();
+    const double j = std::get<2>(row);
+    const double E = std::get<3>(row);
+    
+    m_eigenvalMatrix[levelIndex][nColumns - 1] = E;
+    m_eigenvalMatrix[levelIndex][0] = std::get<0>(row);
+    m_eigenvalMatrix[levelIndex][1] = std::get<1>(row);
+    
+    if (j != 0)
+        m_eigenvalMatrix[levelIndex][2] = j;
 }
 
 // Write all eigenfunctions to a single file

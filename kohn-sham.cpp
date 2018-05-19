@@ -33,7 +33,7 @@ KohnShamInverseWithLB::KohnShamInverseWithLB(const InitialPot& iPot, double h) :
 KohnShamInverseWithJW::KohnShamInverseWithJW() : KohnShamInverse() {}
 KohnShamInverseWithJW::KohnShamInverseWithJW(const InitialPot& iPot, double h) : KohnShamInverse(iPot, h) {}
 KohnShamInverseWithWP::KohnShamInverseWithWP() : KohnShamInverse() {}
-KohnShamInverseWithWP::KohnShamInverseWithWP(const InitialPot& iPot, double h, const ElementEigenValues& eVal, const ElementEigenfunctions& inKSPsi) :
+KohnShamInverseWithWP::KohnShamInverseWithWP(const InitialPot& iPot, double h, const ElementEigenvalues& eVal, const ElementEigenfunctions& inKSPsi) :
 		KohnShamInverse(iPot, h), m_eVal(eVal), m_inKSPsi(inKSPsi) {}
 
 /*===========================================================================================
@@ -131,7 +131,7 @@ void KohnShamInverseWithWP::setElementEigenfunctions(const ElementEigenfunctions
     m_inKSPsi = elEigf;
 }
 
-void KohnShamInverseWithWP::setElementEigenvalues(const ElementEigenValues &elEigV)
+void KohnShamInverseWithWP::setElementEigenvalues(const ElementEigenvalues &elEigV)
 {
     m_eVal = elEigV;
 }
