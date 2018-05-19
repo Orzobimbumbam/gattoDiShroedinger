@@ -6,7 +6,7 @@
 class EnergyTOT
 {
 public:
-    void energyTot (const ElementEigenfunctions& elEigf, ElementEigenValues& eigenValMatrix) override;
+    void energyTot (const ElementEigenfunctions& elEigf, const ElementEigenValues& elEigV, double h) override;
 
 private:
 

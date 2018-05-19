@@ -117,7 +117,7 @@ void KohnShamInverseWithWP::KSinverse(const NuclearDensity& density, const KohnS
     	double sumPsi = 0;
         for (unsigned int i = 0; i < m_inKSPsi.size(); ++i)
         {
-            sumPsi += m_inKSPsi[i].get().at(it.first)*m_inKSPsi[i].get().at(it.first)/m_eVal[i][2];
+            sumPsi += m_inKSPsi[i].get().at(it.first)*m_inKSPsi[i].get().at(it.first)/m_eVal[i][3];
         }
 
     	const double newPot = ((density.getBenchmarkDensity().at(it.first) - it.second)/sumPsi) + inKSPot.getKSPot().at(it.first);
