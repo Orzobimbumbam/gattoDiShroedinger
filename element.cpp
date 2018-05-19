@@ -8,20 +8,18 @@
 #include <sstream>
 
 const unsigned long Element::maximumAlphaSetSize = 3; //[Orzobimbumbam] : nr, l, j
+const unsigned long Element::minimumAlphaSetSize = 2; //[Orzobimbumbam] : nr, l
 
 // Filling the orbitals
 Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
 {
     unsigned long nuclNum = 0;
     m_orbitalMatrixRows = 0;
-    const unsigned long quantumAlphaSetSize = _getQuantumAlphaSetSize(orbitalMatrix);
+    const unsigned long quantumAlphaSetSize = _getQuantumAlphaSetSize(orbitalMatrix, 0);
+    
     for (unsigned int i = 0; i < orbitalMatrix.size(); ++i) //loop through matrix rows
     {
-        /*const unsigned int quantL = orbitalMatrix[i][1];
-        const unsigned int degen = 2*(2*quantL + 1);
-    	const unsigned int quantJ = orbitalMatrix[i][2];
-    	const unsigned int degen = 2*quantJ + 1;*/
-        const unsigned long degen = _getLevelDegeneration(orbitalMatrix, i, quantumAlphaSetSize);
+        const unsigned long degen = _getLevelDegeneration(orbitalMatrix, i);
         nuclNum += degen;
         ++m_orbitalMatrixRows;
         if (nuclNum >= Parameters::NN)
@@ -34,10 +32,10 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
             m_levelDegen.push_back(degen);
     }
 
-    m_eigenvalMatrix.resize(m_orbitalMatrixRows, std::vector<double>(quantumAlphaSetSize + 1));
+    m_eigenvalMatrix.resize(m_orbitalMatrixRows, std::vector<double>(quantumAlphaSetSize + 1)); 
 }
 
-unsigned long Element::_getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbitalMatrix) const
+unsigned long Element::_getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const
 {
     if (!orbitalMatrix.empty())
         return orbitalMatrix[0].size();
@@ -45,21 +43,22 @@ unsigned long Element::_getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbit
         return 0; // [Orzobimbumbam] : maybe should throw here?
 }
 
-unsigned long Element::_getLevelDegeneration(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex, unsigned long quantumAlphaSetSize) const
+unsigned long Element::_getLevelDegeneration(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const
 {
     unsigned long degeneration = 0;
+    const unsigned long quantumAlphaSetSize = _getQuantumAlphaSetSize(orbitalMatrix, levelIndex);
     
-    if (quantumAlphaSetSize == 0 || quantumAlphaSetSize > Element::maximumAlphaSetSize)
+    if (quantumAlphaSetSize < Element::minimumAlphaSetSize || quantumAlphaSetSize > Element::maximumAlphaSetSize)
         throw std::runtime_error ("Element::_getLevelDegeneration : invalid quantum number set size.");
     
-    else if (quantumAlphaSetSize == 2)
+    else if (quantumAlphaSetSize == Element::minimumAlphaSetSize)
         degeneration = 2*(2*orbitalMatrix[levelIndex][1] + 1);
     
-    else if (quantumAlphaSetSize == 3)
+    else if (quantumAlphaSetSize == Element::maximumAlphaSetSize)
         degeneration = 2*orbitalMatrix[levelIndex][2] + 1;
-    
+    /*
     else
-        degeneration = 2*orbitalMatrix[levelIndex][1]*orbitalMatrix[levelIndex][1]; //[Orzobimbumbam] : can be excluded, however it may result in undefined behaviour
+        degeneration = 2*orbitalMatrix[levelIndex][1]*orbitalMatrix[levelIndex][1]; //[Orzobimbumbam] : can be excluded, however it may result in undefined behaviour; should we throw?*/
     
     return degeneration;
 }
@@ -111,7 +110,7 @@ ElementEigenvalues Element::getLevelEigenvalue() const
 
 double Element::_checkAndGetJ(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const
 {
-    if (orbitalMatrix[levelIndex].size() == Element::maximumAlphaSetSize) //check if j is in the matrix
+    if (_getQuantumAlphaSetSize(orbitalMatrix, levelIndex) == Element::maximumAlphaSetSize) //check if j is in the orbitals matrix
         return orbitalMatrix[levelIndex][2];
     
     else

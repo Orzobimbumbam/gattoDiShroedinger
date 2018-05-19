@@ -25,14 +25,15 @@ public:
     
 private:
     const static unsigned long maximumAlphaSetSize;
+    const static unsigned long minimumAlphaSetSize;
     
     OrderedLevelDegeneration m_levelDegen;
     mutable ElementEigenvalues m_eigenvalMatrix;
     unsigned long m_orbitalMatrixRows;
     
-    unsigned long _getLevelDegeneration(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex, unsigned long quantumAlphaSetSize) const;
+    unsigned long _getLevelDegeneration(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const;
     
-    unsigned long _getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbitalMatrix) const;
+    unsigned long _getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const;
     double _checkAndGetJ(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const;
     void _addTuple(const LevelTuple& row, unsigned long levelIndex) const;
 };

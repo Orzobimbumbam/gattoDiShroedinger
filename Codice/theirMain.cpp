@@ -10,7 +10,7 @@ void theirMain()
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
     std::vector <std::vector <double>> orbitals (36);
-    std::ifstream in (inputPath + "orbitals.txt");
+    std::ifstream in (inputPath + "orbitals-so.txt");
     readMatrix(orbitals, in, false);
     in.close();
 
