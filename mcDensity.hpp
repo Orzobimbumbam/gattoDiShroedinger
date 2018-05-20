@@ -14,7 +14,7 @@ public:
     Density getBenchmarkDensity() const override;
     
 private:
-    KeysArray getMatchingKeys() const;
+    KeysArray _getMatchingKeys() const;
 };
 
 #endif /* mcDensity_hpp */

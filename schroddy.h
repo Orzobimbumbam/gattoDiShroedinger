@@ -31,7 +31,7 @@ private:
     std::unique_ptr<InitialPot> m_pot;
     mutable double m_h;
     
-    double spinOrbitInteraction(double x) const;
+    double _spinOrbitInteraction(double x) const;
 };
 
 

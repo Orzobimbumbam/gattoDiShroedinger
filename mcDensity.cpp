@@ -2,7 +2,7 @@
 
 void NuclearDensityWithMC::benchmarkDensity(const std::vector<std::vector<double>>& mcDensity, double h)//h is optional here
 {
-    KeysArray arrayOfKeys = getMatchingKeys();
+    KeysArray arrayOfKeys = _getMatchingKeys();
     const long NRows = mcDensity.size();
     if (arrayOfKeys.size() == NRows)
     {
@@ -20,7 +20,7 @@ Density NuclearDensityWithMC::getBenchmarkDensity() const
 }
 
 // Load keys vector (radius values) from theoretical density map
-KeysArray NuclearDensityWithMC::getMatchingKeys() const
+KeysArray NuclearDensityWithMC::_getMatchingKeys() const
 {
     Density thDens = getTheoreticalDensity();
     KeysArray arrayOfKeys;

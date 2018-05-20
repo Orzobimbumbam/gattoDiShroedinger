@@ -71,7 +71,7 @@ public:
     
 private:
     GenericEigenvalues();
-    double shootingMethod(double E1, double E2, unsigned int parity) const;
+    double _shootingMethod(double E1, double E2, unsigned int nState) const;
     
     const Schroddy m_sh;
     unsigned int m_nState, m_lState;

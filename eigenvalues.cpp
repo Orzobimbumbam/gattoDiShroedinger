@@ -48,7 +48,7 @@ GenericEigenvalues::GenericEigenvalues (const Schroddy& sh, unsigned int nState,
 m_sh(sh), m_nState(nState), m_lState(lState) {}
 
 // Shooting method implementation
-double GenericEigenvalues::shootingMethod(double E1, double E2, unsigned int nState) const
+double GenericEigenvalues::_shootingMethod(double E1, double E2, unsigned int nState) const
 {
 
     const double error = 1e-8;
@@ -104,7 +104,7 @@ double GenericEigenvalues::eigenvalue() const //this must return a double..
     double E1 = TrialEigenvalues::getEigenval1();
     for (unsigned int i = 1; i <= m_nState; ++i)
     {
-        E1 = shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
+        E1 = _shootingMethod(E1, TrialEigenvalues::getEigenval2(), i);
         m_ELev[i] = E1;
     }
     return E1;

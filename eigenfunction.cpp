@@ -7,7 +7,7 @@ double& Eigenfunction::operator()(double key)
     return m_psi[key];
 }
 
-void Eigenfunction::swap(Eigenfunction& rhsEigenfunction)
+void Eigenfunction::_swap(Eigenfunction& rhsEigenfunction)
 {
     std::swap(m_psi, rhsEigenfunction.m_psi);
 }
@@ -15,7 +15,7 @@ void Eigenfunction::swap(Eigenfunction& rhsEigenfunction)
 Eigenfunction& Eigenfunction::operator=(const Eigenfunction& rhsEigenfunction)
 {
     Eigenfunction tempEigenfunction(rhsEigenfunction);
-    swap(tempEigenfunction);
+    _swap(tempEigenfunction);
     return *this;
 }
 

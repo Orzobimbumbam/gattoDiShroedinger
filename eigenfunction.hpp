@@ -18,7 +18,7 @@ public:
     Psi get() const;
     
 private:
-    void swap(Eigenfunction& rhsEigenfunction);
+    void _swap(Eigenfunction& rhsEigenfunction);
     Psi m_psi;
 };
 
