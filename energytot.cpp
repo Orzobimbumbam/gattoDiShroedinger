@@ -47,8 +47,16 @@ void laplacian(const ElementEigenfunctions& elEigf, double h) const
 		for (; it != elEigf[i].get().end(); ++it)
 		{
 			abs1 = std::abs(elEigf[i].get().at(it -> first))*std::abs(elEigf[i].get().at(it -> first));
-			abs2 = std::abs(elEigf[i].get().at(it -> first + h))*std::abs(elEigf[i].get().at(it -> first + h));
-			abs3 = std::abs(elEigf[i].get().at(it -> first - h))*std::abs(elEigf[i].get().at(it -> first - h));
+
+			if(it -> first + h > elEigf[i].get().end() -> first)
+				abs2 = std::abs(elEigf[i].get().end() -> second)*std::abs(elEigf[i].get().end() -> second);
+			else
+				abs2 = std::abs(elEigf[i].get().at(it -> first + h))*std::abs(elEigf[i].get().at(it -> first + h));
+
+			if(it -> first - h < elEigf[i].get().begin() -> first)
+				abs3 = std::abs(elEigf[i].get().begin() -> second)*std::abs(elEigf[i].get().begin() -> second);
+			else
+				abs3 = std::abs(elEigf[i].get().at(it -> first - h))*std::abs(elEigf[i].get().at(it -> first - h));
 
 			laplac = (abs2 + abs3 -2*abs1)/(h*h);
 			std::pair<double, double> elem = {it -> first, laplac};
