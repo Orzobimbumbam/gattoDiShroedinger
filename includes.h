@@ -14,6 +14,7 @@
 #include "eigenfunction.hpp"
 #include "IOUtils.hpp"
 #include "element.hpp"
+#include "energytot.hpp"
 
 
 #endif /* Includes_h */

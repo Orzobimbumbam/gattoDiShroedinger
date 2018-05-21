@@ -10,8 +10,8 @@ double psiPrime0(unsigned int l);
 namespace Parameters //[Orzobimbumbam] this namespace with global variables is a bad idea and should be removed
 {
 
-const int NN = 40;									// Neutrons number
-const int NP = 0;									// Protons number
+const int NN = 20;									// Neutrons number
+const int NP = 20;									// Protons number
 
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
@@ -36,7 +36,7 @@ const double hbar_omega = 41./pow(A,(1./3.));		// [MeV]
 //const double x_fin = 1.97*Rn;						// Final radius value [fm]
 
 const double x_in = 1e-6;							// Initial radius value [fm]
-const double x_fin = 2*Rn;							// Final radius value [fm]
+const double x_fin = 3*Rn;							// Final radius value [fm]
 
 
 // Other parameters

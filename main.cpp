@@ -18,8 +18,8 @@ int main(int argc, const char * argv[])
     clock_t start = clock(); // Start time
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
-    std::vector <std::vector <unsigned int>> orbitals (36);
-    std::ifstream in (inputPath + "orbitals.txt");
+    std::vector <std::vector <double>> orbitals (36);
+    std::ifstream in (inputPath + "orbitals-so.txt");
     readMatrix(orbitals, in, false);
     in.close();
 
@@ -68,22 +68,26 @@ int main(int argc, const char * argv[])
     fOut.open(outputPath + "refSogDensity.txt");
     fOut << NDens.getBenchmarkDensity();
     fOut.close();
-    ElementEigenValues initialEigenvalues = nuclei.getLevelEigenvalue();
+    ElementEigenvalues initialEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refInitialEigenvalues.txt");
     writeMatrix(initialEigenvalues, fOut, false);
     fOut.close();
     fOut.open(outputPath + "refInitialEigenfunctions.txt");
     writeElementEigenfunctions(elEigf, fOut);
     fOut.close();
+    EnergyTOT totalenergy;
+    fOut.open(outputPath + "refTotalEnergy.txt");
+    fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue(), H);
+    fOut.close();
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    /*KohnShamInverseWithLB ksi(potTot, H);
-    KohnShamInverseWithLB tempKsi = ksi;*/
+    KohnShamInverseWithLB ksi(potTot, H);
+    KohnShamInverseWithLB tempKsi = ksi;
     /*KohnShamInverseWithJW ksi(potTot, H);
     KohnShamInverseWithJW tempKsi = ksi;*/
-    KohnShamInverseWithWP ksi(potTot, H, nuclei.getLevelEigenvalue(), elEigf);
-    KohnShamInverseWithWP tempKsi = ksi;
+    /*KohnShamInverseWithWP ksi(potTot, H, nuclei.getLevelEigenvalue(), elEigf);
+    KohnShamInverseWithWP tempKsi = ksi;*/
     ksi.KSinverse(NDens, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
@@ -95,11 +99,11 @@ int main(int argc, const char * argv[])
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
         NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-        //KohnShamInverseWithLB tempKsi_ = ksi;
+        KohnShamInverseWithLB tempKsi_ = ksi;
         //KohnShamInverseWithJW tempKsi_ = ksi;
-        ksi.setElementEigenvalues(nuclei.getLevelEigenvalue());
+        /*ksi.setElementEigenvalues(nuclei.getLevelEigenvalue());
         ksi.setElementEigenfunctions(elEigf);
-        KohnShamInverseWithWP tempKsi_ = ksi;
+        KohnShamInverseWithWP tempKsi_ = ksi;*/
         ksi.KSinverse(NDens, tempKsi_);
 
         ++loops;
@@ -108,10 +112,14 @@ int main(int argc, const char * argv[])
             << NDens.epsilon() << " after " << loops << " iterations. " << std::endl;
     }
 
+    /*EnergyTOT totalenergy;
+    fOut.open(outputPath + "refTotalEnergy.txt");
+    fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue(), H);
+    fOut.close();*/
     fOut.open(outputPath + "refFinalDensity.txt");
     fOut << NDens.getTheoreticalDensity();;
     fOut.close();
-    ElementEigenValues finalEigenvalues = nuclei.getLevelEigenvalue();
+    ElementEigenvalues finalEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refFinalEigenvalues.txt");
     writeMatrix(finalEigenvalues, fOut, false);
     fOut.close();
