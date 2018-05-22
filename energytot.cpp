@@ -51,7 +51,7 @@ double EnergyTOT::energyTot(const ElementEigenfunctions& elEigf, const ElementEi
 
 		for (; it != end; ++it)
 		{
-			tjj += _laplacian(p) + _laplacian(it)*h/2;
+			tjj += p-> second*_laplacian(p) + it -> second*_laplacian(it)*h/2;
 			++p;
 		}
 
