@@ -37,6 +37,7 @@ private:
     void _addTuple(const LevelTuple& row, unsigned long levelIndex) const;
 };
 
+//Global function : could be moved to IOUtils
 void writeElementEigenfunctions(const ElementEigenfunctions& elEigf, std::ostream& outStream);
 
 #endif /* element_hpp */

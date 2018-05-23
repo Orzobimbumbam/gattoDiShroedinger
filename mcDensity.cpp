@@ -2,7 +2,7 @@
 
 void NuclearDensityWithMC::benchmarkDensity(const std::vector<std::vector<double>>& mcDensity, double h)//h is optional here
 {
-    KeysArray arrayOfKeys = _getMatchingKeys();
+    const KeysArray arrayOfKeys = _getMatchingKeys();
     const long NRows = mcDensity.size();
     if (arrayOfKeys.size() == NRows)
     {

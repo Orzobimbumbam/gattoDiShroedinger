@@ -41,12 +41,10 @@ double EnergyTOT::energyTot(const ElementEigenfunctions& elEigf, const ElementEi
 	for (unsigned int i = 0; i < elEigf.size(); ++i)
 	{
 		std::map<double, double>::const_iterator it = ++elEigf[i].get().begin();
-		//++it;
 		std::map<double, double>::const_iterator p = it;
 		std::map<double, double>::const_iterator end = --elEigf[i].get().end();
 		double tjj = 0;
 
-		//--end;
 		++it;
 
 		for (; it != end; ++it)
