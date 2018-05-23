@@ -122,8 +122,7 @@ double Schroddy::_spinOrbitInteraction(double x) const
         
         const double V0 = 51 + sign*33.0*(Parameters::NN - Parameters::NP)/Parameters::A;
         const double VLS = 0.44*V0;
-        const double factor1 = Parameters::hbar*(VLS*Parameters::R0*Parameters::R0)/(2*x); //[Orzobimbumbam] : [Brando-code] you may want to review the constants here; without a hbar factor no eigenvalues are returned by the shooting method
-        
+        const double factor1 = /*Parameters::hbar*Parameters::hbar*/(VLS*Parameters::R0*Parameters::R0)/(2*x);
         const double exponential = exp((x-Parameters::Rn)/Parameters::a0);
         const double factor2 = exponential/(Parameters::a0*(exponential + 1)*(exponential + 1));
     

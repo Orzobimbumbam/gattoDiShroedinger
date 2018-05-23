@@ -23,7 +23,7 @@ int main(int argc, const char * argv[])
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "40Ca.txt");
+    in.open(inputPath + "16O.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
@@ -75,10 +75,10 @@ int main(int argc, const char * argv[])
     fOut.open(outputPath + "refInitialEigenfunctions.txt");
     writeElementEigenfunctions(elEigf, fOut);
     fOut.close();
-    EnergyTOT totalenergy;
+    /*EnergyTOT totalenergy;
     fOut.open(outputPath + "refTotalEnergy.txt");
     fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue(), H);
-    fOut.close();
+    fOut.close();*/
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
@@ -112,10 +112,10 @@ int main(int argc, const char * argv[])
             << NDens.epsilon() << " after " << loops << " iterations. " << std::endl;
     }
 
-    /*EnergyTOT totalenergy;
+    EnergyTOT totalenergy;
     fOut.open(outputPath + "refTotalEnergy.txt");
     fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue(), H);
-    fOut.close();*/
+    fOut.close();
     fOut.open(outputPath + "refFinalDensity.txt");
     fOut << NDens.getTheoreticalDensity();;
     fOut.close();
