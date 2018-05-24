@@ -1,24 +1,58 @@
 #pragma once
 
 #include<cmath>
+#include <string>
 
 
 double psi0(unsigned int l);
 double psiPrime0(unsigned int l);
 
-
-namespace Parameters //[Orzobimbumbam] this namespace with global variables is a bad idea and should be removed
+namespace Parameters
 {
 
-const int NN = 8;									// Neutrons number
-const int NP = 8;									// Protons number
+class ElementConstants
+{
+public:
+    static void initialiseElementConstants(const std::string& fileName, const char delimiter = '_');
+    
+    static unsigned int NN() {return m_instancePtr -> m_NN;};
+    static unsigned int NP() {return m_instancePtr -> m_NP;};
+    static unsigned int A() {return m_instancePtr -> m_NP + m_instancePtr -> m_NN;};
+    static double Rn() {return m_instancePtr -> m_R0;};
+    static double hBarOmega() {return m_instancePtr -> m_hBarOmega;};
+    static std::string elementName() {return m_instancePtr -> m_elementName;};
+    
+    
+private:
+    ElementConstants() = default;
+    ElementConstants(const std::string& fileName, const char delimiter = '_');
+    
+    static ElementConstants* m_instancePtr;
+    
+    unsigned int m_NN, m_NP;
+    std::string m_elementName;
+    double m_R0, m_hBarOmega;
+    
+    std::string _extractFileNameKey(const std::string& fileName);
+    void _initialiseParameters(const std::string& fileName, const char delimiter = '_');
+};
+
+//void initialiseElementConstants(const std::string& fileName, const char delimiter = '_');
+//unsigned int _NN();
+//unsigned int _NP();
+//unsigned int _A();
+
+    
+    const unsigned int NN=0;// = _NN();									// Neutrons number
+    const unsigned int NP=0;// = _NP();                                  // Protons number
+    const unsigned int A= 0;// = _A();
 
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]
 const double mp = 938.28;							// Proton mass in mpc^2 [MeV]
-const int A = NN + NP; 								// Mass number
-const double R0= 1.27; 								// [fm]
+//const int A = NN + NP; 								// Mass number
+const double R0 = 1.27; 								// [fm]
 
 // Wood-Saxon potential parameters
 const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]

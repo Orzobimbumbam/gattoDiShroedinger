@@ -4,8 +4,8 @@ void theirMain()
 {
     const double H = 0.1;
     //mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
-    std::string inputPath = "../Inputs/";
-    std::string outputPath = "Outputs/";
+    const std::string inputPath = "../Inputs/";
+    const std::string outputPath = "Outputs/";
     clock_t start = clock(); // Start time
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
@@ -14,6 +14,7 @@ void theirMain()
     readMatrix(orbitals, in, false);
     in.close();
 
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca");
     in.open(inputPath + "40Ca.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);

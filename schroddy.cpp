@@ -107,6 +107,7 @@ const Eigenfunction Schroddy::solveSchroddyByRK(double x0, double x1, double psi
 // Spin-orbit interaction
 double Schroddy::_spinOrbitInteraction(double x) const
 {
+    using namespace Parameters;
     if (m_pot -> getJ() != 0)
     {
         if (x == 0)
@@ -117,13 +118,13 @@ double Schroddy::_spinOrbitInteraction(double x) const
         const double s = m_pot -> getJ() - m_pot -> getL();
     
         int sign = -1;
-        if (Parameters::NN == 0)
+        if (ElementConstants::NN() == 0)
             sign *= -1;
         
-        const double V0 = 51 + sign*33.0*(Parameters::NN - Parameters::NP)/Parameters::A;
+        const double V0 = 51 + sign*33.0*(ElementConstants::NN() - ElementConstants::NP())/ElementConstants::A();
         const double VLS = 0.44*V0;
         const double factor1 = /*Parameters::hbar*Parameters::hbar*/(VLS*Parameters::R0*Parameters::R0)/(2*x);
-        const double exponential = exp((x-Parameters::Rn)/Parameters::a0);
+        const double exponential = exp((x - ElementConstants::Rn())/Parameters::a0);
         const double factor2 = exponential/(Parameters::a0*(exponential + 1)*(exponential + 1));
     
         return -factor1*factor2*(j*(j + 1) - s*(s + 1) - l*(l + 1));

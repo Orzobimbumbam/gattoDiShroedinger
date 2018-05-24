@@ -22,9 +22,9 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         const unsigned long degen = _getLevelDegeneration(orbitalMatrix, i);
         nuclNum += degen;
         ++m_orbitalMatrixRows;
-        if (nuclNum >= Parameters::NN)
+        if (nuclNum >= Parameters::ElementConstants::NN())
         {
-            const unsigned long outerShellDegen = Parameters::NN - (nuclNum - degen); // number of nucleons in outer shell
+            const unsigned long outerShellDegen = Parameters::ElementConstants::NN() - (nuclNum - degen); // number of nucleons in outer shell
             m_levelDegen.push_back(outerShellDegen);
             break;
         }

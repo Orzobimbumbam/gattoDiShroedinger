@@ -36,6 +36,8 @@ std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery&
 
 void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<double>>& QRparameters, double h)
 {
+    using namespace Parameters;
+    
     const double alpha = sqrt(2./3.)*Parameters::rp;
 	const double gamma = sqrt(2./3.)*Parameters::rms;
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
@@ -49,7 +51,7 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
 		double c3 = 0;
 		for (unsigned int i = 0; i < QRparameters.size(); ++i)
 		{
-            const double Ai = (Parameters::NN*QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
+            const double Ai = (ElementConstants::NN()*QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
             const double exp1 = exp((-1)*((radiusx - QRparameters[i][0])/beta)*((radiusx - QRparameters[i][0])/beta));
             const double exp2 = exp((-1)*((radiusx + QRparameters[i][0])/beta)*((radiusx + QRparameters[i][0])/beta));
             const double c2p1 = ((radiusx + QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma));
@@ -75,7 +77,7 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
         ++p;
     }
 
-	double norm = Parameters::NN/scalar/4/Parameters::PI;
+	double norm = ElementConstants::NN()/scalar/4/Parameters::PI;
 
     for (auto& it : m_benchmarkDensity)
     {
