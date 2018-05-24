@@ -11,7 +11,7 @@ Eigenvalues::~Eigenvalues() {}
 HarmonicEigenvalues::HarmonicEigenvalues(unsigned int nr, int l): m_nr(nr), m_l(l) {}
 double HarmonicEigenvalues::eigenvalue() const
 {
-    return Parameters::hbar_omega*(2*(m_nr-1)+m_l+(3/2));
+    return Parameters::ElementConstants::hBarOmega()*(2*(m_nr-1)+m_l+(3/2));
 }
 
 std::unique_ptr<Eigenvalues> HarmonicEigenvalues::clone() const
@@ -58,8 +58,7 @@ double GenericEigenvalues::_shootingMethod(double E1, double E2, unsigned int nS
     unsigned int nodes = 0;
     while (true)
     {
-
-        m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+        m_sh.solveSchroddyByRK(Parameters::IntegrationParameters::x0(), Parameters::IntegrationParameters::x1(), psi0(lState),
                                           psiPrime0(lState), E2 , psiArray);
 
         nodes = 0;
@@ -83,7 +82,7 @@ double GenericEigenvalues::_shootingMethod(double E1, double E2, unsigned int nS
     double midE = (E1 + E2)/2.;
     while (std::abs(E2 - E1) > error)
     {
-        double sMid = m_sh.solveSchroddyByRK(Parameters::x_in, Parameters::x_fin, psi0(lState),
+        double sMid = m_sh.solveSchroddyByRK(Parameters::IntegrationParameters::x0(), Parameters::IntegrationParameters::x1(), psi0(lState),
                                              psiPrime0(lState), midE , psiArray);
 
         if (endPointSign*sMid > 0)

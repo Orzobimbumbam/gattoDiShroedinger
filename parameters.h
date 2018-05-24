@@ -37,15 +37,32 @@ private:
     void _initialiseParameters(const std::string& fileName, const char delimiter = '_');
 };
 
-//void initialiseElementConstants(const std::string& fileName, const char delimiter = '_');
-//unsigned int _NN();
-//unsigned int _NP();
-//unsigned int _A();
+    
+
+class IntegrationParameters
+{
+public:
+    static void initialiseIntegrationParameters(double x0, double x1); //[Orzobimbumbam] : h should be here too
+    static double x0() {return m_instancePtr -> m_x0;};
+    static double x1() {return m_instancePtr -> m_x1;};
+    
+private:
+    IntegrationParameters() = default;
+    IntegrationParameters(double x0, double x1);
+    
+    static IntegrationParameters* m_instancePtr;
+    
+    double m_x0, m_x1;
+};
+    
+    
+    
+    
 
     
-    const unsigned int NN=0;// = _NN();									// Neutrons number
-    const unsigned int NP=0;// = _NP();                                  // Protons number
-    const unsigned int A= 0;// = _A();
+    //const unsigned int NN=0;// = _NN();									// Neutrons number
+    //const unsigned int NP=0;// = _NP();                                  // Protons number
+    //const unsigned int A= 0;// = _A();
 
 //const double mp= 1.6726219e-27;					// Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
@@ -55,12 +72,12 @@ const double mp = 938.28;							// Proton mass in mpc^2 [MeV]
 const double R0 = 1.27; 								// [fm]
 
 // Wood-Saxon potential parameters
-const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
-const double a0 = 0.67;								// Nuclear surface thickness [fm]
+//const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
+//const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
-const double hbar_omega = 41./pow(A,(1./3.));		// [MeV]
+//const double hbar_omega = 41./pow(A,(1./3.));		// [MeV]
 //const double k = 1e-24;
 
 

@@ -53,10 +53,21 @@ void ElementConstants::initialiseElementConstants(const std::string& fileName, c
 {
     if (ElementConstants::m_instancePtr == nullptr)
     {
-        //ElementConstants::m_instance = true;
         ElementConstants::m_instancePtr = new ElementConstants(fileName, delimiter);
     }
 }
+
+
+IntegrationParameters* IntegrationParameters::m_instancePtr = nullptr;
+IntegrationParameters::IntegrationParameters(double x0, double x1) : m_x0(x0), m_x1(x1) {}
+
+void IntegrationParameters::initialiseIntegrationParameters(double x0, double x1)
+{
+    if (IntegrationParameters::m_instancePtr == nullptr)
+        IntegrationParameters::m_instancePtr = new IntegrationParameters(x0, x1);
+}
+
+
 /*
 unsigned int Parameters::NN = _NN();
 unsigned int Parameters::NP = _NP();
@@ -64,12 +75,12 @@ unsigned int Parameters::A = _A();*/
 
 double psi0(unsigned int l)
 {
-    return pow(Parameters::x_in, l + 1);
+    return pow(Parameters::IntegrationParameters::x0(), l + 1);
 }
 
 double psiPrime0(unsigned int l)
 {
 	/*if (l == 0) return 0.;
-	else*/ return (l + 1)*pow(Parameters::x_in, l);
+	else*/ return (l + 1)*pow(Parameters::IntegrationParameters::x0(), l);
 }
 

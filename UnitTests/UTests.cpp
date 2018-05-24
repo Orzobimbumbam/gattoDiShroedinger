@@ -24,6 +24,8 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 typedef std::vector<double> PsiArray;
 
+//Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, <#double x1#>)
+
 //NB. set Rn = 5*Rn in parameters.h before running the test cases
 BOOST_AUTO_TEST_SUITE(Calc)
 

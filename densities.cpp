@@ -42,8 +42,8 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
 	const double gamma = sqrt(2./3.)*Parameters::rms;
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
 
-	const unsigned long NSteps = static_cast<unsigned long>(std::abs(Parameters::x_fin - Parameters::x_in)/h);
-	double radiusx = Parameters::x_in;
+	const unsigned long NSteps = static_cast<unsigned long>(std::abs(IntegrationParameters::x1() - IntegrationParameters::x0())/h);
+	double radiusx = IntegrationParameters::x0();
 	for (unsigned int r = 0 ; r < NSteps + 1; ++r)
 	{
         const double c1 = 1./(2*pow(Parameters::PI, 3./2.)*radiusx);

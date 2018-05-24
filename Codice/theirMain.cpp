@@ -14,7 +14,13 @@ void theirMain()
     readMatrix(orbitals, in, false);
     in.close();
 
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca");
+    //Dynamically initialise element and integration constants
+    std::string fileName = "20_20_Ca.txt";
+    Parameters::ElementConstants::initialiseElementConstants(fileName);
+    const double xin = 1e-6;
+    const double xfin = 3*Parameters::ElementConstants::Rn();
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
+    
     in.open(inputPath + "40Ca.txt");
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
@@ -29,8 +35,8 @@ void theirMain()
     //const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
-    const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
-    double rad = Parameters::x_in;
+    const unsigned long NSteps = std::abs(Parameters::IntegrationParameters::x1() - Parameters::IntegrationParameters::x0())/H;
+    double rad = Parameters::IntegrationParameters::x1();
     for (int i = 0; i < NSteps +1; ++i)
     {
  		inPotential[rad] = potTot.potential(rad);
