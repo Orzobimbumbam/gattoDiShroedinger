@@ -42,9 +42,25 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
 
 std::string ElementConstants::_extractFileNameKey(const std::string& fileName)
 {
+    const char delimiter = '.';
     std::stringstream ss(fileName);
     std::string fileNameKey;
-    std::getline(ss, fileNameKey, '.');
+    do
+    {
+        std::string token;
+        std::getline(ss, token, delimiter);
+        
+        if(ss.peek() != EOF)
+            fileNameKey += (token + delimiter);
+        else
+        {
+            fileNameKey.pop_back();
+            break;
+        }
+        
+    } while (true);
+    
+    //std::getline(ss, fileNameKey, '.');
     
     return fileNameKey;
 }

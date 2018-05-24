@@ -15,7 +15,7 @@ void theirMain()
     in.close();
 
     //Dynamically initialise element constants and integration parameters
-    std::string fileName = "20_20_Ca.txt";
+    std::string fileName = "20_20_Ca_3.22.txt";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
