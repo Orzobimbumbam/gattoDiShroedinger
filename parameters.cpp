@@ -68,11 +68,7 @@ void IntegrationParameters::initialiseIntegrationParameters(double x0, double x1
 }
 
 
-/*
-unsigned int Parameters::NN = _NN();
-unsigned int Parameters::NP = _NP();
-unsigned int Parameters::A = _A();*/
-
+//other global functions
 double psi0(unsigned int l)
 {
     return pow(Parameters::IntegrationParameters::x0(), l + 1);

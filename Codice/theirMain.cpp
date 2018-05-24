@@ -14,7 +14,7 @@ void theirMain()
     readMatrix(orbitals, in, false);
     in.close();
 
-    //Dynamically initialise element and integration constants
+    //Dynamically initialise element constants and integration parameters
     std::string fileName = "20_20_Ca.txt";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double xin = 1e-6;
@@ -31,7 +31,7 @@ void theirMain()
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
     //const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
-    const HOPot potTot(Parameters::mn); //default is ground state
+    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mn); //default is ground state
     //const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
@@ -99,7 +99,11 @@ void theirMain()
             std::cerr << "Convergence distance: " << NDens.distanceToConvergence() << " with epsilon "
             << NDens.epsilon() << " after " << loops << " iterations. " << std::endl;
     }
-
+    
+    EnergyTOT totalenergy;
+    fOut.open(outputPath + "refTotalEnergy.txt");
+    fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue());
+    fOut.close();
     fOut.open(outputPath + "refFinalDensity.txt");
     fOut << NDens.getTheoreticalDensity();;
     fOut.close();
