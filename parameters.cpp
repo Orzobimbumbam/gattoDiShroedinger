@@ -36,7 +36,7 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
         throw std::runtime_error("initialiseParameters : invalid file name keys.");
     
     const unsigned int A = m_NN + m_NP;
-    m_R0 = R0*pow(A,(1./3.));
+    m_Rn = R0*pow(A,(1./3.));
     m_hBarOmega = 41./pow(A,(1./3.));
 }
 

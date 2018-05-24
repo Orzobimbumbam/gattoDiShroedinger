@@ -24,7 +24,6 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 typedef std::vector<double> PsiArray;
 
-//Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, <#double x1#>)
 
 //NB. set Rn = 5*Rn in parameters.h before running the test cases
 BOOST_AUTO_TEST_SUITE(Calc)
@@ -32,13 +31,14 @@ BOOST_AUTO_TEST_SUITE(Calc)
 BOOST_AUTO_TEST_CASE(shootingWS10, *utf::tolerance(0.1))
 {
     const double H = 0.1;
-    //int mass_num=Parameters::A;
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     const unsigned int k = 1;
     const unsigned int l_mom=0;
     //const unsigned int n = 2*(k-1) + l_mom;
     
-    WSaxPot pot (Parameters::Rn, Parameters::a0, Parameters::mn, l_mom);
+    WSaxPot pot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     GenericEigenvalues GenEig(Sfunc, k, l_mom);
     
@@ -49,7 +49,8 @@ BOOST_AUTO_TEST_CASE(shootingWS10, *utf::tolerance(0.1))
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
     const double H = 0.1;
-    //int mass_num=Parameters::A;
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     const unsigned int k = 1;
     const unsigned int l_mom=0;
@@ -59,14 +60,15 @@ BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
     Schroddy Sfunc (pot, H);
     GenericEigenvalues GenEig(Sfunc, k, l_mom);
     //std::cerr << GenEig.eigenvalue() << std::endl;
-    BOOST_TEST(GenEig.eigenvalue() == 3./2.*Parameters::hbar_omega);
+    BOOST_TEST(GenEig.eigenvalue() == 3./2.*Parameters::ElementConstants::hBarOmega());
     
 }
 
 BOOST_AUTO_TEST_CASE(shooting_HO11, *utf::tolerance(0.1))
 {
     const double H = 0.01;
-    //int mass_num=Parameters::A;
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     const unsigned int k = 1;
     const unsigned int l_mom = 1;
@@ -76,14 +78,15 @@ BOOST_AUTO_TEST_CASE(shooting_HO11, *utf::tolerance(0.1))
     Schroddy Sfunc (pot, H);
     GenericEigenvalues GenEig(Sfunc, k, l_mom);
     //std::cerr << GenEig.eigenvalue() << std::endl;
-    BOOST_TEST(GenEig.eigenvalue() == 5./2.*Parameters::hbar_omega);
+    BOOST_TEST(GenEig.eigenvalue() == 5./2.*Parameters::ElementConstants::hBarOmega());
     
 }
 
 BOOST_AUTO_TEST_CASE(shooting_HO2012, *utf::tolerance(0.1))
 {
     const double H = 0.001;
-    //int mass_num=Parameters::A;
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     unsigned int k = 2;
     unsigned int l_mom = 0;
@@ -93,7 +96,7 @@ BOOST_AUTO_TEST_CASE(shooting_HO2012, *utf::tolerance(0.1))
     Schroddy Sfunc10 (pot10, H);
     GenericEigenvalues GenEig10(Sfunc10, k, l_mom);
     
-    BOOST_TEST(GenEig10.eigenvalue() == 7./2.*Parameters::hbar_omega);
+    BOOST_TEST(GenEig10.eigenvalue() == 7./2.*Parameters::ElementConstants::hBarOmega());
     
     k = 1;
     l_mom = 2;
@@ -103,13 +106,14 @@ BOOST_AUTO_TEST_CASE(shooting_HO2012, *utf::tolerance(0.1))
     Schroddy Sfunc02 (pot02, H);
     GenericEigenvalues GenEig02(Sfunc02, k, l_mom);
     
-    BOOST_TEST(GenEig02.eigenvalue() == 7./2.*Parameters::hbar_omega);
+    BOOST_TEST(GenEig02.eigenvalue() == 7./2.*Parameters::ElementConstants::hBarOmega());
 }
 
 BOOST_AUTO_TEST_CASE(shootingHO_2113, *utf::tolerance(0.1))
 {
     const double H = 0.001;
-    //int mass_num=Parameters::A;
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     unsigned int k = 2;
     unsigned int l_mom = 1;
@@ -119,7 +123,7 @@ BOOST_AUTO_TEST_CASE(shootingHO_2113, *utf::tolerance(0.1))
     Schroddy Sfunc21 (pot21, H);
     GenericEigenvalues GenEig21(Sfunc21, k, l_mom);
     
-    BOOST_TEST(GenEig21.eigenvalue() == 9./2.*Parameters::hbar_omega);
+    BOOST_TEST(GenEig21.eigenvalue() == 9./2.*Parameters::ElementConstants::hBarOmega());
     
     k = 1;
     l_mom = 3;
@@ -129,13 +133,14 @@ BOOST_AUTO_TEST_CASE(shootingHO_2113, *utf::tolerance(0.1))
     Schroddy Sfunc13 (pot13, H);
     GenericEigenvalues GenEig13(Sfunc13, k, l_mom);
     
-    BOOST_TEST(GenEig13.eigenvalue() == 9./2.*Parameters::hbar_omega);
+    BOOST_TEST(GenEig13.eigenvalue() == 9./2.*Parameters::ElementConstants::hBarOmega());
 }
 
 BOOST_AUTO_TEST_CASE(shooting_HORandom, *utf::tolerance(0.1))
 {
     const double H = 0.1;
-    //int mass_num=Parameters::A;
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     unsigned int N = 10;
     for (unsigned int i = 0; i < N; ++i)
@@ -148,7 +153,7 @@ BOOST_AUTO_TEST_CASE(shooting_HORandom, *utf::tolerance(0.1))
         Schroddy Sfunc (pot, H);
         GenericEigenvalues GenEig(Sfunc, k, l_mom);
         
-        BOOST_TEST(GenEig.eigenvalue() == (n + 3./2.)*Parameters::hbar_omega);
+        BOOST_TEST(GenEig.eigenvalue() == (n + 3./2.)*Parameters::ElementConstants::hBarOmega());
     }
     
 }
@@ -157,12 +162,17 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot1_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
+    //Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     const unsigned int l_mom = rand()%10;
     const double E = rand()/static_cast<double>(RAND_MAX)*100;
     
     HOPot pot(Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     PsiArray psi;
+    
+    const double x_in = IntegrationParameters::x0();
+    const double x_fin = IntegrationParameters::x1();
     
     Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E, psi);
     const Eigenfunction eigf = Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E);
@@ -179,12 +189,16 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot1_KeyValues)
 {
     using namespace Parameters;
     const double H = 0.001;
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     const unsigned int l_mom = rand()%10;
     const double E = rand()/static_cast<double>(RAND_MAX)*100;
     
     HOPot pot(Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     PsiArray psi;
+    
+    const double x_in = IntegrationParameters::x0();
+    const double x_fin = IntegrationParameters::x1();
     
     Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E, psi);
     const Eigenfunction eigf = Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E);
@@ -208,6 +222,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot2_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     const unsigned int l_mom = rand()%10;
     const double E1 = rand()/static_cast<double>(RAND_MAX)*100;
     const double E2 = rand()/static_cast<double>(RAND_MAX)*100;
@@ -215,6 +230,9 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot2_Values)
     HOPot pot(Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     PsiArray psi;
+    
+    const double x_in = IntegrationParameters::x0();
+    const double x_fin = IntegrationParameters::x1();
     
     Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E1, psi);
     const Eigenfunction eigf = Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E2);
@@ -234,6 +252,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot3_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     const unsigned int l_mom1 = rand()%10;
     const unsigned int l_mom2 = rand()%10;
     const double E = rand()/static_cast<double>(RAND_MAX)*100;
@@ -243,6 +262,9 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_HOPot3_Values)
     Schroddy Sfunc1 (pot1, H);
     Schroddy Sfunc2 (pot2, H);
     PsiArray psi;
+    
+    const double x_in = IntegrationParameters::x0();
+    const double x_fin = IntegrationParameters::x1();
     
     Sfunc1.solveSchroddyByRK(x_in, x_fin, psi0(l_mom1), psiPrime0(l_mom1), E, psi);
     const Eigenfunction eigf = Sfunc2.solveSchroddyByRK(x_in, x_fin, psi0(l_mom2), psiPrime0(l_mom2), E);
@@ -263,12 +285,17 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_WSaxPot_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
+    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     const unsigned int l_mom = rand()%10;
     const double E = rand()/static_cast<double>(RAND_MAX)*100;
     
-    WSaxPot pot(Rn, a0, Parameters::mn, l_mom);
+    WSaxPot pot(Parameters::ElementConstants::Rn(), a0, Parameters::mn, l_mom);
     Schroddy Sfunc (pot, H);
     PsiArray psi;
+    
+    const double x_in = IntegrationParameters::x0();
+    const double x_fin = IntegrationParameters::x1();
     
     Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E, psi);
     const Eigenfunction eigf = Sfunc.solveSchroddyByRK(x_in, x_fin, psi0(l_mom), psiPrime0(l_mom), E);
@@ -281,7 +308,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_WSaxPot_Values)
     BOOST_CHECK(eigfValues == psi);
 }
 
-struct KSInverseFixture : public KohnShamInverse
+struct KSInverseFixture : public KohnShamInverseWithLB
 {
     KSInverseFixture(const KSPotential& extPotential) {setInternalMap(extPotential);};
     

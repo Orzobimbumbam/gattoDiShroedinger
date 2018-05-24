@@ -18,7 +18,7 @@ public:
     static unsigned int NN() {return m_instancePtr -> m_NN;};
     static unsigned int NP() {return m_instancePtr -> m_NP;};
     static unsigned int A() {return m_instancePtr -> m_NP + m_instancePtr -> m_NN;};
-    static double Rn() {return m_instancePtr -> m_R0;};
+    static double Rn() {return m_instancePtr -> m_Rn;};
     static double hBarOmega() {return m_instancePtr -> m_hBarOmega;};
     static std::string elementName() {return m_instancePtr -> m_elementName;};
     
@@ -31,7 +31,7 @@ private:
     
     unsigned int m_NN, m_NP;
     std::string m_elementName;
-    double m_R0, m_hBarOmega;
+    double m_Rn, m_hBarOmega;
     
     std::string _extractFileNameKey(const std::string& fileName);
     void _initialiseParameters(const std::string& fileName, const char delimiter = '_');
@@ -73,7 +73,7 @@ const double R0 = 1.27; 								// [fm]
 
 // Wood-Saxon potential parameters
 //const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
-//const double a0 = 0.67;								// Nuclear surface thickness [fm]
+const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 // HO potential parameters
 //const double f = 2.417988e21;						// [Hz]
@@ -86,8 +86,8 @@ const double R0 = 1.27; 								// [fm]
 //const double x_in = 1e-12;							// Initial radius value [fm]
 //const double x_fin = 1.97*Rn;						// Final radius value [fm]
 
-const double x_in = 1e-6;							// Initial radius value [fm]
-const double x_fin = 3*Rn;							// Final radius value [fm]
+//const double x_in = 1e-6;							// Initial radius value [fm]
+//const double x_fin = 3*Rn;							// Final radius value [fm]
 
 
 // Other parameters

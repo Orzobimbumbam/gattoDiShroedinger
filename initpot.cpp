@@ -63,7 +63,7 @@ double HOPot::potential(double x) const
         //coulomb = -NN*qe*qe/x;
     }*/
 
-    const double c =(m_m*hbar_omega*hbar_omega)/(hbarc*hbarc);
+    const double c =(m_m*ElementConstants::hBarOmega()*ElementConstants::hBarOmega())/(hbarc*hbarc);
     double hopot = 0.5*c*x*x + coulomb;
 
     return hopot;
@@ -85,9 +85,11 @@ CoPot::CoPot(int Z, double m, unsigned int l, double j): InitialPot(m, l, j), m_
 
 double CoPot::potential(double x) const
 {
+    using namespace Parameters;
+    
     int s = 2.;
-    const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
-    		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
+    const double Ru = ElementConstants::Rn()*sqrt((1 + (5*s*s)/(2*ElementConstants::Rn()*ElementConstants::Rn()))/
+    		(1 + (3*s*s)/(4*ElementConstants::Rn()*ElementConstants::Rn())));
 
     double copot;
     if (x <= Ru)
@@ -216,7 +218,7 @@ double TestPot::potential(double x) const
 {
 
 	using namespace Parameters;
-	const double c =(m_m*hbar_omega*hbar_omega)/(hbarc*hbarc);
+    const double c =(m_m*ElementConstants::hBarOmega()*ElementConstants::hBarOmega())/(hbarc*hbarc);
 	const double verTraslation = -50.;
     //const double perturbativePart = 10*x;
     const double perturbativePart2 = (rand()/(static_cast<double>(RAND_MAX))) - 0.05;

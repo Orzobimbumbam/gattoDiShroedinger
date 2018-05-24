@@ -12,9 +12,9 @@
 KohnShamInverse::KohnShamInverse (const InitialPot& iPot, double h)
 {
     using namespace Parameters;
-    const unsigned int NSteps = static_cast<unsigned int>(std::abs(x_fin - x_in)/h);
+    const unsigned int NSteps = static_cast<unsigned int>(std::abs(IntegrationParameters::x1() - IntegrationParameters::x0())/h);
     
-    double x = x_in;
+    double x = IntegrationParameters::x0();
     m_KSOutPot.insert(std::make_pair(x, iPot.potential(x)));
     for (unsigned int i = 0; i < NSteps; i++)
     {

@@ -27,7 +27,7 @@ public:
     KohnShamInverseWithLB(const InitialPot& iPot, double h);
     void KSinverse(const NuclearDensity& density, const KohnShamInverse& inKSPot) override;
     
-private:
+protected:
     KohnShamInverseWithLB();
 
 };

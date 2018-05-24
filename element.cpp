@@ -89,7 +89,7 @@ ElementEigenfunctions Element::orbitalEigenfunction(const Schroddy& sh, const Or
         const Schroddy tempSh(*ptPot, h);
         const GenericEigenvalues genEig(tempSh, nr, l);
         const double E = genEig.eigenvalue();
-        const Eigenfunction eigf = tempSh.solveSchroddyByRK(x_in, x_fin, psi0(l), psiPrime0(l), E);
+        const Eigenfunction eigf = tempSh.solveSchroddyByRK(IntegrationParameters::x0(), IntegrationParameters::x1(), psi0(l), psiPrime0(l), E);
         elEigf.push_back(eigf);
         
         const LevelTuple eigenvalMatrixRow = std::make_tuple(nr, l, j, E); // {nr, l, j, E};
