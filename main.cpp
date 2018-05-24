@@ -12,6 +12,8 @@
 int main(int argc, const char * argv[])
 {
     const double H = 0.1;
+    const double xin = 1e-6;
+    const double xfin = 3*Parameters::ElementConstants::Rn();
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
     std::string inputPath = "Inputs/";
     std::string outputPath = "Outputs/";
@@ -32,13 +34,13 @@ int main(int argc, const char * argv[])
 
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
-    const WSaxPot potTot (Parameters::Rn, Parameters::a0, Parameters::mp);
+    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mp);
     //const HOPot potTot(Parameters::mn); //default is ground state
     //const TestPot potTot(Parameters::mn);
 
     std::map<double, double> inPotential;
-    const unsigned long NSteps = std::abs(Parameters::x_fin - Parameters::x_in)/H;
-    double rad = Parameters::x_in;
+    const unsigned long NSteps = std::abs(Parameters::IntegrationParameters::x1() - Parameters::IntegrationParameters::x0())/H;
+    double rad = Parameters::IntegrationParameters::x1();
     for (int i = 0; i < NSteps +1; ++i)
     {
  		inPotential[rad] = potTot.potential(rad);
@@ -114,7 +116,7 @@ int main(int argc, const char * argv[])
 
     EnergyTOT totalenergy;
     fOut.open(outputPath + "refTotalEnergy.txt");
-    fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue(), H);
+    fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue());
     fOut.close();
     fOut.open(outputPath + "refFinalDensity.txt");
     fOut << NDens.getTheoreticalDensity();;
