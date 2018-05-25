@@ -10,6 +10,7 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/included/unit_test.hpp>
 #include "../Codice/Includes.h"
+#include "teamcity_messages.h"
 
 #include <fstream>
 #include <cmath>
