@@ -27,6 +27,7 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
             m_NP = std::stoi(key);
         if (count == 3)
             m_elementName = key;
+        //add rms logic here...
     }
     
     if (count > 3)
