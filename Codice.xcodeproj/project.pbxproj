@@ -463,7 +463,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/boost_1_62_0;
-				"OTHER_LDFLAGS[arch=*]" = /usr/local/boost_1_62_0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -473,7 +472,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/boost_1_62_0;
-				"OTHER_LDFLAGS[arch=*]" = /usr/local/boost_1_62_0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
