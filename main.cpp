@@ -11,9 +11,12 @@
 
 int main(int argc, const char * argv[])
 {
+    std::string fileName = "2_2_He_1.00.txt";
+    Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
+    Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
     std::string inputPath = "Inputs/";
     std::string outputPath = "Outputs/";
@@ -21,11 +24,12 @@ int main(int argc, const char * argv[])
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
     std::vector <std::vector <double>> orbitals (36);
-    std::ifstream in (inputPath + "orbitals-so.txt");
+    std::ifstream in (inputPath + "orbitals.txt");
     readMatrix(orbitals, in, false);
     in.close();
 
-    in.open(inputPath + "16O.txt");
+    //in.open(inputPath + "16O.txt");
+    in.open(inputPath + fileName);
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
@@ -34,7 +38,7 @@ int main(int argc, const char * argv[])
 
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
-    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mp);
+    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mn);
     //const HOPot potTot(Parameters::mn); //default is ground state
     //const TestPot potTot(Parameters::mn);
 
