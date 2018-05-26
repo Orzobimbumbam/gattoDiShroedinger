@@ -20,11 +20,11 @@ public:
     static unsigned int NP() {return m_instancePtr -> m_NP;};
     static unsigned int A() {return m_instancePtr -> m_NP + m_instancePtr -> m_NN;};
     static double Rn() {return m_instancePtr -> m_Rn;};
+    static double rms() {return m_instancePtr -> m_rms;};
     static double hBarOmega() {return m_instancePtr -> m_hBarOmega;};
     static std::string elementName() {return m_instancePtr -> m_elementName;};
     
-    
-private:
+protected:
     ElementConstants() = default;
     ElementConstants(const std::string& fileName, const char delimiter = '_');
     
@@ -32,7 +32,7 @@ private:
     
     unsigned int m_NN, m_NP;
     std::string m_elementName;
-    double m_Rn, m_hBarOmega;
+    double m_Rn, m_hBarOmega, m_rms;
     
     std::string _extractFileNameKey(const std::string& fileName);
     void _initialiseParameters(const std::string& fileName, const char delimiter = '_');

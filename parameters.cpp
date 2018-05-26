@@ -18,6 +18,7 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
     std::stringstream ss(_extractFileNameKey(fileName));
     std::string key;
     int count = 0;
+    const unsigned int fileNameKeys = 4;
     while (std::getline(ss, key, delimiter))
     {
         ++count;
@@ -27,14 +28,15 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
             m_NP = std::stoi(key);
         if (count == 3)
             m_elementName = key;
-        //add rms logic here...
+        if (count == 4)
+            m_rms = std::stod(key);
     }
     
-    if (count > 3)
+    if (count > fileNameKeys)
         std::cerr << "initialiseParameters : Warning : file name may contain more keys than needed. " << std::endl;
     
     if (count == 0)
-        throw std::runtime_error("initialiseParameters : invalid file name keys.");
+        throw std::invalid_argument("initialiseParameters : invalid file name keys.");
     
     const unsigned int A = m_NN + m_NP;
     m_Rn = R0*pow(A,(1./3.));

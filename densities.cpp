@@ -39,7 +39,7 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
     using namespace Parameters;
     
     const double alpha = sqrt(2./3.)*Parameters::rp;
-	const double gamma = sqrt(2./3.)*Parameters::rms;
+    const double gamma = sqrt(2./3.)*Parameters::ElementConstants::rms();
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
 
 	const unsigned long NSteps = static_cast<unsigned long>(std::abs(IntegrationParameters::x1() - IntegrationParameters::x0())/h);

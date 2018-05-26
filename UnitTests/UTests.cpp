@@ -442,3 +442,70 @@ BOOST_AUTO_TEST_CASE(IOUtils_readMatrix)
 //more Utils test cases here...
 
 BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(Parameters_)
+
+struct ElementConstantsFixture : public Parameters::ElementConstants
+{
+    void resetInstance() {delete m_instancePtr;
+        m_instancePtr = nullptr;};
+};
+
+BOOST_AUTO_TEST_CASE(ElementConstants_initialise_happyPath)
+{
+    using namespace Parameters;
+    
+    ElementConstantsFixture fix;
+    fix.resetInstance();
+    
+    const std::string ca = "28_20_Cs_1.45.txt";
+    const std::string pb = "126_82_pPb_1.70.txt";
+    
+    ElementConstants::initialiseElementConstants(ca);
+    ElementConstants::initialiseElementConstants(pb);
+    
+    BOOST_CHECK_EQUAL(ElementConstants::NN(), 28);
+    BOOST_CHECK_EQUAL(ElementConstants::NP(), 20);
+    BOOST_CHECK_EQUAL(ElementConstants::elementName(), "Cs");
+    BOOST_CHECK_EQUAL(ElementConstants::A(), 28 + 20);
+    BOOST_CHECK_EQUAL(ElementConstants::rms(), 1.45);
+    
+}
+
+BOOST_AUTO_TEST_CASE(ElementConstants_initialise_cornerCase_invalidKey)
+{
+    using namespace Parameters;
+    
+    ElementConstantsFixture fix;
+    fix.resetInstance();
+    
+    const std::string ca = "Ca45.txt";
+    
+    BOOST_CHECK_THROW(ElementConstants::initialiseElementConstants(ca);, std::invalid_argument);
+    
+}
+
+BOOST_AUTO_TEST_CASE(ElementConstants_initialise_cornerCase_moreKeys)
+{
+    using namespace Parameters;
+    
+    ElementConstantsFixture fix;
+    fix.resetInstance();
+    
+    const std::string pb = "126_82_pPb_1.70_4.50.txt";
+    ElementConstants::initialiseElementConstants(pb);
+    
+    BOOST_CHECK_EQUAL(ElementConstants::NN(), 126);
+    BOOST_CHECK_EQUAL(ElementConstants::NP(), 82);
+    BOOST_CHECK_EQUAL(ElementConstants::elementName(), "pPb");
+    BOOST_CHECK_EQUAL(ElementConstants::A(), 208);
+    BOOST_CHECK_EQUAL(ElementConstants::rms(), 1.70);
+    
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+
+
