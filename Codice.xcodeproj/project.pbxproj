@@ -337,7 +337,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd UnitTests\n../DerivedData/Codice/Build/Products/Debug/UnitTests --result_code=no --report_level=no";
+			shellScript = "#cd UnitTests\n#../DerivedData/Codice/Build/Products/Debug/UnitTests --result_code=no --report_level=no";
 		};
 /* End PBXShellScriptBuildPhase section */
 
