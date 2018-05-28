@@ -39,7 +39,7 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
     using namespace Parameters;
     
     const double alpha = sqrt(2./3.)*Parameters::rp;
-    const double gamma = sqrt(2./3.)*Parameters::ElementConstants::rms();
+	const double gamma = sqrt(2./3.)*Parameters::rms;
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
 
 	const unsigned long NSteps = static_cast<unsigned long>(std::abs(IntegrationParameters::x1() - IntegrationParameters::x0())/h);
@@ -54,8 +54,8 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
             const double Ai = (ElementConstants::NN()*QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
             const double exp1 = exp((-1)*((radiusx - QRparameters[i][0])/beta)*((radiusx - QRparameters[i][0])/beta));
             const double exp2 = exp((-1)*((radiusx + QRparameters[i][0])/beta)*((radiusx + QRparameters[i][0])/beta));
-            const double c2p1 = ((radiusx + QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma));
-            const double c2p2 = ((radiusx - QRparameters[i][0])/(beta*beta*beta)) + (QRparameters[i][0]/(beta*gamma*gamma));
+            const double c2p1 = ((radiusx - QRparameters[i][0])/(beta*beta*beta)) + (QRparameters[i][0]/(beta*gamma*gamma));
+            const double c2p2 = ((radiusx + QRparameters[i][0])/(beta*beta*beta)) - (QRparameters[i][0]/(beta*gamma*gamma));
             const double c2 = exp1*c2p1 + exp2*c2p2;
             
             c3 += Ai*c2;
@@ -66,7 +66,7 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
 	}
 
 	// Normalization by trapezoid method integration
-	Density::iterator it = m_benchmarkDensity.begin();
+	/*Density::iterator it = m_benchmarkDensity.begin();
 	double scalar = 0;
 	Density::iterator p = it;
 	++it;
@@ -77,12 +77,25 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
         ++p;
     }
 
-	double norm = ElementConstants::NN()/scalar/4/Parameters::PI;
+	double norm = ElementConstants::NP()/scalar/4/Parameters::PI;
 
     for (auto& it : m_benchmarkDensity)
     {
         it.second *= norm;
+
+    }*/
+
+	// Control on SOG density normalization: if normalized the control returns the number of nucleons
+	/*Density::iterator itt = m_benchmarkDensity.begin();
+    double normControl = 0;
+	Density::iterator pp = itt;
+	++itt;
+    for (; itt != m_benchmarkDensity.end(); ++itt)
+    {
+    	normControl += 4*Parameters::PI*((pp -> second*pp -> first*pp -> first) + (itt -> second*itt -> first*itt -> first))*h/2;
+        ++pp;
     }
+    std::cout << "SOG normalization control - Number of nucleons: " << normControl << std::endl;*/
     
 	return;
 }

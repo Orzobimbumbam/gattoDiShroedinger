@@ -11,7 +11,7 @@
 
 int main(int argc, const char * argv[])
 {
-    std::string fileName = "2_2_He_1.00.txt";
+    std::string fileName = "20_20_Ca_1.45.txt";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
     const double xin = 1e-6;
@@ -44,7 +44,7 @@ int main(int argc, const char * argv[])
 
     std::map<double, double> inPotential;
     const unsigned long NSteps = std::abs(Parameters::IntegrationParameters::x1() - Parameters::IntegrationParameters::x0())/H;
-    double rad = Parameters::IntegrationParameters::x1();
+    double rad = Parameters::IntegrationParameters::x0();
     for (int i = 0; i < NSteps +1; ++i)
     {
  		inPotential[rad] = potTot.potential(rad);
