@@ -28,15 +28,12 @@ class HarmonicEigenvalues: public Eigenvalues
 public:
     HarmonicEigenvalues(unsigned int nr, int l);
     double eigenvalue() const override;
-    //setEnergyLevel(unsigned int n);
-    //setAngularMomentum(int l);
     
     std::unique_ptr<Eigenvalues> clone() const override;
     
 private:
     HarmonicEigenvalues();
     
-    //if you want to be able to change quantum numbers within same object, implement set methods and remove const keyword
     const unsigned int m_nr;
     const int m_l;
 };

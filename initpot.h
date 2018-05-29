@@ -90,43 +90,6 @@ private:
     int m_Z;
 };
 
-/*=====================================================================
- * Spin-Orbit potential class
- *===================================================================*/
-/*
-class SOPot: public InitialPot //derived class
-{
-public:
-    SOPot(unsigned int j);
-    SOPot(unsigned int j, unsigned int l);
-    double potential(double x) const override;
-
-    std::unique_ptr<InitialPot> clone() const override;
-
-private:
-    SOPot(); //same as before
-    unsigned int m_j;
-};
-
-/*=====================================================================
- * Total potential class
- *===================================================================*/
-
-/*class TotPot: public InitialPot //derived class
-{
-public:
-    TotPot(double m);
-    TotPot(double m, unsigned int l);
-    double potential(double x) const override;
-
-    std::unique_ptr<InitialPot> clone() const override;
-
-private:
-    TotPot(); //same as before
-};
-
-friend TotPot& operator+(const InitialPot& rhsPotential);*/
-
 /*======================================================================
  * Kohn-Sham potential class
  *====================================================================*/

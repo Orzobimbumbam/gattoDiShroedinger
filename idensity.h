@@ -25,7 +25,6 @@ public:
     
     virtual void benchmarkDensity (const std::vector<std::vector<double>>& matrix, double h = 0) = 0;
     virtual Density getBenchmarkDensity() const = 0;
-    //virtual void benchmarkDensity (std::ifstream& file) = 0; //overload for experimental data from file
     
     virtual ~NuclearDensity(){};
     
@@ -33,7 +32,7 @@ private:
     Density m_thDensity;
     mutable double m_distanceToConvergenge;
     mutable double m_epsilon;
-    mutable bool m_isFirstLoop;
+    //mutable bool m_isFirstLoop;
     
 protected:
     Density m_benchmarkDensity;

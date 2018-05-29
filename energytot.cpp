@@ -25,7 +25,7 @@ double EnergyTOT::energyTot(const ElementEigenfunctions& elEigf, const ElementEi
 
 		for (; it != end; ++it)
 		{
-            const double h = std::abs(it -> first - p -> first);
+            const double h = std::abs(it -> first - p -> first); //[Orzobimbumbam] : adaptive integration step-size (safest option)
 			tjj += p-> second*_laplacian(p, h) + it -> second*_laplacian(it, h)*h/2;
 			++p;
 		}
@@ -41,7 +41,6 @@ double EnergyTOT::_laplacian(std::map<double, double>::const_iterator itt, doubl
 {
 	std::map<double, double>::const_iterator minusItt = --itt;
 	std::map<double, double>::const_iterator plusItt = ++itt;
-	//const double h = itt -> first - minusItt -> first;
 	const double laplacian = ((minusItt -> second) + (plusItt -> second) -2*(itt -> second))/(h*h);
 
 	return laplacian;

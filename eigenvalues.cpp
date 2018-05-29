@@ -1,6 +1,5 @@
 #include "eigenvalues.hpp"
 #include "parameters.h"
-//#include "schroddy.h"
 
 Eigenvalues::~Eigenvalues() {}
 

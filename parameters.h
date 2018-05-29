@@ -24,7 +24,7 @@ public:
     static double hBarOmega() {return m_instancePtr -> m_hBarOmega;};
     static std::string elementName() {return m_instancePtr -> m_elementName;};
     
-protected:
+protected: //[Orzobimbumbam] : protected only for testing purposes; fixture classes to be derived to allow pointer reset
     ElementConstants() = default;
     ElementConstants(const std::string& fileName, const char delimiter = '_');
     
@@ -43,7 +43,7 @@ protected:
 class IntegrationParameters
 {
 public:
-    static void initialiseIntegrationParameters(double x0, double x1); //[Orzobimbumbam] : h should be here too
+    static void initialiseIntegrationParameters(double x0, double x1); //[Orzobimbumbam] : h should be here too ??
     static double x0() {return m_instancePtr -> m_x0;};
     static double x1() {return m_instancePtr -> m_x1;};
     
@@ -82,7 +82,7 @@ const double qe = 1.439; //1.6021e-19;				// elementary charge [MeV*fm]
 const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
-const double rms = 1.30;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
+//const double rms = 1.30;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
 const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 

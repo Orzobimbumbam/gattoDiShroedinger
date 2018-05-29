@@ -20,7 +20,7 @@ public:
     friend std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery& ouputQuery);
     
 private:
-
+    
 };
 
 class NuclearDensityWithNeutronsSOG : public NuclearDensity
