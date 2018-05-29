@@ -58,6 +58,7 @@ int main(int argc, const char * argv[])
     const Schroddy sh(potTot, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
     NuclearDensityWithSOG NDens;
+    //NuclearDensityWithNeutronsSOG NDens;
     //NuclearDensityWithMC NDens;
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
     NDens.benchmarkDensity(qrParam, H);

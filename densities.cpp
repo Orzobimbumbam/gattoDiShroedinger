@@ -30,16 +30,16 @@ std::ostream& operator<<(std::ostream& wStream, const NuclearDensityOutputQuery&
         << usageMessage << std::endl;
 }
 
-/*=================================================================
+/*=========================================================================================================================================
  * SOG density
- *===============================================================*/
+ *=======================================================================================================================================*/
 
 void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<double>>& QRparameters, double h)
 {
     using namespace Parameters;
     
     const double alpha = sqrt(2./3.)*Parameters::rp;
-	const double gamma = sqrt(2./3.)*Parameters::rms;
+	const double gamma = sqrt(2./3.)*ElementConstants::rms();
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
 
 	const unsigned long NSteps = static_cast<unsigned long>(std::abs(IntegrationParameters::x1() - IntegrationParameters::x0())/h);
@@ -51,7 +51,7 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
 		double c3 = 0;
 		for (unsigned int i = 0; i < QRparameters.size(); ++i)
 		{
-            const double Ai = (ElementConstants::NN()*QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
+            const double Ai = (ElementConstants::NP()*QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
             const double exp1 = exp((-1)*((radiusx - QRparameters[i][0])/beta)*((radiusx - QRparameters[i][0])/beta));
             const double exp2 = exp((-1)*((radiusx + QRparameters[i][0])/beta)*((radiusx + QRparameters[i][0])/beta));
             const double c2p1 = ((radiusx - QRparameters[i][0])/(beta*beta*beta)) + (QRparameters[i][0]/(beta*gamma*gamma));
@@ -104,3 +104,56 @@ Density NuclearDensityWithSOG::getBenchmarkDensity() const
 {
     return m_benchmarkDensity;
 }
+
+/*=========================================================================================================================================
+ * Neutrons of 208Pb SOG density by Zenihiro
+ *=======================================================================================================================================*/
+
+void NuclearDensityWithNeutronsSOG::benchmarkDensity(const std::vector<std::vector<double>>& QRparameters, double h)
+{
+	using namespace Parameters;
+
+	const double gamma = sqrt(2./3.)*ElementConstants::rms();
+
+	const unsigned long NSteps = static_cast<unsigned long>(std::abs(IntegrationParameters::x1() - IntegrationParameters::x0())/h);
+	double radiusx = IntegrationParameters::x0();
+	for (unsigned int r = 0 ; r < NSteps + 1; ++r)
+	{
+		const double c1 = ElementConstants::NN()/(2*pow(Parameters::PI, 3./2.)*gamma*gamma*gamma);
+
+		double c3 = 0;
+		for (unsigned int i = 0; i < QRparameters.size(); ++i)
+		{
+            const double exp1 = exp((-1)*(radiusx - QRparameters[i][0])*(radiusx - QRparameters[i][0])/(gamma*gamma));
+            const double exp2 = exp((-1)*(radiusx + QRparameters[i][0])*(radiusx + QRparameters[i][0])/(gamma*gamma));
+            const double c2 = (QRparameters[i][1])/(1 + (2.*QRparameters[i][0]*QRparameters[i][0])/(gamma*gamma));
+
+            c3 += c2*(exp1 + exp2);
+		}
+
+		const double sogdens = c1*c3;
+		m_benchmarkDensity[radiusx] = sogdens;
+		radiusx += h;
+	}
+
+	// Control on SOG density normalization: if normalized the control returns the number of nucleons
+	/*Density::iterator itt = m_benchmarkDensity.begin();
+    double normControl = 0;
+	Density::iterator pp = itt;
+	++itt;
+    for (; itt != m_benchmarkDensity.end(); ++itt)
+    {
+    	normControl += 4*Parameters::PI*((pp -> second*pp -> first*pp -> first) + (itt -> second*itt -> first*itt -> first))*h/2;
+        ++pp;
+    }
+    std::cout << "SOG normalization control - Number of nucleons: " << normControl << std::endl;*/
+
+	return;
+}
+
+Density NuclearDensityWithNeutronsSOG::getBenchmarkDensity() const
+{
+    return m_benchmarkDensity;
+}
+
+

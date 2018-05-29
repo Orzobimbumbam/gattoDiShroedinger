@@ -50,13 +50,13 @@ bool NuclearDensity::hasConverged () const
         //m_epsilon = m_benchmarkDensity.at(xMax)*0.05;
         m_isFirstLoop = false;
 
-    }
+    }*/
 
-/*
+    /*
     //std::ofstream fOut("Outputs/distance.txt");
     double maxDiff = std::abs(1 - (m_thDensity.begin() -> second/m_benchmarkDensity.begin() -> second));
     double xMax = m_thDensity.begin() -> first;
-    m_epsilon = (m_benchmarkDensity.begin() -> second)*0.05;
+    //m_epsilon = (m_benchmarkDensity.begin() -> second)*0.05;
     for (const auto& it : m_thDensity)
 	{
 		if(std::abs(1 - (it.second/m_benchmarkDensity.at(it.first))) > maxDiff) //access only, throw exception if key is not found
