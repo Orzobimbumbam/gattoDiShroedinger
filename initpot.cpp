@@ -104,6 +104,7 @@ std::unique_ptr<InitialPot> CoPot::clone() const
 PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l, double j): InitialPot(m, l, j), m_outpot(outpot.getKSPot()) {}
 PotOut::PotOut(const KohnShamInverse& outpot, double m, unsigned int l): InitialPot(m, l, 0), m_outpot(outpot.getKSPot()) {}
 PotOut::PotOut(const KohnShamInverse& outpot, double m): InitialPot(m, 0, 0), m_outpot(outpot.getKSPot()) {}
+PotOut::PotOut(const KSPotential& inPot, double m): InitialPot(m, 0, 0), m_outpot(inPot) {}
 
 double PotOut::potential(double x) const
 {

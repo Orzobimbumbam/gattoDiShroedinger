@@ -100,6 +100,8 @@ public:
     PotOut(const KohnShamInverse& outpot, double m, unsigned int l, double j);
 	PotOut(const KohnShamInverse& outpot, double m, unsigned int l);
     PotOut(const KohnShamInverse& outpot, double m); //l is assumed ground state; j is zero
+    
+    PotOut(const KSPotential& inPot, double m);
 	double potential (double x) const override;
     
     std::unique_ptr<InitialPot> clone() const override;
