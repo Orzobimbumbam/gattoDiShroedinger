@@ -23,11 +23,11 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
     {
         ++count;
         if (count == 1)
-            m_NN = std::stoi(key); //mandatory value
+        	m_elementName = key; //mandatory value
         if (count == 2)
-            m_NP = std::stoi(key);
+        	m_NN = std::stoi(key);
         if (count == 3)
-            m_elementName = key;
+        	m_NP = std::stoi(key);
         if (count == 4)
             m_rms = std::stod(key);
     }
