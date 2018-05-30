@@ -55,11 +55,26 @@ private:
     
     double m_x0, m_x1;
 };
+    
+class NucleonType
+{
+public:
+    static void initialiseNucleonType(bool isNeutron);
+    static bool isNeutron() {return m_instancePtr -> m_isNeutron;};
+    
+private:
+    NucleonType() = default;
+    NucleonType(bool isNeutron);
+    
+    static NucleonType* m_instancePtr;
+    
+    bool m_isNeutron; //[Orzobimbumbam] : true for neutron, false for proton simulation type
+};
 
     
 //Global constants - immutable, simulation independent
 
-const int nucleons = 0; 							// set 0 for protons, set 1 for neutrons
+//const int nucleons = 0; 							// set 0 for protons, set 1 for neutrons
 //const double mp= 1.6726219e-27;                   // Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]

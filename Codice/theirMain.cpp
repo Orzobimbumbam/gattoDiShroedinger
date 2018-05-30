@@ -14,14 +14,15 @@ void theirMain()
     readMatrix(orbitals, in, false);
     in.close();
 
-    //Dynamically initialise element constants and integration parameters
-    std::string fileName = "40Ca_20_20_3.22.txt";
+    //Dynamically initialise element constants, integration parameters and simulation type
+    std::string fileName = "40Ca_20_20_1.45.txt";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
     Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
-    
-    in.open(inputPath + "40Ca.txt");
+    Parameters::NucleonType::initialiseNucleonType(false); //false: run simulation for protons
+                                                            //true: run simulation for neutrons
+    in.open(inputPath + fileName);
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();

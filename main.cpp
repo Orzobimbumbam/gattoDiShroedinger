@@ -18,6 +18,9 @@ int main(int argc, const char * argv[])
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
     Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
+    Parameters::NucleonType::initialiseNucleonType(false); //false: run simulation for protons
+                                                            //true: run simulation for neutrons
+    
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
     std::string inputPath = "Inputs/";
     std::string outputPath = "Outputs/";

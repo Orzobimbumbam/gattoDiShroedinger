@@ -34,6 +34,7 @@ BOOST_AUTO_TEST_CASE(shootingWS10, *utf::tolerance(0.1))
     const double H = 0.1;
     Parameters::ElementConstants::initialiseElementConstants("40Ca_20_20_1.30.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
+    Parameters::NucleonType::initialiseNucleonType(false);
     
     const unsigned int k = 1;
     const unsigned int l_mom=0;

@@ -29,7 +29,7 @@ double WSaxPot::potential(double x) const
     	copot = (Parameters::NP*Parameters::qe*Parameters::qe)/x;*/
 
     int sign = -1;
-    if (Parameters::nucleons == 0)
+    if (!Parameters::NucleonType::isNeutron())
         sign = 1;
     
     double V0 = 51 + sign*33.0*(ElementConstants::NN() - ElementConstants::NP())/ElementConstants::A();

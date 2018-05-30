@@ -84,6 +84,15 @@ void IntegrationParameters::initialiseIntegrationParameters(double x0, double x1
         IntegrationParameters::m_instancePtr = new IntegrationParameters(x0, x1);
 }
 
+NucleonType* NucleonType::m_instancePtr = nullptr;
+NucleonType::NucleonType(bool isNeutron) : m_isNeutron(isNeutron) {}
+
+void NucleonType::initialiseNucleonType(bool isNeutron)
+{
+    if (NucleonType::m_instancePtr == nullptr)
+        m_instancePtr = new NucleonType(isNeutron);
+}
+
 
 //other global functions
 double psi0(unsigned int l)

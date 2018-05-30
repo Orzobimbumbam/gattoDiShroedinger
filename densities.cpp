@@ -41,6 +41,10 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
     const double alpha = sqrt(2./3.)*Parameters::rp;
 	const double gamma = sqrt(2./3.)*ElementConstants::rms();
 	const double beta = sqrt((gamma*gamma)-(alpha*alpha));
+    
+    double ratio = 1;
+    if(Parameters::NucleonType::isNeutron())
+        ratio = ElementConstants::NN()/ElementConstants::NP();
 
 	const unsigned long NSteps = static_cast<unsigned long>(std::abs(IntegrationParameters::x1() - IntegrationParameters::x0())/h);
 	double radiusx = IntegrationParameters::x0();
@@ -60,10 +64,6 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
             
             c3 += Ai*c2;
 		}
-
-		double ratio = 1;
-		if(Parameters::nucleons == 1)
-			ratio = ElementConstants::NN()/ElementConstants::NP();
 
 		const double sogdens = ratio*c1*c3;
 		m_benchmarkDensity[radiusx] = sogdens;
