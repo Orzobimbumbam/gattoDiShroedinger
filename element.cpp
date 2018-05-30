@@ -7,12 +7,16 @@
 #include <iomanip>
 #include <sstream>
 
-const unsigned long Element::maximumAlphaSetSize = 3; //[Orzobimbumbam] : nr, l, j
-const unsigned long Element::minimumAlphaSetSize = 2; //[Orzobimbumbam] : nr, l
+const unsigned long Element::maximumAlphaSetSize = 3; // nr, l, j
+const unsigned long Element::minimumAlphaSetSize = 2; // nr, l
 
 // Filling the orbitals
 Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
 {
+    int nuclType = Parameters::ElementConstants::NP();
+    if(Parameters::NucleonType::isNeutron())
+        nuclType = Parameters::ElementConstants::NN();
+
     unsigned long nuclNum = 0;
     m_orbitalMatrixRows = 0;
     const unsigned long quantumAlphaSetSize = _getQuantumAlphaSetSize(orbitalMatrix, 0);
@@ -22,9 +26,9 @@ Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
         const unsigned long degen = _getLevelDegeneration(orbitalMatrix, i);
         nuclNum += degen;
         ++m_orbitalMatrixRows;
-        if (nuclNum >= Parameters::ElementConstants::NN())
+        if (nuclNum >= nuclType)
         {
-            const unsigned long outerShellDegen = Parameters::ElementConstants::NN() - (nuclNum - degen); // number of nucleons in outer shell
+            const unsigned long outerShellDegen = nuclType - (nuclNum - degen); // number of nucleons in outer shell
             m_levelDegen.push_back(outerShellDegen);
             break;
         }
@@ -40,7 +44,7 @@ unsigned long Element::_getQuantumAlphaSetSize(const OrderedOrbitalMatrix& orbit
     if (!orbitalMatrix.empty())
         return orbitalMatrix[0].size();
     else
-        return 0; // [Orzobimbumbam] : maybe should throw here?
+        return 0;
 }
 
 unsigned long Element::_getLevelDegeneration(const OrderedOrbitalMatrix& orbitalMatrix, unsigned long levelIndex) const

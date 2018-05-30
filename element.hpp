@@ -8,11 +8,11 @@
 class Eigenfunction;
 class Schroddy;
 
-typedef std::vector<std::vector<double>> OrderedOrbitalMatrix; //[Orzobimbumbam] : should be a double to allow half-integer j-values
+typedef std::vector<std::vector<double>> OrderedOrbitalMatrix; //should be a double to allow half-integer j-values
 typedef std::vector<Eigenfunction> ElementEigenfunctions;
 typedef std::vector<unsigned long> OrderedLevelDegeneration;
 typedef std::vector<std::vector<double>> ElementEigenvalues;
-typedef std::tuple<unsigned int, unsigned int, double, double> LevelTuple; //[Orzobimbumbam] : must be (nr, l, j, E) in this given order!
+typedef std::tuple<unsigned int, unsigned int, double, double> LevelTuple; //must be (nr, l, j, E) in this given order!
 
 class Element
 {
