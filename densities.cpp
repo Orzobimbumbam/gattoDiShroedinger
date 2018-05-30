@@ -65,7 +65,7 @@ void NuclearDensityWithSOG::benchmarkDensity(const std::vector<std::vector<doubl
 		if(Parameters::nucleons == 1)
 			ratio = ElementConstants::NN()/ElementConstants::NP();
 
-		const double sogdens = /*ratio**/c1*c3;
+		const double sogdens = ratio*c1*c3;
 		m_benchmarkDensity[radiusx] = sogdens;
 		radiusx += h;
 	}
