@@ -13,8 +13,6 @@ ElementConstants::ElementConstants(const std::string& fileName, const char delim
 
 void ElementConstants::_initialiseParameters(const std::string& fileName, const char delimiter)
 {
-    m_NP = 0; //optional value
-    m_elementName = ""; //optional value
     std::stringstream ss(_extractFileNameKey(fileName));
     std::string key;
     int count = 0;
@@ -22,8 +20,8 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
     while (std::getline(ss, key, delimiter))
     {
         ++count;
-        if (count == 1)
-        	m_elementName = key; //mandatory value
+        if (count == 1) //all mandatory values, key must be complete
+        	m_elementName = key;
         if (count == 2)
         	m_NN = std::stoi(key);
         if (count == 3)
@@ -35,8 +33,8 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
     if (count > fileNameKeys)
         std::cerr << "initialiseParameters : Warning : file name may contain more keys than needed. " << std::endl;
     
-    if (count == 0)
-        throw std::invalid_argument("initialiseParameters : invalid file name keys.");
+    if (count < fileNameKeys)
+        throw std::invalid_argument("initialiseParameters : invalid or incomplete file name keys.");
     
     const unsigned int A = m_NN + m_NP;
     m_Rn = R0*pow(A,(1./3.));

@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_SUITE(Calc)
 BOOST_AUTO_TEST_CASE(shootingWS10, *utf::tolerance(0.1))
 {
     const double H = 0.1;
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    Parameters::ElementConstants::initialiseElementConstants("40Ca_20_20_1.30.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     const unsigned int k = 1;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(shootingWS10, *utf::tolerance(0.1))
 BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 {
     const double H = 0.1;
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    //Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     const unsigned int k = 1;
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(shootingHO10, *utf::tolerance(0.1))
 BOOST_AUTO_TEST_CASE(shooting_HO11, *utf::tolerance(0.1))
 {
     const double H = 0.01;
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    //Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     const unsigned int k = 1;
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(shooting_HO11, *utf::tolerance(0.1))
 BOOST_AUTO_TEST_CASE(shooting_HO2012, *utf::tolerance(0.1))
 {
     const double H = 0.001;
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    //Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     unsigned int k = 2;
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(shooting_HO2012, *utf::tolerance(0.1))
 BOOST_AUTO_TEST_CASE(shootingHO_2113, *utf::tolerance(0.1))
 {
     const double H = 0.001;
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    //Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     unsigned int k = 2;
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(shootingHO_2113, *utf::tolerance(0.1))
 BOOST_AUTO_TEST_CASE(shooting_HORandom, *utf::tolerance(0.1))
 {
     const double H = 0.1;
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    //Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     
     unsigned int N = 10;
@@ -286,7 +286,7 @@ BOOST_AUTO_TEST_CASE(solveSchroddyByRK_WSaxPot_Values)
 {
     using namespace Parameters;
     const double H = 0.001;
-    Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
+    //Parameters::ElementConstants::initialiseElementConstants("20_20_Ca.txt");
     Parameters::IntegrationParameters::initialiseIntegrationParameters(1e-6, 5*Parameters::ElementConstants::Rn());
     const unsigned int l_mom = rand()%10;
     const double E = rand()/static_cast<double>(RAND_MAX)*100;
@@ -458,7 +458,7 @@ BOOST_AUTO_TEST_CASE(ElementConstants_initialise_happyPath)
     ElementConstantsFixture fix;
     fix.resetInstance();
     
-    const std::string ca = "28_20_Cs_1.45.txt";
+    const std::string ca = "40Cs_28_20_1.45.txt";
     const std::string pb = "126_82_pPb_1.70.txt";
     
     ElementConstants::initialiseElementConstants(ca);
@@ -466,7 +466,7 @@ BOOST_AUTO_TEST_CASE(ElementConstants_initialise_happyPath)
     
     BOOST_CHECK_EQUAL(ElementConstants::NN(), 28);
     BOOST_CHECK_EQUAL(ElementConstants::NP(), 20);
-    BOOST_CHECK_EQUAL(ElementConstants::elementName(), "Cs");
+    BOOST_CHECK_EQUAL(ElementConstants::elementName(), "40Cs");
     BOOST_CHECK_EQUAL(ElementConstants::A(), 28 + 20);
     BOOST_CHECK_EQUAL(ElementConstants::rms(), 1.45);
     
@@ -479,7 +479,7 @@ BOOST_AUTO_TEST_CASE(ElementConstants_initialise_cornerCase_invalidKey)
     ElementConstantsFixture fix;
     fix.resetInstance();
     
-    const std::string ca = "Ca45.txt";
+    const std::string ca = "45Ca.txt";
     
     BOOST_CHECK_THROW(ElementConstants::initialiseElementConstants(ca);, std::invalid_argument);
     
@@ -492,12 +492,12 @@ BOOST_AUTO_TEST_CASE(ElementConstants_initialise_cornerCase_moreKeys)
     ElementConstantsFixture fix;
     fix.resetInstance();
     
-    const std::string pb = "126_82_pPb_1.70_4.50.txt";
+    const std::string pb = "208pPb_126_82_1.70_4.50.txt";
     ElementConstants::initialiseElementConstants(pb);
     
     BOOST_CHECK_EQUAL(ElementConstants::NN(), 126);
     BOOST_CHECK_EQUAL(ElementConstants::NP(), 82);
-    BOOST_CHECK_EQUAL(ElementConstants::elementName(), "pPb");
+    BOOST_CHECK_EQUAL(ElementConstants::elementName(), "208pPb");
     BOOST_CHECK_EQUAL(ElementConstants::A(), 208);
     BOOST_CHECK_EQUAL(ElementConstants::rms(), 1.70);
     
