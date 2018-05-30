@@ -58,12 +58,13 @@ private:
 
     
 //Global constants - immutable, simulation independent
-    
-//const double mp= 1.6726219e-27;                     // Proton mass [kg]
+
+const int nucleons = 0; 							// set 0 for protons, set 1 for neutrons
+//const double mp= 1.6726219e-27;                   // Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]
 const double mn = 939.565378;                       // Neutron mass in mnc^2 [MeV]
 const double mp = 938.28;							// Proton mass in mpc^2 [MeV]
-const double R0 = 1.27; 								// [fm]
+const double R0 = 1.27; 							// [fm]
 
 // Wood-Saxon potential parameters
 //const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
@@ -72,7 +73,7 @@ const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 // Runge-Kutta parameters
 //const double x_in = 1e-6;							// Initial radius value [fm]
-//const double x_fin = 3*Rn;							// Final radius value [fm]
+//const double x_fin = 3*Rn;						// Final radius value [fm]
 
 
 // Other parameters

@@ -29,8 +29,8 @@ double WSaxPot::potential(double x) const
     	copot = (Parameters::NP*Parameters::qe*Parameters::qe)/x;*/
 
     int sign = -1;
-    /*if (Parameters::NN == 0)
-        sign *= -1;*/
+    if (Parameters::nucleons == 0)
+        sign = 1;
     
     double V0 = 51 + sign*33.0*(ElementConstants::NN() - ElementConstants::NP())/ElementConstants::A();
     double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) /*+ copot*/;

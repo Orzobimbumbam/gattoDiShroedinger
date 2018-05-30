@@ -36,18 +36,18 @@ int main(int argc, const char * argv[])
     in.close();
 
     //load initial potential from file
-    in.open(inputPath + filePotential);
+    /*in.open(inputPath + filePotential);
     std::map<double, double> initialPotential;
-    readMap(initialPotential, in, false);
+    readMap(initialPotential, in, false);*/
 
     Element nuclei(orbitals);
 
     //Test theoretical and sog density for initial harmonic potential
     //const TotPot potTot (Parameters::mn);
-    //const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mn);
+    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mn);
     //const HOPot potTot(Parameters::mn); //default is ground state
     //const TestPot potTot(Parameters::mn);
-    const PotOut potTot (initialPotential, Parameters::mn);
+    //const PotOut potTot (initialPotential, Parameters::mn);
 
     std::map<double, double> inPotential;
     const unsigned long NSteps = std::abs(Parameters::IntegrationParameters::x1() - Parameters::IntegrationParameters::x0())/H;
