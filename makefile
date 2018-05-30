@@ -21,6 +21,9 @@ eigenfunction.o: eigenfunction.cpp
 
 eigenvalues.o: eigenvalues.cpp
 	g++ -c eigenvalues.cpp $(ROOTFLAGS) $(LIBROOT)
+	
+energytot.o: energytot.cpp
+	g++ -c energytot.cpp $(ROOTFLAGS) $(LIBROOT)
 
 element.o: element.cpp
 	g++ -c element.cpp $(ROOTFLAGS) $(LIBROOT)
@@ -37,8 +40,8 @@ schroddy.o: schroddy.cpp
 main.o: main.cpp
 	g++ -c main.cpp $(ROOTFLAGS) $(LIBROOT)
 
-Build: parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o element.o initpot.o kohn-sham.o schroddy.o main.o
-	g++ parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o element.o initpot.o kohn-sham.o schroddy.o main.o -o exec.x $(ROOTFLAGS) $(LIBROOT)
+Build: parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o energytot.o element.o initpot.o kohn-sham.o schroddy.o main.o
+	g++ parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o energytot.o element.o initpot.o kohn-sham.o schroddy.o main.o -o exec.x $(ROOTFLAGS) $(LIBROOT)
 
 Execute: Execute exec.x
 	./exec.x
