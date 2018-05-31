@@ -13,7 +13,7 @@ const unsigned long Element::minimumAlphaSetSize = 2; // nr, l
 // Filling the orbitals
 Element::Element(const OrderedOrbitalMatrix& orbitalMatrix)
 {
-    int nuclType = Parameters::ElementConstants::NP();
+    unsigned int nuclType = Parameters::ElementConstants::NP();
     if(Parameters::NucleonType::isNeutron())
         nuclType = Parameters::ElementConstants::NN();
 

@@ -499,6 +499,11 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/boost_1_62_0;
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
+					"-fprofile-arcs",
+					"-ftest-coverage",
+				);
+				"OTHER_LDFLAGS[arch=*]" = "-coverage";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
