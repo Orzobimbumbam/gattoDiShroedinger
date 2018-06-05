@@ -81,16 +81,10 @@ const double mp = 938.28;							// Proton mass in mpc^2 [MeV]
 const double R0 = 1.27; 							// [fm]
 
 // Wood-Saxon potential parameters
-//const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
 const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 
-// Runge-Kutta parameters
-//const double x_in = 1e-6;							// Initial radius value [fm]
-//const double x_fin = 3*Rn;						// Final radius value [fm]
-
-
-// Other parameters
+//Other absolute constants
 const double qe = 1.439; 							// elementary charge [MeV*fm]
 //const double qe = 1.6021e-19;						// elementary charge [C]
 //const double qe = 1.2;							// elementary charge [MeV fm^(1/2)]
@@ -98,7 +92,9 @@ const double PI = 4*atan(1);
 const double hbar = 6.58211928e-16; 				// Reduced constant Planck [eV*s]
 const double hbarc = 197.3269788;					// [MeV*fm]
 //const double rms = 1.30;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
-const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
+const double rp = 0.8751;                           // proton rms charge radius (<rp^2>)^1/2 [fm]
+    
+//Algorithm parameters
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
 const double convperc = 0.01;						// Percentage of convergence
 

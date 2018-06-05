@@ -8,7 +8,7 @@
 class Eigenfunction;
 class Schroddy;
 
-typedef std::vector<std::vector<double>> OrderedOrbitalMatrix; //should be a double to allow half-integer j-values
+typedef std::vector<std::vector<double>> OrderedOrbitalMatrix; //must be a double to allow half-integer j-values
 typedef std::vector<Eigenfunction> ElementEigenfunctions;
 typedef std::vector<unsigned long> OrderedLevelDegeneration;
 typedef std::vector<std::vector<double>> ElementEigenvalues;

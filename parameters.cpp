@@ -119,7 +119,7 @@ double psi0(unsigned int l)
     return pow(Parameters::IntegrationParameters::x0(), l + 1);
 }
 
-// first derivate eigenfunction in r=0
+// first derivative eigenfunction in r=0
 double psiPrime0(unsigned int l)
 {
 	/*if (l == 0) return 0.;

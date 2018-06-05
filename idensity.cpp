@@ -74,7 +74,7 @@ bool NuclearDensity::hasConverged () const
 
 void NuclearDensity::densityError()
 {
-	m_densError.clear();
+	//m_densError.clear();
 	double denserror;
 	for (const auto& it : m_thDensity)
 	{

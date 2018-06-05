@@ -277,7 +277,7 @@
 				D3DBD28B204B6B26002BD241 /* Sources */,
 				D3DBD28C204B6B26002BD241 /* Frameworks */,
 				D3DBD28D204B6B26002BD241 /* CopyFiles */,
-				D38E409220B8D2F0000BC103 /* ShellScript */,
+				D38E409220B8D2F0000BC103 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -326,18 +326,19 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		D38E409220B8D2F0000BC103 /* ShellScript */ = {
+		D38E409220B8D2F0000BC103 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#cd UnitTests\n#../DerivedData/Codice/Build/Products/Debug/UnitTests --result_code=no --report_level=no";
+			shellScript = "#cd UnitTests\n#../DerivedData/Codice/Build/Products/Debug/UnitTests --result_code=no --report_level=no\nlcov --directory . --zerocounters";
 		};
 /* End PBXShellScriptBuildPhase section */
 
