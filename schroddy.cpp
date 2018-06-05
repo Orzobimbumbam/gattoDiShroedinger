@@ -31,9 +31,13 @@ Schroddy& Schroddy::operator=(const Schroddy& rhsSchroddy) //copy assignment
 
 double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psiPrime0, double E, std::vector<double>& psiArray) const
 {
+	double nucleonMass = Parameters::mp;
+	if(Parameters::NucleonType::isNeutron())
+		nucleonMass = Parameters::mn;
+
     psiArray.clear();
     const unsigned long NSteps = static_cast<unsigned long>(std::abs(x1 - x0)/m_h);
-    const double factor = 2*Parameters::mn/(Parameters::hbarc*Parameters::hbarc);
+    const double factor = 2*nucleonMass/(Parameters::hbarc*Parameters::hbarc);
     const double eigenvalue = E;
 
     double runningX = x0, runningPsi = psi0, runningPsiPrime = psiPrime0;
@@ -42,10 +46,10 @@ double Schroddy::solveSchroddyByRK(double x0, double x1, double psi0, double psi
     for (unsigned long i = 0; i < NSteps ; ++i)
     {
         //lambda expression for decoupled angular term
-        auto angularPart = [this](double x) -> const double {
+        auto angularPart = [&](double x) -> const double {
             if (x == 0)
                 return 0;
-            return (Parameters::hbarc*Parameters::hbarc)*m_pot -> getL()*(m_pot -> getL() + 1)/(2*Parameters::mn*x*x);};
+            return (Parameters::hbarc*Parameters::hbarc)*m_pot -> getL()*(m_pot -> getL() + 1)/(2*nucleonMass*x*x);};
         
         //compute decoupled RK factors
         const double k1 = m_h*runningPsiPrime;

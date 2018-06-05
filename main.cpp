@@ -11,14 +11,14 @@
 
 int main(int argc, const char * argv[])
 {
-    std::string fileName = "20_20_Ca_1.45.txt";
-    std::string filePotential = "InitialPotential.txt";
+    std::string fileName = "16O_8_8_1.30.txt";
+    std::string filePotential = "16O(p)_initpot.dat";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
     Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
-    Parameters::NucleonType::initialiseNucleonType(false); //false: run simulation for protons
+    Parameters::NucleonType::initialiseNucleonType(true); 	//false: run simulation for protons
                                                             //true: run simulation for neutrons
     
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
@@ -134,7 +134,11 @@ int main(int argc, const char * argv[])
     fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue());
     fOut.close();
     fOut.open(outputPath + "refFinalDensity.txt");
-    fOut << NDens.getTheoreticalDensity();;
+    fOut << NDens.getTheoreticalDensity();
+    fOut.close();
+    NDens.densityError();
+    fOut.open(outputPath + "refDensityError.txt");
+    fOut << NDens.getDensityError();
     fOut.close();
     ElementEigenvalues finalEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refFinalEigenvalues.txt");

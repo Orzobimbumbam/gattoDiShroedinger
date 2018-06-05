@@ -45,7 +45,7 @@ bool NuclearDensity::hasConverged () const
      //std::ofstream fOut("Outputs/distance.txt");
      double maxDiff = std::abs(1 - (m_thDensity.begin() -> second/m_benchmarkDensity.begin() -> second));
      double xMax = m_thDensity.begin() -> first;
-     m_epsilon = (m_benchmarkDensity.begin() -> second)*0.05;
+     m_epsilon = (m_benchmarkDensity.begin() -> second)*Parameters::convperc;
      for (const auto& it : m_thDensity)
  	 {
  		if(std::abs(1 - (it.second/m_benchmarkDensity.at(it.first))) > maxDiff) //access only, throw exception if key is not found
@@ -62,15 +62,38 @@ bool NuclearDensity::hasConverged () const
  	 }
      //fOut.close();*/
     
-    m_epsilon = m_benchmarkDensity.at(xMax)*0.01;
+    m_epsilon = m_benchmarkDensity.at(xMax)*Parameters::convperc;
     m_distanceToConvergenge = maxDiff - m_epsilon;
     
     return maxDiff < m_epsilon; // convergence condition
 }
 
+/*=========================================================================================================================
+ * Density error
+ *=======================================================================================================================*/
+
+void NuclearDensity::densityError()
+{
+	m_densError.clear();
+	double denserror;
+	for (const auto& it : m_thDensity)
+	{
+		denserror = std::abs(m_benchmarkDensity.at(it.first) - it.second);
+		m_densError[it.first] = denserror;
+	}
+
+	return;
+}
+
+
 Density NuclearDensity::getTheoreticalDensity() const
 {
     return m_thDensity;
+}
+
+Density NuclearDensity::getDensityError() const
+{
+	return m_densError;
 }
 
 double NuclearDensity::distanceToConvergence() const

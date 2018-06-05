@@ -6,6 +6,10 @@ using namespace Parameters;
 
 ElementConstants* ElementConstants::m_instancePtr = nullptr;
 
+/*=====================================================================================================
+ * Load element name, neutron number, proton number and rms value from filename
+ *===================================================================================================*/
+
 ElementConstants::ElementConstants(const std::string& fileName, const char delimiter)
 {
     _initialiseParameters(fileName, delimiter);
@@ -36,10 +40,15 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
     if (count < fileNameKeys)
         throw std::invalid_argument("initialiseParameters : invalid or incomplete file name keys.");
     
-    const unsigned int A = m_NN + m_NP;
-    m_Rn = R0*pow(A,(1./3.));
-    m_hBarOmega = 41./pow(A,(1./3.));
+    // Parameters
+    const unsigned int A = m_NN + m_NP;	// Atomic number
+    m_Rn = R0*pow(A,(1./3.));			// Nucleus radius
+    m_hBarOmega = 41./pow(A,(1./3.));	// [MeV*fm]
 }
+
+/*=====================================================================================================
+ * Parameters extractor from filename
+ *===================================================================================================*/
 
 std::string ElementConstants::_extractFileNameKey(const std::string& fileName)
 {
@@ -74,6 +83,9 @@ void ElementConstants::initialiseElementConstants(const std::string& fileName, c
     }
 }
 
+/*=====================================================================================================
+ * Integration parameters
+ *===================================================================================================*/
 
 IntegrationParameters* IntegrationParameters::m_instancePtr = nullptr;
 IntegrationParameters::IntegrationParameters(double x0, double x1) : m_x0(x0), m_x1(x1) {}
@@ -84,6 +96,10 @@ void IntegrationParameters::initialiseIntegrationParameters(double x0, double x1
         IntegrationParameters::m_instancePtr = new IntegrationParameters(x0, x1);
 }
 
+/*=====================================================================================================
+ * Nucleon type
+ *===================================================================================================*/
+
 NucleonType* NucleonType::m_instancePtr = nullptr;
 NucleonType::NucleonType(bool isNeutron) : m_isNeutron(isNeutron) {}
 
@@ -93,13 +109,17 @@ void NucleonType::initialiseNucleonType(bool isNeutron)
         m_instancePtr = new NucleonType(isNeutron);
 }
 
+/*=====================================================================================================
+ * Boundary conditions for Schrodinger solver
+ *===================================================================================================*/
 
-//other global functions
+// eigenfunction condition in r=0
 double psi0(unsigned int l)
 {
     return pow(Parameters::IntegrationParameters::x0(), l + 1);
 }
 
+// first derivate eigenfunction in r=0
 double psiPrime0(unsigned int l)
 {
 	/*if (l == 0) return 0.;

@@ -24,7 +24,7 @@ public:
     static double hBarOmega() {return m_instancePtr -> m_hBarOmega;};
     static std::string elementName() {return m_instancePtr -> m_elementName;};
     
-protected: //[Orzobimbumbam] : protected only for testing purposes; fixture classes to be derived to allow pointer reset
+protected: //protected only for testing purposes; fixture classes to be derived to allow pointer reset
     ElementConstants() = default;
     ElementConstants(const std::string& fileName, const char delimiter = '_');
     
@@ -43,7 +43,7 @@ protected: //[Orzobimbumbam] : protected only for testing purposes; fixture clas
 class IntegrationParameters
 {
 public:
-    static void initialiseIntegrationParameters(double x0, double x1); //[Orzobimbumbam] : h should be here too ??
+    static void initialiseIntegrationParameters(double x0, double x1); // h should be here too ??
     static double x0() {return m_instancePtr -> m_x0;};
     static double x1() {return m_instancePtr -> m_x1;};
     
@@ -68,7 +68,7 @@ private:
     
     static NucleonType* m_instancePtr;
     
-    bool m_isNeutron; //[Orzobimbumbam] : true for neutron, false for proton simulation type
+    bool m_isNeutron; // true for neutron, false for proton simulation type
 };
 
     
@@ -81,6 +81,7 @@ const double mp = 938.28;							// Proton mass in mpc^2 [MeV]
 const double R0 = 1.27; 							// [fm]
 
 // Wood-Saxon potential parameters
+//const double Rn = R0*pow(A,(1./3.)); 				// Nuclear radius [fm]
 const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 
@@ -90,7 +91,7 @@ const double a0 = 0.67;								// Nuclear surface thickness [fm]
 
 
 // Other parameters
-const double qe = 1.439; //1.6021e-19;				// elementary charge [MeV*fm]
+const double qe = 1.439; 							// elementary charge [MeV*fm]
 //const double qe = 1.6021e-19;						// elementary charge [C]
 //const double qe = 1.2;							// elementary charge [MeV fm^(1/2)]
 const double PI = 4*atan(1);
@@ -99,6 +100,7 @@ const double hbarc = 197.3269788;					// [MeV*fm]
 //const double rms = 1.30;							// root-mean-square radius of the charge distribution (<r^2>)^1/2 [fm]
 const double rp = 0.8751;							// proton rms charge radius (<rp^2>)^1/2 [fm]
 const double pregamma = 0.05;						// gamma prefactor for Kohn-Sham equations
+const double convperc = 0.01;						// Percentage of convergence
 
 }
 

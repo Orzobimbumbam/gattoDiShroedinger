@@ -18,6 +18,8 @@ public:
     
     virtual void theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen);
     virtual Density getTheoreticalDensity() const;
+    virtual void densityError();
+    virtual Density getDensityError() const;
     virtual bool hasConverged() const;
     
     virtual double distanceToConvergence() const;
@@ -30,6 +32,7 @@ public:
     
 private:
     Density m_thDensity;
+    Density m_densError;
     mutable double m_distanceToConvergenge;
     mutable double m_epsilon;
     //mutable bool m_isFirstLoop;
@@ -37,6 +40,7 @@ private:
 protected:
     Density m_benchmarkDensity;
 };
+
 
 
 #endif /* IDensity_h */
