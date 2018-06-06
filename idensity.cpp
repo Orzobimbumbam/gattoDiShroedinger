@@ -72,18 +72,17 @@ bool NuclearDensity::hasConverged () const
  * Density error
  *=======================================================================================================================*/
 
-void NuclearDensity::densityError()
+Density NuclearDensity::densityError() const
 {
-	//m_densError.clear();
-	double denserror;
+    Density densityError;
 	for (const auto& it : m_thDensity)
 	{
 		//denserror = std::abs(m_benchmarkDensity.at(it.first) - it.second)/m_benchmarkDensity.at(it.first);
-		denserror = std::abs(m_benchmarkDensity.at(it.first) - it.second);
-		m_densError[it.first] = log10(denserror);
+		const double denserror = std::abs(m_benchmarkDensity.at(it.first) - it.second);
+		densityError[it.first] = log10(denserror);
 	}
 
-	return;
+	return densityError;
 }
 
 
@@ -91,11 +90,11 @@ Density NuclearDensity::getTheoreticalDensity() const
 {
     return m_thDensity;
 }
-
+/*
 Density NuclearDensity::getDensityError() const
 {
 	return m_densError;
-}
+}*/
 
 double NuclearDensity::distanceToConvergence() const
 {

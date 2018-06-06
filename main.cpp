@@ -140,9 +140,9 @@ int main(int argc, const char * argv[])
     fOut.open(outputPath + "refFinalDensity.txt");
     fOut << NDens.getTheoreticalDensity();
     fOut.close();
-    NDens.densityError();
+    //NDens.densityError();
     fOut.open(outputPath + "refDensityError.txt");
-    fOut << NDens.getDensityError();
+    fOut << NDens.densityError();
     fOut.close();
     ElementEigenvalues finalEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refFinalEigenvalues.txt");
