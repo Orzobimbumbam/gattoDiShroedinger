@@ -45,12 +45,16 @@ int main(int argc, const char * argv[])
 
     Element nuclei(orbitals);
 
+	double nclMass = Parameters::mp;
+	if(Parameters::NucleonType::isNeutron())
+		nclMass = Parameters::mn;
+
     //Test theoretical and sog density for initial harmonic potential
-    //const TotPot potTot (Parameters::mn);
-    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, Parameters::mn);
-    //const HOPot potTot(Parameters::mn); //default is ground state
-    //const TestPot potTot(Parameters::mn);
-    //const PotOut potTot (initialPotential, Parameters::mn);
+    //const TotPot potTot (nclMass);
+    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, nclMass);
+    //const HOPot potTot(nclMass); //default is ground state
+    //const TestPot potTot(nclMass);
+    //const PotOut potTot (initialPotential, nclMass);
 
     std::map<double, double> inPotential;
     const unsigned long NSteps = std::abs(Parameters::IntegrationParameters::x1() - Parameters::IntegrationParameters::x0())/H;
