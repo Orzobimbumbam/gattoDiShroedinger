@@ -11,14 +11,14 @@
 
 int main(int argc, const char * argv[])
 {
-    std::string fileName = "16O_8_8_1.30.txt";
-    std::string filePotential = "16O(p)_initpot.dat";
+    std::string fileName = "40Ca_20_20_1.45.txt";
+    std::string filePotential = "PROTONI_208pb_KS-POTENTIAL.dat";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
     Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
-    Parameters::NucleonType::initialiseNucleonType(true); 	//false: run simulation for protons
+    Parameters::NucleonType::initialiseNucleonType(false); 	//false: run simulation for protons
                                                             //true: run simulation for neutrons
     
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder

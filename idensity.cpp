@@ -41,6 +41,30 @@ bool NuclearDensity::hasConverged () const
             xMax = it.first;
         }
     }
+
+    /*double maxDiff = std::abs(log10(m_thDensity.begin() -> second) - log10(m_benchmarkDensity.begin() -> second));
+    double xMax = m_thDensity.begin() -> first;
+    for (const auto& it : m_thDensity)
+    {
+        if(std::abs(log10(it.second) - log10(m_benchmarkDensity.at(it.first))) > maxDiff) //access only, throw exception if key is not found
+        {
+            maxDiff = std::abs(log10(it.second) - log10(m_benchmarkDensity.at(it.first)));
+            xMax = it.first;
+        }
+    }*/
+
+    /*double maxDiff = std::abs(1 - (log10(m_thDensity.begin() -> second)/log10(m_benchmarkDensity.begin() -> second)));
+    double xMax = m_thDensity.begin() -> first;
+    for (const auto& it : m_thDensity)
+	 {
+		if(std::abs(1 - (log10(it.second)/log10(m_benchmarkDensity.at(it.first)))) > maxDiff) //access only, throw exception if key is not found
+		{
+			maxDiff = std::abs(1 - (log10(it.second)/log10(m_benchmarkDensity.at(it.first))));
+			xMax = it.first;
+		}
+	 }*/
+
+
     /*
      //std::ofstream fOut("Outputs/distance.txt");
      double maxDiff = std::abs(1 - (m_thDensity.begin() -> second/m_benchmarkDensity.begin() -> second));
@@ -62,6 +86,8 @@ bool NuclearDensity::hasConverged () const
  	 }
      //fOut.close();*/
     
+    //m_epsilon = 0.01;
+    //m_epsilon = std::abs(log10(m_benchmarkDensity.at(xMax))*Parameters::convperc);
     m_epsilon = m_benchmarkDensity.at(xMax)*Parameters::convperc;
     m_distanceToConvergenge = maxDiff - m_epsilon;
     
