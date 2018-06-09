@@ -15,6 +15,7 @@
 #include "IOUtils.hpp"
 #include "element.hpp"
 #include "energytot.hpp"
+#include "recap.hpp"
 
 
 #endif /* Includes_h */

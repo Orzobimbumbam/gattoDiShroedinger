@@ -11,7 +11,7 @@
 
 int main(int argc, const char * argv[])
 {
-    std::string fileName = "40Ca_20_20_1.45.txt";
+    std::string fileName = "16O_8_8_1.30.txt";
     std::string filePotential = "PROTONI_208pb_KS-POTENTIAL.dat";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
@@ -158,6 +158,9 @@ int main(int argc, const char * argv[])
 
     clock_t end = clock(); // Finish time
     double seconds = (((double)(end - start))/CLOCKS_PER_SEC);
+
+    RecapFile rcfile(H, loops, seconds);
+    rcfile.paramRecap();
 
     std::cout << "CONVERGENCE IS DONE in: " << seconds << " seconds!" << " GREAT JOB!" << std::endl;
     std::cout << "Program executed successfully." << std::endl;

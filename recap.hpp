@@ -4,12 +4,12 @@
 class RecapFile
 {
 public:
-	RecapFile(double h, double xin, double xfin);
+	RecapFile(double h, double loops, double time);
 	void paramRecap();
 
 private:
 	RecapFile();
-	double m_h, m_xin, m_xfin, m_time;
+	double m_h, m_time;
 	int m_loops;
 
 };
