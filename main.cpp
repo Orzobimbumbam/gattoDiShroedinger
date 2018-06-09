@@ -162,7 +162,7 @@ int main(int argc, const char * argv[])
     RecapFile rcfile(H, loops, seconds);
     rcfile.paramRecap();
 
-    std::cout << "CONVERGENCE IS DONE in: " << seconds << " seconds!" << " GREAT JOB!" << std::endl;
+    std::cout << "CONVERGENCE IS ACHIEVED in: " << seconds << " seconds!" << " GREAT JOB!" << std::endl;
     std::cout << "Program executed successfully." << std::endl;
     return 0;
 }

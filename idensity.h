@@ -18,8 +18,7 @@ public:
     
     virtual void theoreticalDensity(const ElementEigenfunctions& psi, const OrderedLevelDegeneration& degen);
     virtual Density getTheoreticalDensity() const;
-    virtual Density densityError() const; //maybe should return a Density type and remove get?
-    //virtual Density getDensityError() const;
+    virtual Density densityError() const;
     virtual bool hasConverged() const;
     
     virtual double distanceToConvergence() const;
@@ -32,7 +31,6 @@ public:
     
 private:
     Density m_thDensity;
-    //Density m_densError; //is this going to be used elsewhere? If not, perhaps shouldn't be stored
     mutable double m_distanceToConvergenge;
     mutable double m_epsilon;
     //mutable bool m_isFirstLoop;

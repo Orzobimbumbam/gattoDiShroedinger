@@ -9,9 +9,10 @@ public:
 
 private:
 	RecapFile();
-	double m_h, m_time;
-	int m_loops;
+	const double m_h, m_time;
+	unsigned long m_loops;
 
+    static std::string m_recapFilePath;
 };
 
 
