@@ -116,7 +116,7 @@ private:
 };
 
 /*======================================================================
- * Test potential class
+ * HO Test potential class
  *====================================================================*/
 
 class TestPot: public InitialPot

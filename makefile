@@ -37,11 +37,14 @@ kohn-sham.o: kohn-sham.cpp
 schroddy.o: schroddy.cpp
 	g++ -c schroddy.cpp $(ROOTFLAGS) $(LIBROOT)
 
+recap.o: recap.cpp
+	g++ -c recap.cpp $(ROOTFLAGS) $(LIBROOT)
+
 main.o: main.cpp
 	g++ -c main.cpp $(ROOTFLAGS) $(LIBROOT)
 
-Build: parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o energytot.o element.o initpot.o kohn-sham.o schroddy.o main.o
-	g++ parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o energytot.o element.o initpot.o kohn-sham.o schroddy.o main.o -o exec.x $(ROOTFLAGS) $(LIBROOT)
+Build: parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o energytot.o element.o initpot.o kohn-sham.o schroddy.o recap.o main.o
+	g++ parameters.o IOUtils.o densities.o idensity.o mcDensity.o eigenfunction.o eigenvalues.o energytot.o element.o initpot.o kohn-sham.o schroddy.o recap.o main.o -o exec.x $(ROOTFLAGS) $(LIBROOT)
 
 Execute: Execute exec.x
 	./exec.x

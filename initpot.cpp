@@ -33,7 +33,7 @@ double WSaxPot::potential(double x) const
         sign = 1;
     
     double V0 = 51 + sign*33.0*(ElementConstants::NN() - ElementConstants::NP())/ElementConstants::A();
-    double wspot = -V0/(1+exp ((x-m_Rn)/m_a0)) /*+ copot*/;
+    double wspot = -V0/(1 + exp((x-m_Rn)/m_a0)) /*+ copot*/;
     return wspot;
 }
 
@@ -157,10 +157,13 @@ double TestPot::potential(double x) const
 	using namespace Parameters;
     const double c =(m_m*ElementConstants::hBarOmega()*ElementConstants::hBarOmega())/(hbarc*hbarc);
 	const double verTraslation = -50.;
+	const double V0 = 10;
+	const double Rn = 10;
     //const double perturbativePart = 10*x;
-    const double perturbativePart2 = (rand()/(static_cast<double>(RAND_MAX))) - 0.05;
+    //const double perturbativePart2 = (rand()/(static_cast<double>(RAND_MAX))) - 0.05;
     //double hopot = 0.05*x*x + perturbativePart2 /*+ verTraslation*/;
-    double hopot = 0.05*c*x*x + perturbativePart2 + verTraslation;
+    //double hopot = 0.05*c*x*x + perturbativePart2 + verTraslation;
+    double hopot =  -V0/(1 + exp((x-Rn)/a0));
 
 
     return hopot;

@@ -11,8 +11,9 @@
 
 int main(int argc, const char * argv[])
 {
-    std::string fileName = "16O_8_8_1.30.txt";
-    std::string filePotential = "PROTONI_208pb_KS-POTENTIAL.dat";
+    std::string fileName = "40Ca_20_20_1.45.txt";
+    std::string filePotential = "HO-tipo-Calcio.dat";
+    std::string fileDensity = "208Pb(n)_SKP_siCoul_density_2Rn.out";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
     const double xin = 1e-6;
@@ -22,8 +23,10 @@ int main(int argc, const char * argv[])
                                                             //true: run simulation for neutrons
     
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
+    mkdir("Outputs/PotStep", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create potential step folder
     std::string inputPath = "Inputs/";
     std::string outputPath = "Outputs/";
+    std::string stepPath = "Outputs/IterPot/";
     clock_t start = clock(); // Start time
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt"
@@ -77,7 +80,7 @@ int main(int argc, const char * argv[])
     NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
     NDens.benchmarkDensity(qrParam, H);
 
-    /*in.open(inputPath + "HODensity-20NN-3Rn.txt");
+    /*in.open(inputPath + fileDensity);
     std::vector<std::vector<double>> mcDensity(NDens.getTheoreticalDensity().size());
     readMatrix(mcDensity, in, false);
     in.close();
@@ -126,6 +129,12 @@ int main(int argc, const char * argv[])
         ksi.setElementEigenfunctions(elEigf);
         KohnShamInverseWithWP tempKsi_ = ksi;*/
         ksi.KSinverse(NDens, tempKsi_);
+
+        std::string nfile = std::to_string(loops);
+        KSPotential finalPotential = ksi.getKSPot();
+        fOut.open(stepPath + nfile + "StepPotential.txt");
+        fOut << finalPotential;
+        fOut.close();
 
         ++loops;
         //if (loops%10 == 0)
