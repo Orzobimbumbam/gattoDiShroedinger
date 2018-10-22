@@ -18,22 +18,31 @@ WSaxPot::WSaxPot(double Rn, double a0, double m, unsigned int l, double j): Init
 double WSaxPot::potential(double x) const
 {
     using namespace Parameters;
-    /*int s = 2.;
-    const double Ru = Parameters::Rn*sqrt((1 + (5*s*s)/(2*Parameters::Rn*Parameters::Rn))/
-    		(1 + (3*s*s)/(4*Parameters::Rn*Parameters::Rn)));
+
+    // Coulombian interaction
+   int s = 2.;
+    const double Ru = m_Rn*sqrt((1 + (5*s*s)/(2*m_Rn*m_Rn))/
+    		(1 + (3*s*s)/(4*m_Rn*m_Rn)));
 
     double copot;
     if (x <= Ru)
-    	copot = 0.5*((Parameters::NP*Parameters::qe*Parameters::qe)/Ru)*(3 - (x/Ru)*(x/Ru));
+    	copot = 0.5*((Parameters::ElementConstants::NP()*Parameters::qe*Parameters::qe)/Ru)*(3 - (x/Ru)*(x/Ru));
     else
-    	copot = (Parameters::NP*Parameters::qe*Parameters::qe)/x;*/
+    	copot = (Parameters::ElementConstants::NP()*Parameters::qe*Parameters::qe)/x;
 
+    // Wood-Saxon potential
     int sign = -1;
     if (!Parameters::NucleonType::isNeutron())
         sign = 1;
     
     double V0 = 51 + sign*33.0*(ElementConstants::NN() - ElementConstants::NP())/ElementConstants::A();
-    double wspot = -V0/(1 + exp((x-m_Rn)/m_a0)) /*+ copot*/;
+
+    double wspot;
+    if (!Parameters::NucleonType::isNeutron())
+    	wspot = -V0/(1 + exp((x-m_Rn)/m_a0)) + copot;
+    else
+    	wspot = -V0/(1 + exp((x-m_Rn)/m_a0));
+
     return wspot;
 }
 
@@ -155,15 +164,16 @@ double TestPot::potential(double x) const
 {
 
 	using namespace Parameters;
-    const double c =(m_m*ElementConstants::hBarOmega()*ElementConstants::hBarOmega())/(hbarc*hbarc);
-	const double verTraslation = -50.;
+    //const double c =(m_m*ElementConstants::hBarOmega()*ElementConstants::hBarOmega())/(hbarc*hbarc);
+    const double c =(m_m*90*ElementConstants::hBarOmega())/(hbarc*hbarc);
+	const double verTraslation = -51.;
 	const double V0 = 10;
 	const double Rn = 10;
     //const double perturbativePart = 10*x;
     //const double perturbativePart2 = (rand()/(static_cast<double>(RAND_MAX))) - 0.05;
     //double hopot = 0.05*x*x + perturbativePart2 /*+ verTraslation*/;
-    //double hopot = 0.05*c*x*x + perturbativePart2 + verTraslation;
-    double hopot =  -V0/(1 + exp((x-Rn)/a0));
+    double hopot = 0.05*c*x*x + verTraslation;
+    //double hopot =  -V0/(1 + exp((x-Rn)/a0));
 
 
     return hopot;

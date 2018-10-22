@@ -18,6 +18,8 @@ int main(int argc, const char * argv[])
     const double H = 0.1;
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
+    int potType = 1;	// set: 0: Total potential | 1: Wood-Saxon | 2: Harmonic Oscillator | 3: Test potential | 4: KS/Other potential
+    int empyDensType = 0;	// set: 0: Protons SoG | 1: Neutrons SoG | 2: MC/Other density
     Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
     Parameters::NucleonType::initialiseNucleonType(false); 	//false: run simulation for protons
                                                             //true: run simulation for neutrons
@@ -26,25 +28,19 @@ int main(int argc, const char * argv[])
     mkdir("Outputs/PotStep", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create potential step folder
     std::string inputPath = "Inputs/";
     std::string outputPath = "Outputs/";
-    std::string stepPath = "Outputs/IterPot/";
+    std::string stepPath = "Outputs/PotStep/";
     clock_t start = clock(); // Start time
 
-    //Load the matrix of quantum numbers for each state from "orbitals.txt"
+    //Load the matrix of quantum numbers for each state from "orbitals.txt" and SoG parameters from file
     std::vector <std::vector <double>> orbitals (36);
     std::ifstream in (inputPath + "orbitals.txt");
     readMatrix(orbitals, in, false);
     in.close();
 
-    //in.open(inputPath + "16O.txt");
     in.open(inputPath + fileName);
     std::vector<std::vector<double>> qrParam(12);
     readMatrix(qrParam, in, false);
     in.close();
-
-    //load initial potential from file
-    /*in.open(inputPath + filePotential);
-    std::map<double, double> initialPotential;
-    readMap(initialPotential, in, false);*/
 
     Element nuclei(orbitals);
 
@@ -52,19 +48,39 @@ int main(int argc, const char * argv[])
 	if(Parameters::NucleonType::isNeutron())
 		nclMass = Parameters::mn;
 
-    //Test theoretical and sog density for initial harmonic potential
-    //const TotPot potTot (nclMass);
-    const WSaxPot potTot (Parameters::ElementConstants::Rn(), Parameters::a0, nclMass);
-    //const HOPot potTot(nclMass); //default is ground state
-    //const TestPot potTot(nclMass);
-    //const PotOut potTot (initialPotential, nclMass);
+	//Test theoretical and sog density for initial potential
+	std::unique_ptr<InitialPot> pot_ptr;
+	switch(potType)
+	{
+		case 0:
+			//pot_ptr = std::make_unique<TotPot> (nclMass);
+		break;
+		case 1:
+			pot_ptr = std::make_unique<WSaxPot> (Parameters::ElementConstants::Rn(), Parameters::a0, nclMass);
+		break;
+		case 2:
+			pot_ptr = std::make_unique<HOPot> (nclMass);
+		break;
+		case 3:
+			pot_ptr = std::make_unique<TestPot> (nclMass);
+		break;
+		case 4:
 
+			in.open(inputPath + filePotential);
+		    std::map<double, double> initialPotential;
+		    readMap(initialPotential, in, false);
+
+			pot_ptr = std::make_unique<PotOut> (initialPotential, nclMass);
+		break;
+	}
+
+	//std::string potTot = "potTot" + potType;
     std::map<double, double> inPotential;
     const unsigned long NSteps = std::abs(Parameters::IntegrationParameters::x1() - Parameters::IntegrationParameters::x0())/H;
     double rad = Parameters::IntegrationParameters::x0();
     for (int i = 0; i < NSteps +1; ++i)
     {
- 		inPotential[rad] = potTot.potential(rad);
+ 		inPotential[rad] = pot_ptr -> potential(rad);
  		rad += H;
     }
     std::ofstream fOut(outputPath + "refInitialPotential.txt");
@@ -72,25 +88,41 @@ int main(int argc, const char * argv[])
     fOut.close();
 
 
-    const Schroddy sh(potTot, H);
+    const Schroddy sh(*pot_ptr, H);
     ElementEigenfunctions elEigf = nuclei.orbitalEigenfunction(sh, orbitals);
-    NuclearDensityWithSOG NDens;
-    //NuclearDensityWithNeutronsSOG NDens;
-    //NuclearDensityWithMC NDens;
-    NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
-    NDens.benchmarkDensity(qrParam, H);
 
-    /*in.open(inputPath + fileDensity);
-    std::vector<std::vector<double>> mcDensity(NDens.getTheoreticalDensity().size());
-    readMatrix(mcDensity, in, false);
-    in.close();
-    NDens.benchmarkDensity(mcDensity);*/
+    std::unique_ptr<NuclearDensity> NDens_ptr;
+    switch(empyDensType)
+    {
+    	case 0:
+    		NDens_ptr = std::make_unique<NuclearDensityWithSOG>();
+    		NDens_ptr -> theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
+    		NDens_ptr -> benchmarkDensity(qrParam, H);
+
+    	break;
+    	case 1:
+    		NDens_ptr = std::make_unique<NuclearDensityWithNeutronsSOG>();
+    		NDens_ptr -> theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
+    		NDens_ptr -> benchmarkDensity(qrParam, H);
+
+    	break;
+    	case 2:
+    		NDens_ptr = std::make_unique<NuclearDensityWithMC>();
+    		NDens_ptr -> theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
+    		in.open(inputPath + fileDensity);
+    		std::vector<std::vector<double>> mcDensity(NDens_ptr -> getTheoreticalDensity().size());
+    		readMatrix(mcDensity, in, false);
+    		in.close();
+    		NDens_ptr -> benchmarkDensity(mcDensity);
+
+    	break;
+    }
 
     fOut.open(outputPath + "refInitialDensity.txt");
-    fOut << NDens.getTheoreticalDensity();
+    fOut << NDens_ptr -> getTheoreticalDensity();
     fOut.close();
     fOut.open(outputPath + "refSogDensity.txt");
-    fOut << NDens.getBenchmarkDensity();
+    fOut << NDens_ptr -> getBenchmarkDensity();
     fOut.close();
     ElementEigenvalues initialEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refInitialEigenvalues.txt");
@@ -106,29 +138,29 @@ int main(int argc, const char * argv[])
 
     //Test Kohn-Sham inversion for initial harmonic potential
     fOut.open(outputPath + "refFirstKSPotential.txt");
-    KohnShamInverseWithLB ksi(potTot, H);
+    KohnShamInverseWithLB ksi(*pot_ptr, H);
     KohnShamInverseWithLB tempKsi = ksi;
     /*KohnShamInverseWithJW ksi(potTot, H);
     KohnShamInverseWithJW tempKsi = ksi;*/
     /*KohnShamInverseWithWP ksi(potTot, H, nuclei.getLevelEigenvalue(), elEigf);
     KohnShamInverseWithWP tempKsi = ksi;*/
-    ksi.KSinverse(NDens, tempKsi);
+    ksi.KSinverse(*NDens_ptr, tempKsi);
     fOut << ksi.getKSPot();
     fOut.close();
 
     unsigned long loops = 0;
-    while (!NDens.hasConverged()) //simulation loop
+    while (!NDens_ptr -> hasConverged()) //simulation loop
     {
         const PotOut po(ksi, Parameters::mn, 0);
         const Schroddy sh_(po, H);
         elEigf = nuclei.orbitalEigenfunction(sh_, orbitals);
-        NDens.theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
+        NDens_ptr -> theoreticalDensity(elEigf, nuclei.getLevelDegeneration());
         KohnShamInverseWithLB tempKsi_ = ksi;
         //KohnShamInverseWithJW tempKsi_ = ksi;
         /*ksi.setElementEigenvalues(nuclei.getLevelEigenvalue());
         ksi.setElementEigenfunctions(elEigf);
         KohnShamInverseWithWP tempKsi_ = ksi;*/
-        ksi.KSinverse(NDens, tempKsi_);
+        ksi.KSinverse(*NDens_ptr, tempKsi_);
 
         std::string nfile = std::to_string(loops);
         KSPotential finalPotential = ksi.getKSPot();
@@ -138,8 +170,8 @@ int main(int argc, const char * argv[])
 
         ++loops;
         //if (loops%10 == 0)
-            std::cerr << "Convergence distance: " << NDens.distanceToConvergence() << " with epsilon "
-            << NDens.epsilon() << " after " << loops << " iterations. " << std::endl;
+            std::cerr << "Convergence distance: " << NDens_ptr -> distanceToConvergence() << " with epsilon "
+            << NDens_ptr -> epsilon() << " after " << loops << " iterations. " << std::endl;
     }
 
     EnergyTOT totalenergy;
@@ -147,11 +179,11 @@ int main(int argc, const char * argv[])
     fOut << totalenergy.energyTot(elEigf, nuclei.getLevelEigenvalue());
     fOut.close();
     fOut.open(outputPath + "refFinalDensity.txt");
-    fOut << NDens.getTheoreticalDensity();
+    fOut << NDens_ptr -> getTheoreticalDensity();
     fOut.close();
     //NDens.densityError();
     fOut.open(outputPath + "refDensityError.txt");
-    fOut << NDens.densityError();
+    fOut << NDens_ptr -> densityError();
     fOut.close();
     ElementEigenvalues finalEigenvalues = nuclei.getLevelEigenvalue();
     fOut.open(outputPath + "refFinalEigenvalues.txt");
@@ -168,7 +200,7 @@ int main(int argc, const char * argv[])
     clock_t end = clock(); // Finish time
     double seconds = (((double)(end - start))/CLOCKS_PER_SEC);
 
-    RecapFile rcfile(H, loops, seconds);
+    RecapFile rcfile(H, loops, seconds, fileName,filePotential,fileDensity, potType, empyDensType);
     rcfile.paramRecap();
 
     std::cout << "CONVERGENCE IS ACHIEVED in: " << seconds << " seconds!" << " GREAT JOB!" << std::endl;

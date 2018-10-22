@@ -79,7 +79,7 @@ template <class T> std::istream& readMatrix(std::vector<std::vector<T>>& outputM
         std::istringstream sLine(line);
         std::string value;
         while (sLine >> value)
-            outputMatrix[rowIndex].push_back(std::stod(value)); //convert string to double
+            outputMatrix.at(rowIndex).push_back(std::stod(value)); //convert string to double
         
         ++rowIndex;
      }
