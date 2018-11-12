@@ -12,13 +12,14 @@
 int main(int argc, const char * argv[])
 {
     std::string fileName = "40Ca_20_20_1.45.txt";
-    std::string filePotential = "HO-tipo-Calcio.dat";
-    std::string fileDensity = "208Pb(n)_SKP_siCoul_density_2Rn.out";
+    std::string filePotential = "KS-POTENTIAL.dat";
+    std::string fileDensity = "208Pb(p)_SKP_siCoul_density-2Rn.txt";
+    std::string fileQuantNumb = "orbitals-so.txt";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
     const double xin = 1e-6;
     const double xfin = 3*Parameters::ElementConstants::Rn();
-    int potType = 1;	// set: 0: Total potential | 1: Wood-Saxon | 2: Harmonic Oscillator | 3: Test potential | 4: KS/Other potential
+    int potType = 1;	// set: 0: Total potential | 1: Woods-Saxon | 2: Harmonic Oscillator | 3: Test potential | 4: KS/Other potential
     int empyDensType = 0;	// set: 0: Protons SoG | 1: Neutrons SoG | 2: MC/Other density
     Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
     Parameters::NucleonType::initialiseNucleonType(false); 	//false: run simulation for protons
@@ -32,8 +33,8 @@ int main(int argc, const char * argv[])
     clock_t start = clock(); // Start time
 
     //Load the matrix of quantum numbers for each state from "orbitals.txt" and SoG parameters from file
-    std::vector <std::vector <double>> orbitals (36);
-    std::ifstream in (inputPath + "orbitals.txt");
+    std::vector <std::vector <double>> orbitals (28);
+    std::ifstream in (inputPath + fileQuantNumb);
     readMatrix(orbitals, in, false);
     in.close();
 
@@ -200,7 +201,7 @@ int main(int argc, const char * argv[])
     clock_t end = clock(); // Finish time
     double seconds = (((double)(end - start))/CLOCKS_PER_SEC);
 
-    RecapFile rcfile(H, loops, seconds, fileName,filePotential,fileDensity, potType, empyDensType);
+    RecapFile rcfile(H, loops, seconds, fileName, filePotential, fileDensity, fileQuantNumb, potType, empyDensType);
     rcfile.paramRecap();
 
     std::cout << "CONVERGENCE IS ACHIEVED in: " << seconds << " seconds!" << " GREAT JOB!" << std::endl;

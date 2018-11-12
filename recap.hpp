@@ -4,7 +4,7 @@
 class RecapFile
 {
 public:
-	RecapFile(double h, double loops, double time, std::string fSoG, std::string fPot, std::string fDens, int pType, int edType);
+	RecapFile(double h, double loops, double time, std::string fSoG, std::string fPot, std::string fDens,  std::string fQNumb, int pType, int edType);
 	void paramRecap();
 
 private:
@@ -14,7 +14,7 @@ private:
 	unsigned long m_loops;
 
     static std::string m_recapFilePath;
-    std::string m_fSoG, m_fPot, m_fDens;
+    std::string m_fSoG, m_fPot, m_fDens, m_fQNumb;
 };
 
 
