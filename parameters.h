@@ -1,6 +1,7 @@
 #pragma once
 
 #include<cmath>
+#include <map>
 #include <string>
 
 
@@ -10,7 +11,10 @@ double psiPrime0(unsigned int l);
 namespace Parameters
 {
 
-//Global objects - simulation dependent, to be initialised in client code
+/*======================================================================================================
+ * Global objects - simulation dependent, to be initialised in client code
+ *====================================================================================================*/
+
 class ElementConstants
 {
 public:
@@ -71,8 +75,25 @@ private:
     bool m_isNeutron; // true for neutron, false for proton simulation type
 };
 
-    
-//Global constants - immutable, simulation independent
+class SpinOrbit
+{
+public:
+    static void initialiseSpinOrbit(bool SpinOrbitOn);
+    static bool SpinOrbitOn() {return m_instancePtr -> m_SpinOrbitOn;};
+
+private:
+    SpinOrbit() = default;
+    SpinOrbit(bool SpinOrbitOn);
+
+    static SpinOrbit* m_instancePtr;
+
+    bool m_SpinOrbitOn; // true for Spin-Orbit ON, false for Spin-orbit OFF
+};
+
+
+/*========================================================================================================
+ * Global constants - immutable, simulation independent
+ *======================================================================================================*/
 
 //const double mp= 1.6726219e-27;                   // Proton mass [kg]
 //const double mn= 1.6749273e-27;					// Neutron mass [kg]

@@ -41,7 +41,7 @@ void ElementConstants::_initialiseParameters(const std::string& fileName, const 
         throw std::invalid_argument("initialiseParameters : invalid or incomplete file name keys.");
     
     // Parameters
-    const unsigned int A = m_NN + m_NP;	// Atomic number
+    const unsigned int A = m_NN + m_NP;	// Mass number
     m_Rn = R0*pow(A,(1./3.));			// Nucleus radius
     m_hBarOmega = 41./pow(A,(1./3.));	// [MeV*fm]
 }
@@ -107,6 +107,19 @@ void NucleonType::initialiseNucleonType(bool isNeutron)
 {
     if (NucleonType::m_instancePtr == nullptr)
         m_instancePtr = new NucleonType(isNeutron);
+}
+
+/*=====================================================================================================
+ * Spin-Orbit ON/OFF
+ *===================================================================================================*/
+
+SpinOrbit* SpinOrbit::m_instancePtr = nullptr;
+SpinOrbit::SpinOrbit(bool SpinOrbitOn) : m_SpinOrbitOn(SpinOrbitOn) {}
+
+void SpinOrbit::initialiseSpinOrbit(bool SpinOrbitOn)
+{
+    if (SpinOrbit::m_instancePtr == nullptr)
+        m_instancePtr = new SpinOrbit(SpinOrbitOn);
 }
 
 /*=====================================================================================================

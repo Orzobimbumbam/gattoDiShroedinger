@@ -119,19 +119,20 @@ double Schroddy::_spinOrbitInteraction(double x) const
     
         const unsigned int l = m_pot -> getL();
         const double j = m_pot -> getJ();
-        const double s = m_pot -> getJ() - m_pot -> getL();
+        //const double s = m_pot -> getJ() - m_pot -> getL();
     
         int sign = -1;
         if (ElementConstants::NN() == 0)
             sign *= -1;
         
         const double V0 = 51 + sign*33.0*(ElementConstants::NN() - ElementConstants::NP())/ElementConstants::A();
-        const double VLS = 0.44*V0;
-        const double factor1 = /*Parameters::hbar*Parameters::hbar*/(VLS*Parameters::R0*Parameters::R0)/(2*x);
+        const double k0 = 0.44*V0;
+        const double factor1 = /*Parameters::hbar*Parameters::hbar*/(k0*Parameters::R0*Parameters::R0)/(2*x);
         const double exponential = exp((x - ElementConstants::Rn())/Parameters::a0);
         const double factor2 = exponential/(Parameters::a0*(exponential + 1)*(exponential + 1));
     
-        return -factor1*factor2*(j*(j + 1) - s*(s + 1) - l*(l + 1));
+        //return (-1)*factor1*factor2*(j*(j + 1) - s*(s + 1) - l*(l + 1));
+        return (-1)*factor1*factor2*(j*(j + 1) - 0.75 - l*(l + 1));
     }
     else
         return 0;

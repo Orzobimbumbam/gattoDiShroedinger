@@ -85,7 +85,7 @@ void RecapFile::paramRecap()
     fOut << "Integration step size: " << m_h << " [fm]" << std::endl;
     fOut << "Initial radius: " << Parameters::IntegrationParameters::x0() << " [fm]" << std::endl;
     fOut << "Final radius: " << Parameters::IntegrationParameters::x1() << " [fm]" << std::endl;
-    fOut << "Percentage of convergence " << Parameters::convperc << std::endl;
+    fOut << "Percentage of convergence: " << Parameters::convperc << std::endl;
     fOut << "Convergence achieved after: " << m_loops << " iterations" << std::endl;
     fOut << "Convergence achieved in: " << m_time << " seconds" << std::endl;
     fOut.close();

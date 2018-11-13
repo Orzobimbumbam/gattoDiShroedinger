@@ -11,10 +11,9 @@
 
 int main(int argc, const char * argv[])
 {
-    std::string fileName = "40Ca_20_20_1.45.txt";
+    std::string fileName = "16O_8_8_1.30.txt";
     std::string filePotential = "KS-POTENTIAL.dat";
     std::string fileDensity = "208Pb(p)_SKP_siCoul_density-2Rn.txt";
-    std::string fileQuantNumb = "orbitals-so.txt";
     Parameters::ElementConstants::initialiseElementConstants(fileName);
     const double H = 0.1;
     const double xin = 1e-6;
@@ -22,8 +21,8 @@ int main(int argc, const char * argv[])
     int potType = 1;	// set: 0: Total potential | 1: Woods-Saxon | 2: Harmonic Oscillator | 3: Test potential | 4: KS/Other potential
     int empyDensType = 0;	// set: 0: Protons SoG | 1: Neutrons SoG | 2: MC/Other density
     Parameters::IntegrationParameters::initialiseIntegrationParameters(xin, xfin);
-    Parameters::NucleonType::initialiseNucleonType(false); 	//false: run simulation for protons
-                                                            //true: run simulation for neutrons
+    Parameters::NucleonType::initialiseNucleonType(true); 	// false: run simulation for protons | true: run simulation for neutrons
+    Parameters::SpinOrbit::initialiseSpinOrbit(false); 		// false: Spin-Orbit OFF | true: Spin-Orbit ON
     
     mkdir("Outputs", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create outputs folder
     mkdir("Outputs/PotStep", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // Create potential step folder
@@ -32,8 +31,21 @@ int main(int argc, const char * argv[])
     std::string stepPath = "Outputs/PotStep/";
     clock_t start = clock(); // Start time
 
+    std::string fileQuantNumb;
+    int nMatRows;
+    if (!Parameters::SpinOrbit::SpinOrbitOn())
+    {
+    	fileQuantNumb = "orbitals.txt";
+    	nMatRows = 36;
+    }
+    else
+    {
+    	fileQuantNumb = "orbitals-so.txt";
+    	nMatRows = 28;
+    }
+
     //Load the matrix of quantum numbers for each state from "orbitals.txt" and SoG parameters from file
-    std::vector <std::vector <double>> orbitals (28);
+    std::vector <std::vector <double>> orbitals (nMatRows);
     std::ifstream in (inputPath + fileQuantNumb);
     readMatrix(orbitals, in, false);
     in.close();
